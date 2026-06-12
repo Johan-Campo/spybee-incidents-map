@@ -3,13 +3,17 @@
 import { useState, type FormEvent } from "react";
 import { X } from "lucide-react";
 import { useIncidentsStore } from "@/store/incidentsStore";
-import { CATEGORY_OPTIONS, CURRENT_USER, DEFAULT_PROJECT, PEOPLE_OPTIONS, PRIORITY_OPTIONS, TAG_OPTIONS } from "@/lib/incidentOptions";
+import { CATEGORY_OPTIONS, CURRENT_USER, DEFAULT_PROJECT, PEOPLE_OPTIONS, PRIORITY_OPTIONS } from "@/lib/incidentOptions";
 import { DEFAULT_MAP_VIEW } from "@/lib/mapConfig";
+import { LOCATION_TAGS, flattenLocationTags } from "@/lib/locationTags";
 import type { Incident, IncidentCoordinates, IncidentMedia, IncidentPriority } from "@/types/incident";
 import { TextField } from "../fields/TextField";
 import { TextAreaField } from "../fields/TextAreaField";
 import { SelectField } from "../fields/SelectField";
-import { MultiSelectField } from "../fields/MultiSelectField";
+import { SearchableSelectField } from "../fields/SearchableSelectField";
+import { SearchableMultiSelectField } from "../fields/SearchableMultiSelectField";
+import { TreeMultiSelectField } from "../fields/TreeMultiSelectField";
+import { DateField } from "../fields/DateField";
 import { FileUploadField } from "../fields/FileUploadField";
 import { LocationPicker } from "../fields/LocationPicker";
 import styles from "./CreateIncidentModal.module.scss";
@@ -78,7 +82,7 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
       dueDate: dueDate ? new Date(dueDate).toISOString() : null,
       closingDate: null,
       media,
-      tags: TAG_OPTIONS.filter((tag) => tagIds.includes(tag.id)),
+      tags: flattenLocationTags().filter((tag) => tagIds.includes(tag.id)),
       deleted: false,
       createdAt: now,
       updatedAt: now,
@@ -92,7 +96,7 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(event) => event.stopPropagation()}>
         <header className={styles.header}>
-          <h2 className={styles.title}>Crear incidencia</h2>
+          <h2 className={styles.title}>Crear Incidencia</h2>
           <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Cerrar">
             <X size={20} />
           </button>
@@ -110,15 +114,15 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
             required
           />
 
-          <TextField id="dueDate" label="Fecha de vencimiento" type="date" value={dueDate} onChange={setDueDate} required />
+          <DateField id="dueDate" label="Fecha de vencimiento" value={dueDate} onChange={setDueDate} required />
 
           <div className={styles.categoryRow}>
-            <SelectField
+            <SearchableSelectField
               id="category"
               label="Categoría"
               value={categoryId}
               onChange={setCategoryId}
-              placeholder="Selecciona una categoría"
+              placeholder="Seleccione categoría"
               required
               options={CATEGORY_OPTIONS.map((category) => ({ value: category.id, label: category.name, color: category.color }))}
             />
@@ -137,25 +141,30 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
             options={PRIORITY_OPTIONS.map((option) => ({ value: option.value, label: option.label, color: option.color }))}
           />
 
-          <MultiSelectField
-            label="Etiquetas"
-            placeholder="Seleccionar etiquetas"
-            selected={tagIds}
-            onChange={setTagIds}
-            options={TAG_OPTIONS.map((tag) => ({ value: tag.id, label: tag.name, color: tag.color }))}
-          />
+          <div className={styles.categoryRow}>
+            <TreeMultiSelectField
+              label="Etiquetas"
+              placeholder="Buscar etiquetas"
+              selected={tagIds}
+              onChange={setTagIds}
+              nodes={LOCATION_TAGS}
+            />
+            <button type="button" className={styles.manageButton}>
+              Manage
+            </button>
+          </div>
 
-          <MultiSelectField
+          <SearchableMultiSelectField
             label="Asignados"
-            placeholder="Seleccionar asignados"
+            placeholder="Selecciona asignados"
             selected={assigneeIds}
             onChange={setAssigneeIds}
             options={PEOPLE_OPTIONS.map((person) => ({ value: person.id, label: person.name, avatarUrl: person.avatarUrl }))}
           />
 
-          <MultiSelectField
+          <SearchableMultiSelectField
             label="Observadores"
-            placeholder="Seleccionar observadores"
+            placeholder="Selecciona observadores"
             selected={observerIds}
             onChange={setObserverIds}
             options={PEOPLE_OPTIONS.map((person) => ({ value: person.id, label: person.name, avatarUrl: person.avatarUrl }))}
@@ -176,7 +185,7 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
             Cancelar
           </button>
           <button type="submit" form="create-incident-form" className={styles.submitButton}>
-            Crear incidencia
+            Crear Incidente
           </button>
         </footer>
       </div>

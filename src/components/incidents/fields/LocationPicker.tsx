@@ -41,6 +41,15 @@ export function LocationPicker({
           />
         </div>
 
+        <input
+          id="locationDescription"
+          type="text"
+          className={fieldStyles.input}
+          placeholder="Detalles de localización"
+          value={locationDescription}
+          onChange={(event) => onLocationDescriptionChange(event.target.value)}
+        />
+
         <div className={styles.miniMap}>
           <Map
             mapboxAccessToken={MAPBOX_TOKEN}
@@ -61,15 +70,6 @@ export function LocationPicker({
             </Marker>
           </Map>
         </div>
-
-        <input
-          id="locationDescription"
-          type="text"
-          className={fieldStyles.input}
-          placeholder="Descripción de la ubicación"
-          value={locationDescription}
-          onChange={(event) => onLocationDescriptionChange(event.target.value)}
-        />
       </div>
     </FormField>
   );

@@ -14,7 +14,7 @@
 
 .required {
   color: #ef4444;
-  margin-left: 2px;
+  margin-right: 2px;
 }
 
 .input,
@@ -204,4 +204,288 @@
   &:hover {
     color: $color-text-dark;
   }
+}
+
+// Combobox (searchable select / multi-select)
+.comboboxWrapper {
+  position: relative;
+}
+
+.comboboxInputRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $spacing-xs;
+  min-height: 38px;
+  padding: 4px 8px;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  background-color: $color-sidebar-bg;
+  cursor: text;
+
+  &:focus-within {
+    outline: 2px solid $color-accent;
+    outline-offset: -1px;
+  }
+}
+
+.comboboxInlineInput {
+  flex: 1;
+  min-width: 80px;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  font-family: inherit;
+  color: $color-text-dark;
+  background: transparent;
+}
+
+.comboboxPanel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  background-color: $color-sidebar-bg;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.comboboxOption {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  font-size: 13px;
+  font-family: inherit;
+  color: $color-text-dark;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-content-bg;
+  }
+}
+
+.comboboxOptionSelected {
+  background-color: $color-accent-light;
+}
+
+.comboboxChevron {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $color-text-muted;
+  pointer-events: none;
+}
+
+.comboboxInputPadded {
+  padding-right: 32px;
+}
+
+.comboboxInputRowPadded {
+  padding-right: 28px;
+}
+
+.comboboxIcon {
+  flex-shrink: 0;
+  color: $color-text-muted;
+}
+
+.chipRemove {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  padding: 0;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-text-dark;
+  }
+}
+
+// Date field with custom calendar
+.dateInput {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: $color-text-dark;
+  background-color: $color-sidebar-bg;
+  cursor: pointer;
+
+  &:focus {
+    outline: 2px solid $color-accent;
+    outline-offset: -1px;
+  }
+}
+
+.calendarPanel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 10;
+  width: 260px;
+  padding: $spacing-sm;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  background-color: $color-sidebar-bg;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.calendarHeader {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: $spacing-sm;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    color: $color-icon-default;
+    cursor: pointer;
+    padding: 4px;
+
+    &:hover {
+      color: $color-text-dark;
+    }
+  }
+}
+
+.calendarTitle {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-text-dark;
+}
+
+.calendarWeekdays,
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.calendarWeekdays span {
+  text-align: center;
+  font-size: 11px;
+  color: $color-text-muted;
+  padding-bottom: 4px;
+}
+
+.calendarDay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: $radius-sm;
+  background: none;
+  font-size: 12px;
+  color: $color-text-dark;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-content-bg;
+  }
+}
+
+.calendarDayMuted {
+  color: $color-text-muted;
+}
+
+.calendarDaySelected {
+  background-color: $color-accent;
+  color: $color-text-dark;
+  font-weight: 600;
+}
+
+.calendarToday {
+  display: block;
+  width: 100%;
+  margin-top: $spacing-sm;
+  padding-top: $spacing-sm;
+  border: none;
+  border-top: 1px solid $color-sidebar-border;
+  background: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-accent;
+  cursor: pointer;
+  text-align: center;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Tree multi-select (hierarchical tags)
+.treePanel {
+  padding: $spacing-xs 0;
+}
+
+.treeRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: 6px 12px;
+
+  &:hover {
+    background-color: $color-content-bg;
+  }
+}
+
+.treeToggle,
+.treeToggleSpacer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.treeToggle {
+  border: 1px solid $color-sidebar-border;
+  border-radius: 2px;
+  background: none;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-text-dark;
+  }
+}
+
+.treeLabel {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: 13px;
+  color: $color-text-dark;
+  cursor: pointer;
+}
+
+.treeChildren {
+  list-style: none;
+  margin-left: 19px;
+  border-left: 1px solid $color-sidebar-border;
 }

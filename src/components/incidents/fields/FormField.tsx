@@ -12,8 +12,8 @@ export function FormField({ label, htmlFor, required, children }: FormFieldProps
   return (
     <div className={styles.field}>
       <label className={styles.label} htmlFor={htmlFor}>
-        {label}
         {required && <span className={styles.required}>*</span>}
+        {label}
       </label>
       {children}
     </div>
