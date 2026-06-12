@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { ChevronDown, X } from "lucide-react";
 import { FormField } from "./FormField";
 import styles from "./fields.module.scss";
@@ -23,6 +23,8 @@ interface SearchableMultiSelectFieldProps {
 export function SearchableMultiSelectField({ label, options, selected, onChange, placeholder }: SearchableMultiSelectFieldProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const inputId = useId();
+  const listId = `${inputId}-listbox`;
 
   const selectedOptions = options.filter((option) => selected.includes(option.value));
   const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(query.toLowerCase()));
@@ -32,11 +34,14 @@ export function SearchableMultiSelectField({ label, options, selected, onChange,
   }
 
   return (
-    <FormField label={label}>
+    <FormField label={label} htmlFor={inputId}>
       <div
         className={styles.comboboxWrapper}
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") setOpen(false);
         }}
       >
         <div className={`${styles.comboboxInputRow} ${styles.comboboxInputRowPadded}`} onClick={() => setOpen(true)}>
@@ -56,6 +61,11 @@ export function SearchableMultiSelectField({ label, options, selected, onChange,
             </span>
           ))}
           <input
+            id={inputId}
+            role="combobox"
+            aria-expanded={open}
+            aria-controls={listId}
+            aria-autocomplete="list"
             className={styles.comboboxInlineInput}
             value={query}
             placeholder={selectedOptions.length === 0 ? placeholder : ""}
@@ -67,11 +77,11 @@ export function SearchableMultiSelectField({ label, options, selected, onChange,
         {!open && <ChevronDown size={14} className={styles.comboboxChevron} />}
 
         {open && (
-          <ul className={styles.comboboxPanel}>
+          <ul id={listId} role="listbox" aria-multiselectable="true" className={styles.comboboxPanel}>
             {filteredOptions.map((option) => {
               const isSelected = selected.includes(option.value);
               return (
-                <li key={option.value}>
+                <li key={option.value} role="option" aria-selected={isSelected}>
                   <button
                     type="button"
                     className={`${styles.comboboxOption} ${isSelected ? styles.comboboxOptionSelected : ""}`}

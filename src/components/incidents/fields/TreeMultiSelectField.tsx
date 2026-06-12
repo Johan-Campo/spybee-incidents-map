@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { ChevronDown, Minus, Plus, Search, X } from "lucide-react";
 import { FormField } from "./FormField";
 import type { LocationTag } from "@/lib/locationTags";
@@ -35,6 +35,8 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [expanded, setExpanded] = useState<string[]>(() => defaultExpandedIds(nodes));
+  const inputId = useId();
+  const treeId = `${inputId}-tree`;
 
   const selectedNodes = flattenNodes(nodes).filter((node) => selected.includes(node.id));
 
@@ -67,10 +69,15 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
     const isExpanded = expanded.includes(node.id);
 
     return (
-      <li key={node.id}>
+      <li key={node.id} role="treeitem" aria-expanded={hasChildren ? isExpanded : undefined}>
         <div className={styles.treeRow} style={{ paddingLeft: depth * 20 }}>
           {hasChildren ? (
-            <button type="button" className={styles.treeToggle} onClick={() => toggleExpanded(node.id)}>
+            <button
+              type="button"
+              className={styles.treeToggle}
+              aria-label={isExpanded ? `Contraer ${node.name}` : `Expandir ${node.name}`}
+              onClick={() => toggleExpanded(node.id)}
+            >
               {isExpanded ? <Minus size={10} /> : <Plus size={10} />}
             </button>
           ) : (
@@ -91,18 +98,23 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
         </div>
 
         {hasChildren && isExpanded && (
-          <ul className={styles.treeChildren}>{node.children!.map((child) => renderNode(child, depth + 1))}</ul>
+          <ul role="group" className={styles.treeChildren}>
+            {node.children!.map((child) => renderNode(child, depth + 1))}
+          </ul>
         )}
       </li>
     );
   }
 
   return (
-    <FormField label={label}>
+    <FormField label={label} htmlFor={inputId}>
       <div
         className={styles.comboboxWrapper}
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") setOpen(false);
         }}
       >
         <div className={`${styles.comboboxInputRow} ${styles.comboboxInputRowPadded}`} onClick={() => setOpen(true)}>
@@ -123,6 +135,10 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
           ))}
           {open && <Search size={14} className={styles.comboboxIcon} />}
           <input
+            id={inputId}
+            role="combobox"
+            aria-expanded={open}
+            aria-controls={treeId}
             className={styles.comboboxInlineInput}
             value={query}
             placeholder={selectedNodes.length === 0 ? placeholder : ""}
@@ -134,7 +150,9 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
         {!open && <ChevronDown size={14} className={styles.comboboxChevron} />}
 
         {open && (
-          <ul className={`${styles.comboboxPanel} ${styles.treePanel}`}>{nodes.map((node) => renderNode(node, 0))}</ul>
+          <ul id={treeId} role="tree" aria-label={label} className={`${styles.comboboxPanel} ${styles.treePanel}`}>
+            {nodes.map((node) => renderNode(node, 0))}
+          </ul>
         )}
       </div>
     </FormField>

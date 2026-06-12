@@ -75,14 +75,24 @@ export function DateField({ id, label, value, onChange, required }: DateFieldPro
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
         }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") setOpen(false);
+        }}
       >
-        <button type="button" id={id} className={styles.dateInput} onClick={() => setOpen((isOpen) => !isOpen)}>
+        <button
+          type="button"
+          id={id}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          className={styles.dateInput}
+          onClick={() => setOpen((isOpen) => !isOpen)}
+        >
           <span className={value ? "" : styles.placeholder}>{value || "Seleccionar fecha"}</span>
           <Calendar size={16} />
         </button>
 
         {open && (
-          <div className={styles.calendarPanel}>
+          <div className={styles.calendarPanel} role="dialog" aria-label="Seleccionar fecha">
             <div className={styles.calendarHeader}>
               <button type="button" onClick={() => setViewYear((year) => year - 1)} aria-label="Año anterior">
                 <ChevronsLeft size={14} />
@@ -101,13 +111,15 @@ export function DateField({ id, label, value, onChange, required }: DateFieldPro
               </button>
             </div>
 
-            <div className={styles.calendarWeekdays}>
+            <div className={styles.calendarWeekdays} role="row">
               {WEEKDAY_LABELS.map((weekday) => (
-                <span key={weekday}>{weekday}</span>
+                <span key={weekday} role="columnheader" aria-label={weekday}>
+                  {weekday}
+                </span>
               ))}
             </div>
 
-            <div className={styles.calendarGrid}>
+            <div className={styles.calendarGrid} role="grid" aria-label={`${MONTH_LABELS[viewMonth]} ${viewYear}`}>
               {days.map((date) => {
                 const isCurrentMonth = date.getMonth() === viewMonth;
                 const isSelected = value === formatDate(date);
@@ -115,6 +127,9 @@ export function DateField({ id, label, value, onChange, required }: DateFieldPro
                   <button
                     key={date.toISOString()}
                     type="button"
+                    role="gridcell"
+                    aria-selected={isSelected}
+                    aria-label={`${date.getDate()} de ${MONTH_LABELS[date.getMonth()]} de ${date.getFullYear()}`}
                     className={`${styles.calendarDay} ${isCurrentMonth ? "" : styles.calendarDayMuted} ${isSelected ? styles.calendarDaySelected : ""}`}
                     onClick={() => handleSelectDay(date)}
                   >

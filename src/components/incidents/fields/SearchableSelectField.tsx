@@ -28,6 +28,8 @@ export function SearchableSelectField({ id, label, value, onChange, options, pla
   const selectedOption = options.find((option) => option.value === value);
   const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(query.toLowerCase()));
 
+  const listId = `${id}-listbox`;
+
   function handleSelect(option: SearchableSelectOption) {
     onChange(option.value);
     setQuery("");
@@ -41,9 +43,16 @@ export function SearchableSelectField({ id, label, value, onChange, options, pla
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
         }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") setOpen(false);
+        }}
       >
         <input
           id={id}
+          role="combobox"
+          aria-expanded={open}
+          aria-controls={listId}
+          aria-autocomplete="list"
           className={`${styles.input} ${styles.comboboxInputPadded}`}
           value={open ? query : selectedOption?.label ?? ""}
           placeholder={placeholder}
@@ -57,9 +66,9 @@ export function SearchableSelectField({ id, label, value, onChange, options, pla
         {!open && <ChevronDown size={14} className={styles.comboboxChevron} />}
 
         {open && (
-          <ul className={styles.comboboxPanel}>
+          <ul id={listId} role="listbox" className={styles.comboboxPanel}>
             {filteredOptions.map((option) => (
-              <li key={option.value}>
+              <li key={option.value} role="option" aria-selected={option.value === value}>
                 <button type="button" className={styles.comboboxOption} onClick={() => handleSelect(option)}>
                   {option.color && <span className={styles.colorDot} style={{ backgroundColor: option.color }} />}
                   <span>{option.label}</span>
