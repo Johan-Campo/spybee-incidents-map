@@ -1,0 +1,96 @@
+@use "../../../styles/variables" as *;
+
+.bar {
+  position: absolute;
+  top: $spacing-md;
+  left: $spacing-md;
+  right: calc(44px + #{$spacing-md} * 2);
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-sm $spacing-md;
+  background-color: $color-sidebar-bg;
+  border-radius: $radius-md;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  font-size: 13px;
+  color: $color-text-dark;
+}
+
+.detailsButton {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  padding: 6px 10px;
+  background: transparent;
+  color: $color-text-dark;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background-color: $color-sidebar-border;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  white-space: nowrap;
+}
+
+.visits {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  flex: 1;
+  color: $color-text-muted;
+  white-space: nowrap;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  flex: 1;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: $color-accent;
+}
+
+.track {
+  flex: 1;
+  height: 2px;
+  background-color: $color-accent;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.compareButton {
+  border: none;
+  border-radius: $radius-sm;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.compareActive {
+  background-color: $color-accent;
+  color: $color-text-dark;
+}
+
+.compareInactive {
+  background-color: transparent;
+  color: $color-text-dark;
+  border: 1px solid $color-sidebar-border;
+}

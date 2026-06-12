@@ -1,0 +1,94 @@
+@use "../../../styles/variables" as *;
+
+.bottomBar {
+  position: absolute;
+  bottom: $spacing-md;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-xs;
+  background-color: $color-sidebar-bg;
+  border-radius: $radius-md;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.viewToggle {
+  display: flex;
+  border-radius: $radius-sm;
+  overflow: hidden;
+  border: 1px solid $color-sidebar-border;
+}
+
+.viewButton {
+  border: none;
+  background: transparent;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-text-muted;
+}
+
+.viewButtonActive {
+  background-color: $color-accent;
+  color: $color-text-dark;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: $color-icon-default;
+}
+
+.toggle360 {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: 8px 12px;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  font-size: 13px;
+  color: $color-text-muted;
+}
+
+.switch {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  border-radius: 999px;
+  background-color: $color-sidebar-border;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: $color-sidebar-bg;
+  }
+}
+
+.createButton {
+  position: absolute;
+  top: $spacing-md;
+  right: $spacing-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: $radius-md;
+  background-color: $color-accent;
+  color: $color-text-dark;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
