@@ -1,0 +1,68 @@
+@use "../../../styles/variables" as *;
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: $sidebar-width;
+  padding: $spacing-md 0;
+  background-color: $color-sidebar-bg;
+  border-right: 1px solid $color-sidebar-border;
+}
+
+.projectAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-md;
+  background-color: $color-accent;
+  color: $color-text-light;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: $spacing-lg;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-sm;
+  border: none;
+  background: transparent;
+  color: $color-icon-default;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background-color: $color-content-bg;
+    color: $color-icon-active;
+  }
+}
+
+.navItemActive {
+  background-color: $color-accent-light;
+  color: $color-accent;
+
+  &:hover {
+    background-color: $color-accent-light;
+    color: $color-accent;
+  }
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-sm;
+}
