@@ -1,0 +1,122 @@
+@use "../../../styles/variables" as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: $spacing-md;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  background-color: $color-sidebar-bg;
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md $spacing-lg;
+  border-bottom: 1px solid $color-sidebar-border;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: $color-text-dark;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-icon-default;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-text-dark;
+  }
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.categoryRow {
+  display: flex;
+  align-items: flex-end;
+  gap: $spacing-sm;
+
+  > :first-child {
+    flex: 1;
+  }
+}
+
+.manageButton {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  font-size: 13px;
+  color: $color-text-muted;
+  background-color: $color-sidebar-bg;
+  cursor: default;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-sm;
+  padding: $spacing-md $spacing-lg;
+  border-top: 1px solid $color-sidebar-border;
+}
+
+.cancelButton,
+.submitButton {
+  padding: 10px 20px;
+  border-radius: $radius-sm;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancelButton {
+  border: 1px solid $color-sidebar-border;
+  background-color: $color-sidebar-bg;
+  color: $color-text-dark;
+
+  &:hover {
+    background-color: $color-content-bg;
+  }
+}
+
+.submitButton {
+  border: none;
+  background-color: $color-accent;
+  color: $color-text-dark;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

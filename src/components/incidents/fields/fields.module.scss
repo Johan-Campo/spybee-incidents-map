@@ -1,0 +1,207 @@
+@use "../../../styles/variables" as *;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-text-dark;
+}
+
+.required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: $color-text-dark;
+  background-color: $color-sidebar-bg;
+
+  &:focus {
+    outline: 2px solid $color-accent;
+    outline-offset: -1px;
+  }
+}
+
+.textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.selectWrapper {
+  position: relative;
+}
+
+.selectWithDot {
+  padding-left: 30px;
+}
+
+.colorDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.selectWrapper .colorDot {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+// Multi-select (details/summary)
+.multiSelect {
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  background-color: $color-sidebar-bg;
+}
+
+.multiSelectSummary {
+  list-style: none;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  min-height: 18px;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.placeholder {
+  color: $color-text-muted;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background-color: $color-content-bg;
+  font-size: 12px;
+}
+
+.multiSelectPanel {
+  list-style: none;
+  border-top: 1px solid $color-sidebar-border;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-content-bg;
+  }
+}
+
+.avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+// File upload
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  border: 1px dashed $color-sidebar-border;
+  border-radius: $radius-sm;
+  padding: $spacing-lg;
+  text-align: center;
+  cursor: pointer;
+  color: $color-text-muted;
+  background-color: $color-sidebar-bg;
+
+  &:hover,
+  &.dragOver {
+    border-color: $color-accent;
+    background-color: $color-accent-light;
+  }
+}
+
+.dropzoneIcon {
+  color: $color-icon-default;
+}
+
+.dropzoneHint {
+  font-size: 12px;
+}
+
+.fileInput {
+  display: none;
+}
+
+.fileList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.fileItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: 6px 10px;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  font-size: 12px;
+}
+
+.filePreview {
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-sm;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.fileName {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileRemove {
+  display: flex;
+  align-items: center;
+  color: $color-text-muted;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-text-dark;
+  }
+}
