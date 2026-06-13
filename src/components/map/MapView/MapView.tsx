@@ -6,7 +6,13 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { DEFAULT_MAP_VIEW, MAPBOX_TOKEN, MAP_STYLE } from "@/lib/mapConfig";
 import styles from "./MapView.module.scss";
 
-export function MapView({ children }: { children?: ReactNode }) {
+interface MapViewProps {
+  children?: ReactNode;
+  markers?: ReactNode;
+  popup?: ReactNode;
+}
+
+export function MapView({ children, markers, popup }: MapViewProps) {
   const [viewState, setViewState] = useState(DEFAULT_MAP_VIEW);
 
   return (
@@ -17,7 +23,10 @@ export function MapView({ children }: { children?: ReactNode }) {
         mapboxAccessToken={MAPBOX_TOKEN}
         mapStyle={MAP_STYLE}
         style={{ width: "100%", height: "100%" }}
-      />
+      >
+        {markers}
+        {popup}
+      </Map>
       {children}
     </div>
   );
