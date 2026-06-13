@@ -11,7 +11,8 @@
   padding: $spacing-xs;
   background-color: $color-sidebar-bg;
   border-radius: $radius-md;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: $shadow-sm;
+  animation: slide-up-fade-in $transition-base;
 
   @media (max-width: $breakpoint-mobile) {
     gap: $spacing-xs;
@@ -32,11 +33,22 @@
   font-size: 13px;
   font-weight: 600;
   color: $color-text-muted;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    background-color: $color-content-bg;
+    color: $color-text-dark;
+  }
 }
 
 .viewButtonActive {
   background-color: $color-accent;
   color: $color-text-dark;
+
+  &:hover {
+    background-color: $color-accent;
+    color: $color-text-dark;
+  }
 }
 
 .iconButton {
@@ -49,6 +61,16 @@
   border-radius: $radius-sm;
   background: transparent;
   color: $color-icon-default;
+  transition: border-color $transition-fast, color $transition-fast, transform $transition-fast;
+
+  &:hover {
+    border-color: $color-text-muted;
+    color: $color-text-dark;
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
 }
 
 .toggle360 {
@@ -60,6 +82,13 @@
   border-radius: $radius-sm;
   font-size: 13px;
   color: $color-text-muted;
+  cursor: pointer;
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    border-color: $color-text-muted;
+    color: $color-text-dark;
+  }
 
   @media (max-width: $breakpoint-mobile) {
     display: none;
@@ -72,6 +101,7 @@
   height: 18px;
   border-radius: 999px;
   background-color: $color-sidebar-border;
+  transition: background-color $transition-base;
 
   &::after {
     content: "";
@@ -82,7 +112,13 @@
     height: 14px;
     border-radius: 50%;
     background-color: $color-sidebar-bg;
+    box-shadow: $shadow-sm;
+    transition: transform $transition-base;
   }
+}
+
+.toggle360:hover .switch::after {
+  transform: translateX(2px);
 }
 
 .createButton {
@@ -98,5 +134,16 @@
   border-radius: $radius-md;
   background-color: $color-accent;
   color: $color-text-dark;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: $shadow-md;
+  transition: transform $transition-base, box-shadow $transition-base;
+  animation: scale-fade-in $transition-base;
+
+  &:hover {
+    transform: scale(1.08) rotate(90deg);
+    box-shadow: $shadow-lg;
+  }
+
+  &:active {
+    transform: scale(0.96) rotate(90deg);
+  }
 }

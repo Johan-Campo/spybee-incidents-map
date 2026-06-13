@@ -9,6 +9,7 @@
   justify-content: center;
   z-index: 1000;
   padding: $spacing-md;
+  animation: fade-in $transition-base;
 
   @media (max-width: $breakpoint-mobile) {
     padding: 0;
@@ -23,7 +24,9 @@
   max-height: 90vh;
   background-color: $color-sidebar-bg;
   border-radius: $radius-md;
+  box-shadow: $shadow-lg;
   overflow: hidden;
+  animation: scale-fade-in $transition-base;
 
   @media (max-width: $breakpoint-mobile) {
     max-width: 100%;
@@ -51,11 +54,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   color: $color-icon-default;
   cursor: pointer;
+  transition: color $transition-fast, background-color $transition-fast, transform $transition-fast;
 
   &:hover {
     color: $color-text-dark;
+    background-color: $color-content-bg;
+    transform: rotate(90deg);
   }
 }
 
@@ -95,6 +104,12 @@
   color: $color-text-muted;
   background-color: $color-sidebar-bg;
   cursor: default;
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    border-color: $color-text-muted;
+    color: $color-text-dark;
+  }
 }
 
 .row {
@@ -109,6 +124,7 @@
   background-color: #fef2f2;
   color: #b91c1c;
   font-size: 13px;
+  animation: slide-up-fade-in $transition-base;
 }
 
 .footer {
@@ -126,6 +142,11 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color $transition-fast, border-color $transition-fast, box-shadow $transition-fast, transform $transition-fast;
+
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
 .cancelButton {
@@ -135,6 +156,7 @@
 
   &:hover {
     background-color: $color-content-bg;
+    border-color: $color-text-muted;
   }
 }
 
@@ -144,6 +166,11 @@
   color: $color-text-dark;
 
   &:hover {
-    opacity: 0.9;
+    box-shadow: $shadow-md;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.97);
   }
 }

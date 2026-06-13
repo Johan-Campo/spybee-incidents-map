@@ -1,0 +1,162 @@
+@use "../../../styles/variables" as *;
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.topRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.breadcrumb {
+  font-size: 12px;
+  color: $color-text-muted;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: $color-text-dark;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.selectWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.periodSelect {
+  appearance: none;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  background-color: $color-sidebar-bg;
+  padding: 8px 30px 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: $color-text-dark;
+  cursor: pointer;
+  transition: border-color $transition-fast;
+
+  &:hover {
+    border-color: $color-text-muted;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+    box-shadow: $shadow-focus;
+  }
+}
+
+.selectIcon {
+  position: absolute;
+  right: 10px;
+  color: $color-icon-default;
+  pointer-events: none;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  background-color: $color-sidebar-bg;
+  color: $color-icon-default;
+  transition: border-color $transition-fast, color $transition-fast, transform $transition-fast;
+
+  &:hover {
+    border-color: $color-text-muted;
+    color: $color-text-dark;
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
+}
+
+.createButton {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  border: none;
+  border-radius: $radius-sm;
+  padding: 9px 16px;
+  background-color: $color-accent;
+  color: $color-text-dark;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: $shadow-sm;
+  transition: box-shadow $transition-base, transform $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+}
+
+.pdfButton {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  padding: 6px 12px;
+  background-color: $color-sidebar-bg;
+  color: $color-text-dark;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: border-color $transition-fast, background-color $transition-fast, transform $transition-fast;
+
+  &:hover {
+    border-color: $color-text-muted;
+    background-color: $color-content-bg;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.summaryText {
+  font-size: 13px;
+  color: $color-text-dark;
+}
+
+.summaryMuted {
+  font-size: 12px;
+  color: $color-text-muted;
+}

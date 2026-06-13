@@ -48,13 +48,26 @@
   border-radius: $radius-sm;
   background-color: $color-accent;
   color: $color-header-bg;
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    transform: scale(1.06);
+    box-shadow: $shadow-sm;
+  }
 }
 
 .user {
   display: flex;
   align-items: center;
   gap: $spacing-sm;
+  padding: 4px $spacing-sm;
+  border-radius: $radius-md;
   cursor: pointer;
+  transition: background-color $transition-base;
+
+  &:hover {
+    background-color: rgba($color-text-light, 0.08);
+  }
 }
 
 .avatar {
@@ -62,6 +75,11 @@
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
+  transition: box-shadow $transition-base;
+}
+
+.user:hover .avatar {
+  box-shadow: 0 0 0 2px rgba($color-accent, 0.5);
 }
 
 .userInfo {
@@ -94,4 +112,15 @@
   border: 1px solid rgba($color-text-light, 0.2);
   color: $color-text-light;
   background: transparent;
+  transition: background-color $transition-base, border-color $transition-base, transform $transition-fast;
+
+  &:hover {
+    background-color: rgba($color-text-light, 0.1);
+    border-color: rgba($color-text-light, 0.4);
+    transform: scale(1.06);
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
 }

@@ -11,9 +11,10 @@
   padding: $spacing-sm $spacing-md;
   background-color: $color-sidebar-bg;
   border-radius: $radius-md;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: $shadow-sm;
   font-size: 13px;
   color: $color-text-dark;
+  animation: slide-up-fade-in $transition-base;
 
   @media (max-width: $breakpoint-mobile) {
     gap: $spacing-sm;
@@ -31,6 +32,16 @@
   color: $color-text-dark;
   font-size: 13px;
   white-space: nowrap;
+  transition: border-color $transition-fast, background-color $transition-fast, transform $transition-fast;
+
+  &:hover {
+    border-color: $color-text-muted;
+    background-color: $color-content-bg;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
 .divider {
@@ -90,17 +101,31 @@
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
+  transition: box-shadow $transition-fast, border-color $transition-fast, background-color $transition-fast, transform $transition-fast;
+
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
 .compareActive {
   background-color: $color-accent;
   color: $color-text-dark;
+
+  &:hover {
+    box-shadow: $shadow-sm;
+  }
 }
 
 .compareInactive {
   background-color: transparent;
   color: $color-text-dark;
   border: 1px solid $color-sidebar-border;
+
+  &:hover {
+    border-color: $color-text-muted;
+    background-color: $color-content-bg;
+  }
 
   @media (max-width: $breakpoint-mobile) {
     display: none;

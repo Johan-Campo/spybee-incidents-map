@@ -1,4 +1,4 @@
-@use "../../styles/variables" as *;
+@use "../../../styles/variables" as *;
 
 .page {
   display: flex;
@@ -7,34 +7,17 @@
   padding: $spacing-lg;
 }
 
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.title {
-  font-size: 22px;
-  font-weight: 700;
-  color: $color-text-dark;
-}
-
-.subtitle {
-  font-size: 13px;
-  color: $color-text-muted;
-}
-
 .kpis {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: $spacing-md;
 
   @media (max-width: $breakpoint-tablet) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   @media (max-width: $breakpoint-mobile) {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -48,9 +31,28 @@
   }
 }
 
-.trendRow {
-  display: grid;
-  grid-template-columns: 1fr;
+.trendSection {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: baseline;
+  gap: $spacing-sm;
+  flex-wrap: wrap;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-text-dark;
+}
+
+.sectionSubtitle {
+  font-size: 12px;
+  color: $color-text-muted;
 }
 
 .bottomRow {

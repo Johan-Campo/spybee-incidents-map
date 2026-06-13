@@ -28,10 +28,17 @@
   font-family: inherit;
   color: $color-text-dark;
   background-color: $color-sidebar-bg;
+  transition: border-color $transition-base, box-shadow $transition-base;
 
-  &:focus {
-    outline: 2px solid $color-accent;
-    outline-offset: -1px;
+  &:hover {
+    border-color: $color-text-muted;
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border-color: $color-accent;
+    box-shadow: $shadow-focus;
   }
 }
 
@@ -100,6 +107,12 @@
   border-radius: 999px;
   background-color: $color-content-bg;
   font-size: 12px;
+  animation: scale-fade-in $transition-base;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: $color-sidebar-border;
+  }
 }
 
 .multiSelectPanel {
@@ -107,6 +120,7 @@
   border-top: 1px solid $color-sidebar-border;
   max-height: 180px;
   overflow-y: auto;
+  animation: fade-in $transition-base;
 }
 
 .optionRow {
@@ -116,6 +130,7 @@
   padding: 8px 12px;
   font-size: 13px;
   cursor: pointer;
+  transition: background-color $transition-fast;
 
   &:hover {
     background-color: $color-content-bg;
@@ -143,16 +158,28 @@
   cursor: pointer;
   color: $color-text-muted;
   background-color: $color-sidebar-bg;
+  transition: border-color $transition-base, background-color $transition-base, transform $transition-fast;
 
-  &:hover,
+  &:hover {
+    border-color: $color-accent;
+    background-color: $color-accent-light;
+  }
+
   &.dragOver {
     border-color: $color-accent;
     background-color: $color-accent-light;
+    transform: scale(1.01);
   }
 }
 
 .dropzoneIcon {
   color: $color-icon-default;
+  transition: transform $transition-base;
+}
+
+.dropzone:hover .dropzoneIcon,
+.dropzone.dragOver .dropzoneIcon {
+  transform: translateY(-2px);
 }
 
 .dropzoneHint {
@@ -178,6 +205,14 @@
   border: 1px solid $color-sidebar-border;
   border-radius: $radius-sm;
   font-size: 12px;
+  background-color: $color-sidebar-bg;
+  transition: border-color $transition-fast, background-color $transition-fast;
+  animation: slide-up-fade-in $transition-base;
+
+  &:hover {
+    border-color: $color-text-muted;
+    background-color: $color-content-bg;
+  }
 }
 
 .filePreview {
@@ -200,9 +235,13 @@
   align-items: center;
   color: $color-text-muted;
   cursor: pointer;
+  border-radius: 50%;
+  transition: color $transition-fast, background-color $transition-fast, transform $transition-fast;
 
   &:hover {
-    color: $color-text-dark;
+    color: #ef4444;
+    background-color: $color-content-bg;
+    transform: rotate(90deg);
   }
 }
 
@@ -222,10 +261,16 @@
   border-radius: $radius-sm;
   background-color: $color-sidebar-bg;
   cursor: text;
+  transition: border-color $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    border-color: $color-text-muted;
+  }
 
   &:focus-within {
-    outline: 2px solid $color-accent;
-    outline-offset: -1px;
+    outline: none;
+    border-color: $color-accent;
+    box-shadow: $shadow-focus;
   }
 }
 
@@ -252,7 +297,9 @@
   border: 1px solid $color-sidebar-border;
   border-radius: $radius-sm;
   background-color: $color-sidebar-bg;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: $shadow-md;
+  animation: scale-fade-in $transition-base;
+  transform-origin: top center;
 }
 
 .comboboxOption {
@@ -268,6 +315,7 @@
   color: $color-text-dark;
   text-align: left;
   cursor: pointer;
+  transition: background-color $transition-fast;
 
   &:hover {
     background-color: $color-content-bg;
@@ -312,9 +360,11 @@
   padding: 0;
   color: $color-text-muted;
   cursor: pointer;
+  transition: color $transition-fast, transform $transition-fast;
 
   &:hover {
-    color: $color-text-dark;
+    color: #ef4444;
+    transform: rotate(90deg);
   }
 }
 
@@ -332,10 +382,17 @@
   color: $color-text-dark;
   background-color: $color-sidebar-bg;
   cursor: pointer;
+  transition: border-color $transition-base, box-shadow $transition-base;
 
-  &:focus {
-    outline: 2px solid $color-accent;
-    outline-offset: -1px;
+  &:hover {
+    border-color: $color-text-muted;
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border-color: $color-accent;
+    box-shadow: $shadow-focus;
   }
 }
 
@@ -351,9 +408,11 @@
   width: 260px;
   padding: $spacing-sm;
   border: 1px solid $color-sidebar-border;
-  border-radius: $radius-sm;
+  border-radius: $radius-md;
   background-color: $color-sidebar-bg;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: $shadow-md;
+  animation: scale-fade-in $transition-base;
+  transform-origin: top left;
 }
 
 .calendarHeader {
@@ -367,13 +426,16 @@
     align-items: center;
     justify-content: center;
     border: none;
+    border-radius: $radius-xs;
     background: none;
     color: $color-icon-default;
     cursor: pointer;
     padding: 4px;
+    transition: color $transition-fast, background-color $transition-fast;
 
     &:hover {
       color: $color-text-dark;
+      background-color: $color-content-bg;
     }
   }
 }
@@ -410,9 +472,11 @@
   font-size: 12px;
   color: $color-text-dark;
   cursor: pointer;
+  transition: background-color $transition-fast, transform $transition-fast;
 
   &:hover {
     background-color: $color-content-bg;
+    transform: scale(1.08);
   }
 }
 
@@ -424,6 +488,11 @@
   background-color: $color-accent;
   color: $color-text-dark;
   font-weight: 600;
+
+  &:hover {
+    background-color: $color-accent;
+    transform: scale(1.08);
+  }
 }
 
 .calendarToday {
@@ -439,15 +508,18 @@
   color: $color-accent;
   cursor: pointer;
   text-align: center;
+  border-radius: 0 0 $radius-md $radius-md;
+  transition: background-color $transition-fast;
 
   &:hover {
-    text-decoration: underline;
+    background-color: $color-accent-light;
   }
 }
 
 // Tree multi-select (hierarchical tags)
 .treePanel {
   padding: $spacing-xs 0;
+  animation: fade-in $transition-base;
 }
 
 .treeRow {
@@ -455,6 +527,7 @@
   align-items: center;
   gap: $spacing-sm;
   padding: 6px 12px;
+  transition: background-color $transition-fast;
 
   &:hover {
     background-color: $color-content-bg;
@@ -477,9 +550,11 @@
   background: none;
   color: $color-text-muted;
   cursor: pointer;
+  transition: color $transition-fast, border-color $transition-fast, transform $transition-fast;
 
   &:hover {
     color: $color-text-dark;
+    border-color: $color-text-muted;
   }
 }
 

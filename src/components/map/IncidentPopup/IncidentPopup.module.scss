@@ -18,6 +18,7 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-xs;
+  animation: scale-fade-in $transition-base;
 }
 
 .header {
@@ -36,13 +37,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 22px;
+  height: 22px;
   border: none;
+  border-radius: 50%;
   background: none;
   color: $color-icon-default;
   cursor: pointer;
+  transition: color $transition-fast, background-color $transition-fast, transform $transition-fast;
 
   &:hover {
     color: $color-text-dark;
+    background-color: $color-content-bg;
+    transform: rotate(90deg);
   }
 }
 
@@ -77,6 +84,11 @@
   background-color: $color-content-bg;
   font-size: 11px;
   color: $color-text-dark;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: $color-sidebar-border;
+  }
 }
 
 .dot {

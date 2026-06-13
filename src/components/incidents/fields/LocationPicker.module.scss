@@ -18,6 +18,11 @@
   border-radius: $radius-sm;
   overflow: hidden;
   border: 1px solid $color-sidebar-border;
+  transition: border-color $transition-base;
+
+  &:hover {
+    border-color: $color-text-muted;
+  }
 }
 
 .marker {
@@ -27,4 +32,9 @@
   background-color: $color-accent;
   border: 2px solid $color-sidebar-bg;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+  transition: transform $transition-fast;
+
+  &:hover {
+    transform: scale(1.15);
+  }
 }

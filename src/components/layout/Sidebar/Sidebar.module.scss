@@ -32,6 +32,12 @@
   font-weight: 700;
   font-size: 14px;
   margin-bottom: $spacing-lg;
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    transform: scale(1.06);
+    box-shadow: $shadow-sm;
+  }
 
   @media (max-width: $breakpoint-mobile) {
     display: none;
@@ -51,6 +57,7 @@
 }
 
 .navItem {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,11 +67,43 @@
   border: none;
   background: transparent;
   color: $color-icon-default;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color $transition-base, color $transition-base, transform $transition-fast;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -#{$spacing-sm};
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    border-radius: 999px;
+    background-color: $color-accent;
+    transition: height $transition-base;
+
+    @media (max-width: $breakpoint-mobile) {
+      left: 50%;
+      top: auto;
+      bottom: -#{$spacing-sm};
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      transition: width $transition-base;
+    }
+  }
 
   &:hover {
     background-color: $color-content-bg;
     color: $color-icon-active;
+    transform: translateY(-1px);
+
+    @media (max-width: $breakpoint-mobile) {
+      transform: none;
+    }
+  }
+
+  &:active {
+    transform: scale(0.94);
   }
 }
 
@@ -72,9 +111,19 @@
   background-color: $color-accent-light;
   color: $color-accent;
 
+  &::before {
+    height: 20px;
+
+    @media (max-width: $breakpoint-mobile) {
+      height: 3px;
+      width: 20px;
+    }
+  }
+
   &:hover {
     background-color: $color-accent-light;
     color: $color-accent;
+    transform: none;
   }
 }
 

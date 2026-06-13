@@ -10,8 +10,30 @@
   color: #ffffff;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  animation: marker-drop 0.35s ease;
 
   svg {
     transform: rotate(45deg);
+  }
+
+  &:hover {
+    transform: rotate(-45deg) scale(1.15) translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  }
+
+  &:active {
+    transform: rotate(-45deg) scale(1.05);
+  }
+}
+
+@keyframes marker-drop {
+  from {
+    opacity: 0;
+    transform: rotate(-45deg) scale(0.4) translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-45deg) scale(1) translateY(0);
   }
 }
