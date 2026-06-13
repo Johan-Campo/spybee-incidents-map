@@ -27,6 +27,10 @@
   font-size: 14px;
   font-weight: 500;
   color: $color-text-light;
+
+  @media (max-width: $breakpoint-mobile) {
+    display: none;
+  }
 }
 
 .actions {
@@ -64,6 +68,10 @@
   display: flex;
   flex-direction: column;
   line-height: 1.2;
+
+  @media (max-width: $breakpoint-mobile) {
+    display: none;
+  }
 }
 
 .userName {

@@ -10,6 +10,10 @@
   display: flex;
   flex: 1;
   min-height: 0;
+
+  @media (max-width: $breakpoint-mobile) {
+    flex-direction: column-reverse;
+  }
 }
 
 .content {

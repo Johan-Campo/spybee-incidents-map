@@ -12,6 +12,10 @@
   background-color: $color-sidebar-bg;
   border-radius: $radius-md;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  @media (max-width: $breakpoint-mobile) {
+    gap: $spacing-xs;
+  }
 }
 
 .viewToggle {
@@ -56,6 +60,10 @@
   border-radius: $radius-sm;
   font-size: 13px;
   color: $color-text-muted;
+
+  @media (max-width: $breakpoint-mobile) {
+    display: none;
+  }
 }
 
 .switch {
