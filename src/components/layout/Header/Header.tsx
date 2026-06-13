@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, HelpCircle, LogOut, Smartphone, Sparkles } from "lucide-react";
+import { ChevronDown, HelpCircle, LogOut, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import styles from "./Header.module.scss";
@@ -18,7 +18,7 @@ export function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
-        <Sparkles size={18} className={styles.logoIcon} />
+        <img src="/brand/logo2.avif" alt="" className={styles.logoIcon} />
         <span>Spybee</span>
       </div>
 

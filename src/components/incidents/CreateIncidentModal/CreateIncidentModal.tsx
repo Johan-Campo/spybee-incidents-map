@@ -21,6 +21,7 @@ import styles from "./CreateIncidentModal.module.scss";
 
 interface CreateIncidentModalProps {
   onClose: () => void;
+  onCreated?: (incident: Incident) => void;
 }
 
 const INITIAL_COORDINATES: IncidentCoordinates = {
@@ -28,7 +29,7 @@ const INITIAL_COORDINATES: IncidentCoordinates = {
   lng: DEFAULT_MAP_VIEW.longitude,
 };
 
-export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
+export function CreateIncidentModal({ onClose, onCreated }: CreateIncidentModalProps) {
   const incidentsCount = useIncidentsStore((state) => state.incidents.length);
   const addIncident = useIncidentsStore((state) => state.addIncident);
 
@@ -95,6 +96,7 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
     };
 
     addIncident(newIncident);
+    onCreated?.(newIncident);
     onClose();
   }
 

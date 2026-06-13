@@ -124,7 +124,7 @@
 
 .createButton {
   position: absolute;
-  top: $spacing-md;
+  top: calc($spacing-md + 4px);
   right: $spacing-md;
   display: flex;
   align-items: center;

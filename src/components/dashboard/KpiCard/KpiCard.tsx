@@ -1,4 +1,5 @@
 import { ArrowDown, ArrowUp, Minus, type LucideIcon } from "lucide-react";
+import { Area, AreaChart, ResponsiveContainer } from "recharts";
 import styles from "./KpiCard.module.scss";
 
 export interface KpiDelta {
@@ -13,6 +14,7 @@ interface KpiCardProps {
   accentColor: string;
   subtitle?: string;
   delta?: KpiDelta;
+  sparkline?: number[];
 }
 
 const DELTA_ICONS: Record<KpiDelta["direction"], LucideIcon> = {
@@ -21,25 +23,45 @@ const DELTA_ICONS: Record<KpiDelta["direction"], LucideIcon> = {
   neutral: Minus,
 };
 
-export function KpiCard({ icon: Icon, label, value, accentColor, subtitle, delta }: KpiCardProps) {
+export function KpiCard({ icon: Icon, label, value, accentColor, subtitle, delta, sparkline }: KpiCardProps) {
   const DeltaIcon = delta ? DELTA_ICONS[delta.direction] : null;
+  const sparklineData = sparkline?.map((value, index) => ({ index, value }));
 
   return (
     <div className={styles.card} style={{ borderLeftColor: accentColor }}>
-      <div className={styles.iconWrapper} style={{ color: accentColor }}>
-        <Icon size={18} />
+      <div className={styles.row}>
+        <div className={styles.iconWrapper} style={{ color: accentColor }}>
+          <Icon size={18} />
+        </div>
+        <div className={styles.text}>
+          <span className={styles.value}>{value}</span>
+          <span className={styles.label}>{label}</span>
+          {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
+          {delta && DeltaIcon && (
+            <span className={`${styles.delta} ${styles[delta.direction]}`}>
+              <DeltaIcon size={12} />
+              {delta.text}
+            </span>
+          )}
+        </div>
       </div>
-      <div className={styles.text}>
-        <span className={styles.value}>{value}</span>
-        <span className={styles.label}>{label}</span>
-        {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
-        {delta && DeltaIcon && (
-          <span className={`${styles.delta} ${styles[delta.direction]}`}>
-            <DeltaIcon size={12} />
-            {delta.text}
-          </span>
-        )}
-      </div>
+      {sparklineData && sparklineData.length > 1 && (
+        <div className={styles.sparkline}>
+          <ResponsiveContainer width="100%" height={28}>
+            <AreaChart data={sparklineData}>
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke={accentColor}
+                fill={accentColor}
+                fillOpacity={0.15}
+                strokeWidth={1.5}
+                isAnimationActive={false}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      )}
     </div>
   );
 }

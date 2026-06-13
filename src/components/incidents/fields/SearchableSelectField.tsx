@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import { FormField } from "./FormField";
 import styles from "./fields.module.scss";
 
@@ -70,16 +70,24 @@ export function SearchableSelectField({ id, label, value, onChange, options, pla
         {!open && <ChevronDown size={14} className={styles.comboboxChevron} />}
 
         {open && (
-          <ul id={listId} role="listbox" className={styles.comboboxPanel}>
-            {filteredOptions.map((option) => (
-              <li key={option.value} role="option" aria-selected={option.value === value}>
-                <button type="button" className={styles.comboboxOption} onClick={() => handleSelect(option)}>
-                  {option.color && <span className={styles.colorDot} style={{ backgroundColor: option.color }} />}
-                  <span>{option.label}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
+          <div className={styles.comboboxPanel}>
+            <div className={styles.panelHeader}>
+              <span className={styles.panelHeaderLabel}>{label}</span>
+              <button type="button" className={styles.panelCloseButton} onClick={() => setOpen(false)} aria-label="Cerrar">
+                <X size={14} />
+              </button>
+            </div>
+            <ul id={listId} role="listbox" className={styles.comboboxList}>
+              {filteredOptions.map((option) => (
+                <li key={option.value} role="option" aria-selected={option.value === value}>
+                  <button type="button" className={styles.comboboxOption} onClick={() => handleSelect(option)}>
+                    {option.color && <span className={styles.colorDot} style={{ backgroundColor: option.color }} />}
+                    <span>{option.label}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
     </FormField>

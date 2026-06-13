@@ -120,6 +120,7 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
         <div className={`${styles.comboboxInputRow} ${styles.comboboxInputRowPadded}`} onClick={() => setOpen(true)}>
           {selectedNodes.map((node) => (
             <span key={node.id} className={styles.chip}>
+              <span className={styles.colorDot} style={{ backgroundColor: node.color }} />
               {node.name}
               <button
                 type="button"
@@ -150,9 +151,17 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
         {!open && <ChevronDown size={14} className={styles.comboboxChevron} />}
 
         {open && (
-          <ul id={treeId} role="tree" aria-label={label} className={`${styles.comboboxPanel} ${styles.treePanel}`}>
-            {nodes.map((node) => renderNode(node, 0))}
-          </ul>
+          <div className={styles.comboboxPanel}>
+            <div className={styles.panelHeader}>
+              <span className={styles.panelHeaderLabel}>{label}</span>
+              <button type="button" className={styles.panelCloseButton} onClick={() => setOpen(false)} aria-label="Cerrar">
+                <X size={14} />
+              </button>
+            </div>
+            <ul id={treeId} role="tree" aria-label={label} className={`${styles.comboboxList} ${styles.treePanel}`}>
+              {nodes.map((node) => renderNode(node, 0))}
+            </ul>
+          </div>
         )}
       </div>
     </FormField>

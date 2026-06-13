@@ -56,7 +56,10 @@ export function ActivityCalendar({ incidents }: ActivityCalendarProps) {
   return (
     <div className={styles.card}>
       <div className={styles.header}>
-        <h3 className={styles.title}>Calendario de actividad</h3>
+        <div className={styles.headerText}>
+          <h3 className={styles.title}>Calendario de actividad</h3>
+          <p className={styles.subtitle}>Cantidad de incidencias reportadas por día. Los tonos más cálidos indican días con mayor actividad.</p>
+        </div>
         <div className={styles.nav}>
           <button type="button" className={styles.navButton} onClick={goToPreviousMonth} aria-label="Mes anterior">
             <ChevronLeft size={14} />

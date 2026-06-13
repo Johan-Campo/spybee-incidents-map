@@ -4,15 +4,9 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { AuthGuard } from "@/components/auth/AuthGuard";
+import { DroneSwarm } from "@/components/login/DroneSwarm/DroneSwarm";
 import { useAuthStore } from "@/store/authStore";
 import styles from "./page.module.scss";
-
-const STATS = [
-  { value: "50+", label: "Ciudades en toda la región" },
-  { value: "500+", label: "Proyectos completados en Latinoamérica" },
-  { value: "1200+", label: "Clientes confiando en nuestra plataforma" },
-  { value: "8", label: "Países con presencia activa" },
-];
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,36 +31,40 @@ export default function LoginPage() {
       <div className={styles.page}>
         <div className={styles.brandPanel}>
           <img src="/brand/logo2.avif" alt="" className={styles.beeWatermark} />
+          <DroneSwarm />
 
           <div className={`${styles.brandLogo} ${styles.fadeInUp}`}>
             <img src="/brand/logo2.avif" alt="" className={styles.brandLogoIcon} />
-            <span>Spybee</span>
+            <span className={styles.lightSweep} style={{ animationDuration: "9s", animationDelay: "-1s" }}>
+              Spybee
+            </span>
           </div>
 
           <div className={`${styles.brandCopy} ${styles.fadeInUp}`} style={{ animationDelay: "0.08s" }}>
             <h2 className={styles.brandTitle}>
-              Controla tu obra.
+              <span className={styles.lightSweep} style={{ animationDuration: "9s", animationDelay: "0s" }}>
+                Controla tu obra.
+              </span>
               <br />
-              Entiende su avance.
+              <span className={styles.lightSweep} style={{ animationDuration: "12s", animationDelay: "-3s" }}>
+                Entiende su avance.
+              </span>
             </h2>
             <p className={styles.brandSubtitle}>
-              Actúa antes de los retrasos. Integra datos de drones, cámaras 360°, time-lapse y WhatsApp, con IA que
-              anticipa riesgos y alinea a tu equipo en tiempo real.
+              <span className={styles.lightSweep} style={{ animationDuration: "13s", animationDelay: "-5s" }}>
+                Actúa antes de los retrasos.
+              </span>{" "}
+              <span className={styles.lightSweep} style={{ animationDuration: "13s", animationDelay: "-4s" }}>
+                Integra datos de drones, cámaras 360°,
+              </span>{" "}
+              <span className={styles.lightSweep} style={{ animationDuration: "13s", animationDelay: "-3s" }}>
+                time-lapse y WhatsApp,
+              </span>{" "}
+              <span className={styles.lightSweep} style={{ animationDuration: "13s", animationDelay: "-2s" }}>
+                con IA que anticipa riesgos y alinea a tu equipo en tiempo real.
+              </span>
             </p>
           </div>
-
-          <dl className={styles.stats}>
-            {STATS.map((stat, index) => (
-              <div
-                key={stat.label}
-                className={`${styles.stat} ${styles.fadeInUp}`}
-                style={{ animationDelay: `${0.16 + index * 0.05}s` }}
-              >
-                <dt className={styles.statValue}>{stat.value}</dt>
-                <dd className={styles.statLabel}>{stat.label}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
 
         <div className={styles.formPanel}>

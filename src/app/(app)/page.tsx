@@ -12,15 +12,26 @@ import { useIncidentsStore } from "@/store/incidentsStore";
 export default function Home() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedIncidentId, setSelectedIncidentId] = useState<string | null>(null);
+  const [newIncidentId, setNewIncidentId] = useState<string | null>(null);
   const incidents = useIncidentsStore((state) => state.incidents);
   const selectedIncident = incidents.find((incident) => incident.id === selectedIncidentId);
+
+  function handleMarkerClick(incidentId: string) {
+    setSelectedIncidentId(incidentId);
+    if (incidentId === newIncidentId) setNewIncidentId(null);
+  }
 
   return (
     <MapView
       markers={incidents
         .filter((incident) => !incident.deleted)
         .map((incident) => (
-          <IncidentMarker key={incident.id} incident={incident} onClick={() => setSelectedIncidentId(incident.id)} />
+          <IncidentMarker
+            key={incident.id}
+            incident={incident}
+            isNew={incident.id === newIncidentId}
+            onClick={() => handleMarkerClick(incident.id)}
+          />
         ))}
       popup={
         selectedIncident && (
@@ -30,7 +41,9 @@ export default function Home() {
     >
       <MapTopBar />
       <MapControls onCreateIncident={() => setIsCreateModalOpen(true)} />
-      {isCreateModalOpen && <CreateIncidentModal onClose={() => setIsCreateModalOpen(false)} />}
+      {isCreateModalOpen && (
+        <CreateIncidentModal onClose={() => setIsCreateModalOpen(false)} onCreated={(incident) => setNewIncidentId(incident.id)} />
+      )}
     </MapView>
   );
 }

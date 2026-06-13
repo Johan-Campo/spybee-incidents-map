@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const d=require\\('./data/incidents.mock.json'\\); const tags=new Map\\(\\); d.forEach\\(i=>i.tags.forEach\\(t=>tags.set\\(t.id,t\\)\\)\\); console.log\\(JSON.stringify\\([...tags.values\\(\\)].slice\\(0,15\\), null, 2\\)\\)\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/dashboard)",
+      "Bash(node project-notes/verify-phase6.mjs)",
+      "Bash(node project-notes/debug-filter.mjs)",
+      "Bash(node project-notes/debug-filter2.mjs)",
+      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/verify-phase6.mjs project-notes/debug-filter.mjs project-notes/debug-filter2.mjs project-notes/v6-*.png)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\User\\Documents\\GitHub\\spybee-incidents-map\\project-notes"
+    ]
+  }
+}

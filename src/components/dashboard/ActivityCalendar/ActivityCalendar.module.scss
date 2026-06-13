@@ -15,16 +15,27 @@
 
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: $spacing-sm;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .title {
   font-size: 14px;
   font-weight: 600;
   color: $color-text-dark;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: $color-text-muted;
 }
 
 .nav {
@@ -84,6 +95,7 @@
 }
 
 .day {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -92,16 +104,18 @@
   aspect-ratio: 1;
   border-radius: $radius-sm;
   background-color: $color-content-bg;
-  transition: transform $transition-fast, box-shadow $transition-fast;
+  border: 1px solid transparent;
+  transition: transform $transition-fast, box-shadow $transition-fast, background-color $transition-fast;
 
   &:hover {
-    transform: scale(1.05);
-    box-shadow: $shadow-sm;
+    transform: scale(1.08);
+    box-shadow: $shadow-md;
+    z-index: 1;
   }
 }
 
 .today {
-  box-shadow: 0 0 0 2px $color-accent inset;
+  border-color: $color-text-dark;
 }
 
 .dayNumber {
@@ -111,13 +125,17 @@
 }
 
 .dayCount {
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 0 4px;
+  border-radius: 999px;
+  background-color: rgba($color-text-dark, 0.08);
   color: $color-text-muted;
 }
 
 .level0 {
   background-color: $color-content-bg;
+  border-color: $color-sidebar-border;
 
   .dayCount {
     display: none;
@@ -125,38 +143,54 @@
 }
 
 .level1 {
-  background-color: rgba(245, 185, 20, 0.18);
+  background-color: #fef3c7;
 
-  .dayNumber,
+  .dayNumber {
+    color: #92400e;
+  }
+
   .dayCount {
+    background-color: rgba(146, 64, 14, 0.12);
     color: #92400e;
   }
 }
 
 .level2 {
-  background-color: rgba(245, 185, 20, 0.4);
+  background-color: #fcd34d;
 
   .dayNumber,
   .dayCount {
-    color: #92400e;
+    color: #78350f;
+  }
+
+  .dayCount {
+    background-color: rgba(120, 53, 15, 0.16);
   }
 }
 
 .level3 {
-  background-color: rgba(245, 185, 20, 0.65);
+  background-color: #fb923c;
 
   .dayNumber,
   .dayCount {
-    color: #78350f;
+    color: $color-text-light;
+  }
+
+  .dayCount {
+    background-color: rgba(255, 255, 255, 0.25);
   }
 }
 
 .level4 {
-  background-color: rgba(245, 185, 20, 0.9);
+  background-color: #ef4444;
 
   .dayNumber,
   .dayCount {
-    color: #78350f;
+    color: $color-text-light;
+  }
+
+  .dayCount {
+    background-color: rgba(255, 255, 255, 0.25);
   }
 }
 
@@ -175,5 +209,6 @@
 .legendSwatch {
   width: 14px;
   height: 14px;
-  border-radius: 3px;
+  border-radius: $radius-xs;
+  border: 1px solid $color-sidebar-border;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, X } from "lucide-react";
 import { FormField } from "./FormField";
 import { formatLocalDate, parseLocalDate } from "@/lib/date";
 import styles from "./fields.module.scss";
@@ -99,6 +99,9 @@ export function DateField({ id, label, value, onChange, required, invalid }: Dat
               </button>
               <button type="button" onClick={() => setViewYear((year) => year + 1)} aria-label="Año siguiente">
                 <ChevronsRight size={14} />
+              </button>
+              <button type="button" className={styles.panelCloseButton} onClick={() => setOpen(false)} aria-label="Cerrar">
+                <X size={14} />
               </button>
             </div>
 

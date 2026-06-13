@@ -10,6 +10,7 @@ interface TagTreemapProps {
 }
 
 interface TreemapContentProps {
+  depth?: number;
   x?: number;
   y?: number;
   width?: number;
@@ -19,19 +20,21 @@ interface TreemapContentProps {
   color?: string;
 }
 
-function TreemapCell({ x = 0, y = 0, width = 0, height = 0, name, value, color }: TreemapContentProps) {
-  const showLabel = width > 60 && height > 32;
+function TreemapCell({ depth, x = 0, y = 0, width = 0, height = 0, name, value, color }: TreemapContentProps) {
+  if (depth !== 1) return null;
+
+  const showLabel = width > 64 && height > 36;
 
   return (
     <g>
-      <rect x={x} y={y} width={width} height={height} fill={color} stroke="#fff" strokeWidth={2} rx={4} />
+      <rect x={x + 2} y={y + 2} width={Math.max(width - 4, 0)} height={Math.max(height - 4, 0)} fill={color} rx={8} />
       {showLabel && (
-        <text x={x + 8} y={y + 20} fill="#fff" fontSize={12} fontWeight={600}>
+        <text x={x + 14} y={y + 26} fill="#fff" fontSize={13} fontWeight={500} letterSpacing={0.2}>
           {name}
         </text>
       )}
       {showLabel && (
-        <text x={x + 8} y={y + 38} fill="#fff" fontSize={11} opacity={0.85}>
+        <text x={x + 14} y={y + 46} fill="#fff" fontSize={20} fontWeight={600} opacity={0.92}>
           {value}
         </text>
       )}
@@ -44,19 +47,24 @@ export function TagTreemap({ title, tags }: TagTreemapProps) {
 
   return (
     <div className={styles.card}>
-      <h3 className={styles.title}>{title}</h3>
+      <div className={styles.headerText}>
+        <h3 className={styles.title}>{title}</h3>
+        <p className={styles.subtitle}>Incidencias agrupadas por etiqueta. El tamaño de cada bloque refleja su frecuencia.</p>
+      </div>
 
       <div className={styles.chart}>
         <ResponsiveContainer width="100%" height="100%">
           <Treemap
             data={data}
             dataKey="value"
-            stroke="#fff"
             isAnimationActive
             animationDuration={600}
             content={<TreemapCell />}
           >
-            <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }} />
+            <Tooltip
+              contentStyle={{ borderRadius: 10, border: "1px solid #e5e7eb", fontSize: 12, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)" }}
+              labelStyle={{ fontWeight: 600 }}
+            />
           </Treemap>
         </ResponsiveContainer>
       </div>

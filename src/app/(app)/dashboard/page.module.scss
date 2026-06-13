@@ -77,7 +77,8 @@
 
 .calendarRow {
   display: grid;
-  grid-template-columns: minmax(0, 420px);
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: $spacing-md;
 
   @media (max-width: $breakpoint-tablet) {
     grid-template-columns: 1fr;

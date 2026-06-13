@@ -2,8 +2,8 @@
 
 .card {
   display: flex;
-  align-items: flex-start;
-  gap: $spacing-md;
+  flex-direction: column;
+  gap: $spacing-sm;
   padding: $spacing-md;
   background-color: $color-sidebar-bg;
   border: 1px solid $color-sidebar-border;
@@ -16,6 +16,16 @@
     box-shadow: $shadow-md;
     transform: translateY(-1px);
   }
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-md;
+}
+
+.sparkline {
+  margin: 0 -2px -2px;
 }
 
 .iconWrapper {

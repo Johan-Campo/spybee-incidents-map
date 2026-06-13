@@ -1,28 +1,73 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, X } from "lucide-react";
 import { formatDueLabel, type CriticalIncident } from "@/lib/dashboardMetrics";
 import { PRIORITY_OPTIONS } from "@/lib/incidentOptions";
 import { STATUS_COLORS, STATUS_LABELS } from "@/lib/dashboardMetrics";
 import styles from "./CriticalIncidentsTable.module.scss";
 
+export interface TableFilter {
+  label: string;
+  color: string;
+}
+
 interface CriticalIncidentsTableProps {
   incidents: CriticalIncident[];
+  totalCount: number;
+  filter?: TableFilter | null;
+  onClearFilter?: () => void;
 }
+
+type SortKey = "priority" | "due";
+type SortDirection = "asc" | "desc";
 
 const PAGE_SIZE = 10;
 const PRIORITY_MAP = new Map(PRIORITY_OPTIONS.map((option) => [option.value, option]));
+const PRIORITY_RANK: Record<CriticalIncident["priority"], number> = { high: 0, medium: 1, low: 2 };
 
-export function CriticalIncidentsTable({ incidents }: CriticalIncidentsTableProps) {
+export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearFilter }: CriticalIncidentsTableProps) {
   const [page, setPage] = useState(1);
-  const totalPages = Math.max(1, Math.ceil(incidents.length / PAGE_SIZE));
+  const [sort, setSort] = useState<{ key: SortKey; direction: SortDirection } | null>(null);
+
+  const sortedIncidents = useMemo(() => {
+    if (!sort) return incidents;
+
+    const sorted = [...incidents];
+    sorted.sort((a, b) => {
+      let result = 0;
+      if (sort.key === "priority") {
+        result = PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority];
+      } else {
+        const aTime = a.dueDate ? new Date(a.dueDate).getTime() : Infinity;
+        const bTime = b.dueDate ? new Date(b.dueDate).getTime() : Infinity;
+        result = aTime - bTime;
+      }
+      return sort.direction === "asc" ? result : -result;
+    });
+    return sorted;
+  }, [incidents, sort]);
+
+  const totalPages = Math.max(1, Math.ceil(sortedIncidents.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
 
   const rows = useMemo(
-    () => incidents.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE),
-    [incidents, currentPage]
+    () => sortedIncidents.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE),
+    [sortedIncidents, currentPage]
   );
+
+  function toggleSort(key: SortKey) {
+    setPage(1);
+    setSort((current) => {
+      if (current?.key !== key) return { key, direction: "asc" };
+      return { key, direction: current.direction === "asc" ? "desc" : "asc" };
+    });
+  }
+
+  function sortIcon(key: SortKey) {
+    if (sort?.key !== key) return null;
+    return sort.direction === "asc" ? <ChevronUp size={12} /> : <ChevronDown size={12} />;
+  }
 
   const pageNumbers = useMemo(() => {
     const pages: number[] = [];
@@ -39,7 +84,13 @@ export function CriticalIncidentsTable({ incidents }: CriticalIncidentsTableProp
       <div className={styles.header}>
         <h3 className={styles.title}>Críticas para hoy</h3>
         <span className={styles.subtitle}>Alta prioridad o con fecha próxima</span>
-        <span className={styles.total}>{incidents.length} en total</span>
+        {filter && (
+          <button type="button" className={styles.filterChip} style={{ color: filter.color, backgroundColor: `${filter.color}1A` }} onClick={onClearFilter}>
+            {filter.label}
+            <X size={12} />
+          </button>
+        )}
+        <span className={styles.total}>{incidents.length} de {totalCount}</span>
       </div>
 
       <div className={styles.tableWrapper}>
@@ -48,11 +99,15 @@ export function CriticalIncidentsTable({ incidents }: CriticalIncidentsTableProp
             <tr>
               <th>ID</th>
               <th>Título</th>
-              <th>Prioridad</th>
+              <th className={styles.sortable} onClick={() => toggleSort("priority")}>
+                <span className={styles.sortLabel}>Prioridad {sortIcon("priority")}</span>
+              </th>
               <th>Estado</th>
               <th>Asignados</th>
               <th>Creado por</th>
-              <th>Vencimiento</th>
+              <th className={styles.sortable} onClick={() => toggleSort("due")}>
+                <span className={styles.sortLabel}>Vencimiento {sortIcon("due")}</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -94,10 +149,14 @@ export function CriticalIncidentsTable({ incidents }: CriticalIncidentsTableProp
                     )}
                   </td>
                   <td>
-                    <div className={styles.creator}>
-                      <img src={incident.owner.avatarUrl} alt={incident.owner.name} className={styles.avatar} />
-                      <span className={styles.creatorName}>{incident.owner.name.split(" ")[0]}</span>
-                    </div>
+                    {incident.owner ? (
+                      <div className={styles.creator}>
+                        <img src={incident.owner.avatarUrl} alt={incident.owner.name} className={styles.avatar} />
+                        <span className={styles.creatorName}>{incident.owner.name.split(" ")[0]}</span>
+                      </div>
+                    ) : (
+                      <span className={styles.muted}>--</span>
+                    )}
                   </td>
                   <td className={due.overdue ? styles.dueOverdue : styles.dueNormal}>{due.text}</td>
                 </tr>

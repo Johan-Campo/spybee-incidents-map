@@ -3,7 +3,8 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import styles from "./DonutChart.module.scss";
 
-interface DonutChartSegment {
+export interface DonutChartSegment {
+  id?: string;
   label: string;
   value: number;
   color: string;
@@ -11,12 +12,15 @@ interface DonutChartSegment {
 
 interface DonutChartProps {
   title: string;
+  subtitle?: string;
   segments: DonutChartSegment[];
+  onSegmentClick?: (segment: DonutChartSegment) => void;
+  activeId?: string | null;
 }
 
 const EMPTY_COLOR = "#f0f0f0";
 
-export function DonutChart({ title, segments }: DonutChartProps) {
+export function DonutChart({ title, subtitle, segments, onSegmentClick, activeId }: DonutChartProps) {
   const total = segments.reduce((sum, segment) => sum + segment.value, 0);
   const data = segments.filter((segment) => segment.value > 0);
   const chartData = data.length > 0 ? data : [{ label: "Sin datos", value: 1, color: EMPTY_COLOR }];
@@ -24,7 +28,10 @@ export function DonutChart({ title, segments }: DonutChartProps) {
   return (
     <div className={styles.card}>
       <div className={styles.header}>
-        <h3 className={styles.title}>{title}</h3>
+        <div className={styles.headerText}>
+          <h3 className={styles.title}>{title}</h3>
+          {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+        </div>
         <span className={styles.total}>{total}</span>
       </div>
 
@@ -47,7 +54,13 @@ export function DonutChart({ title, segments }: DonutChartProps) {
                 stroke="none"
               >
                 {chartData.map((entry, index) => (
-                  <Cell key={`${entry.label}-${index}`} fill={entry.color} />
+                  <Cell
+                    key={`${entry.label}-${index}`}
+                    fill={entry.color}
+                    opacity={activeId && activeId !== entry.id ? 0.3 : 1}
+                    cursor={onSegmentClick && data.length > 0 ? "pointer" : "default"}
+                    onClick={() => data.length > 0 && onSegmentClick?.(entry)}
+                  />
                 ))}
               </Pie>
               {data.length > 0 && (
@@ -55,16 +68,28 @@ export function DonutChart({ title, segments }: DonutChartProps) {
               )}
             </PieChart>
           </ResponsiveContainer>
+          <div className={styles.centerLabel}>
+            <span className={styles.centerValue}>{total}</span>
+            <span className={styles.centerCaption}>total</span>
+          </div>
         </div>
 
         <ul className={styles.legend}>
-          {segments.map((segment) => (
-            <li key={segment.label} className={styles.legendItem}>
-              <span className={styles.dot} style={{ backgroundColor: segment.color }} />
-              <span className={styles.legendLabel}>{segment.label}</span>
-              <span className={styles.legendValue}>{segment.value}</span>
-            </li>
-          ))}
+          {segments.map((segment) => {
+            const pct = total > 0 ? Math.round((segment.value / total) * 100) : 0;
+            return (
+              <li
+                key={segment.label}
+                className={`${styles.legendItem} ${onSegmentClick ? styles.clickable : ""} ${activeId === segment.id ? styles.active : ""}`}
+                onClick={() => segment.value > 0 && onSegmentClick?.(segment)}
+              >
+                <span className={styles.dot} style={{ backgroundColor: segment.color }} />
+                <span className={styles.legendLabel}>{segment.label}</span>
+                <span className={styles.legendPct}>{pct}%</span>
+                <span className={styles.legendValue}>{segment.value}</span>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

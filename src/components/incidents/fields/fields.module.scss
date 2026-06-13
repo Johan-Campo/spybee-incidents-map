@@ -292,15 +292,56 @@
   left: 0;
   right: 0;
   z-index: 10;
-  list-style: none;
-  max-height: 200px;
-  overflow-y: auto;
   border: 1px solid $color-sidebar-border;
   border-radius: $radius-sm;
   background-color: $color-sidebar-bg;
   box-shadow: $shadow-md;
   animation: scale-fade-in $transition-base;
   transform-origin: top center;
+  overflow: hidden;
+}
+
+.comboboxList {
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-bottom: 1px solid $color-sidebar-border;
+}
+
+.panelHeaderLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $color-text-muted;
+}
+
+.panelCloseButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: $color-text-muted;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color $transition-fast, background-color $transition-fast, transform $transition-fast;
+
+  &:hover {
+    color: $color-text-dark;
+    background-color: $color-content-bg;
+    transform: rotate(90deg);
+  }
 }
 
 .comboboxOption {
