@@ -1,0 +1,187 @@
+@use "../../styles/variables" as *;
+
+.page {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 100vh;
+
+  @media (max-width: $breakpoint-tablet) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.brandPanel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+  background-color: $color-header-bg;
+  color: $color-text-light;
+  overflow: hidden;
+
+  @media (max-width: $breakpoint-tablet) {
+    display: none;
+  }
+}
+
+.beeWatermark {
+  position: absolute;
+  top: -10%;
+  right: -15%;
+  width: 60%;
+  max-width: 480px;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.brandLogo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.brandLogoIcon {
+  height: 28px;
+  width: auto;
+}
+
+.brandCopy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  max-width: 480px;
+}
+
+.brandTitle {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.brandSubtitle {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba($color-text-light, 0.7);
+}
+
+.stats {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-lg;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: $color-accent;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: rgba($color-text-light, 0.6);
+}
+
+.formPanel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md;
+  background-color: $color-content-bg;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  width: 100%;
+  max-width: 380px;
+  padding: $spacing-lg;
+  background-color: $color-sidebar-bg;
+  border-radius: $radius-md;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.formLogo {
+  height: 28px;
+  width: auto;
+  align-self: flex-start;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  color: $color-text-dark;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: $color-text-muted;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-text-dark;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: $color-text-dark;
+  background-color: $color-sidebar-bg;
+
+  &:focus {
+    outline: 2px solid $color-accent;
+    outline-offset: -1px;
+  }
+}
+
+.submitButton {
+  border: none;
+  border-radius: $radius-sm;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  background-color: $color-accent;
+  color: $color-text-dark;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.demoHint {
+  font-size: 12px;
+  color: $color-text-muted;
+  text-align: center;
+}

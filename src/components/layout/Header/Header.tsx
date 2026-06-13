@@ -1,7 +1,20 @@
-import { ChevronDown, HelpCircle, Smartphone, Sparkles } from "lucide-react";
+"use client";
+
+import { ChevronDown, HelpCircle, LogOut, Smartphone, Sparkles } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
 import styles from "./Header.module.scss";
 
 export function Header() {
+  const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+
+  function handleLogout() {
+    logout();
+    router.replace("/login");
+  }
+
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
@@ -16,21 +29,23 @@ export function Header() {
           <Smartphone size={16} />
         </span>
 
-        <div className={styles.user}>
-          <img
-            className={styles.avatar}
-            src="https://i.pravatar.cc/64?u=johan-superadmin"
-            alt="Johan"
-          />
-          <div className={styles.userInfo}>
-            <span className={styles.userName}>Johan</span>
-            <span className={styles.userRole}>Superadmin</span>
+        {user && (
+          <div className={styles.user}>
+            <img className={styles.avatar} src={user.avatarUrl} alt={user.name} />
+            <div className={styles.userInfo}>
+              <span className={styles.userName}>{user.name.split(" ")[0]}</span>
+              <span className={styles.userRole}>Superadmin</span>
+            </div>
+            <ChevronDown size={16} />
           </div>
-          <ChevronDown size={16} />
-        </div>
+        )}
 
         <button type="button" className={styles.helpButton} aria-label="Ayuda">
           <HelpCircle size={16} />
+        </button>
+
+        <button type="button" className={styles.helpButton} aria-label="Cerrar sesión" title="Cerrar sesión" onClick={handleLogout}>
+          <LogOut size={16} />
         </button>
       </div>
     </header>
