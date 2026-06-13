@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Download, FileBarChart, Plus, SlidersHorizontal } from "lucide-react";
+import { Calendar, ChevronDown, Download, FileBarChart, Plus, SlidersHorizontal } from "lucide-react";
 import { formatPeriodRangeLabel, PERIOD_OPTIONS } from "@/lib/dashboardMetrics";
 import { DEFAULT_PROJECT } from "@/lib/incidentOptions";
 import styles from "./DashboardToolbar.module.scss";
@@ -27,6 +27,7 @@ export function DashboardToolbar({ period, onPeriodChange, onCreateIncident }: D
 
         <div className={styles.actions}>
           <div className={styles.selectWrapper}>
+            <Calendar size={14} className={styles.selectCalendarIcon} />
             <select
               className={styles.periodSelect}
               value={period}

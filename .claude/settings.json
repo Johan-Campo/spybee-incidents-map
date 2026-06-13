@@ -6,7 +6,11 @@
       "Bash(node project-notes/verify-phase6.mjs)",
       "Bash(node project-notes/debug-filter.mjs)",
       "Bash(node project-notes/debug-filter2.mjs)",
-      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/verify-phase6.mjs project-notes/debug-filter.mjs project-notes/debug-filter2.mjs project-notes/v6-*.png)"
+      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/verify-phase6.mjs project-notes/debug-filter.mjs project-notes/debug-filter2.mjs project-notes/v6-*.png)",
+      "Bash(node project-notes/verify-layout.mjs)",
+      "Bash(node project-notes/verify-menu-crop.mjs)",
+      "Bash(node project-notes/debug-overlap.mjs)",
+      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/verify-layout.mjs project-notes/verify-menu-crop.mjs project-notes/debug-zindex.mjs project-notes/debug-overlap.mjs project-notes/layout-*.png project-notes/menu-crop.png)"
     ],
     "additionalDirectories": [
       "C:\\Users\\User\\Documents\\GitHub\\spybee-incidents-map\\project-notes"

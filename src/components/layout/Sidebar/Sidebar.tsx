@@ -34,16 +34,23 @@ export function Sidebar() {
 
       <nav className={styles.nav}>
         {navItems.map(({ icon: Icon, label, href }) => {
-          const isActive = href !== null && pathname === href;
-          const className = `${styles.navItem} ${isActive ? styles.navItemActive : ""}`;
-
           if (!href) {
             return (
-              <button key={label} type="button" className={className} aria-label={label} title={label}>
+              <button
+                key={label}
+                type="button"
+                className={`${styles.navItem} ${styles.navItemDisabled}`}
+                disabled
+                aria-label={`${label} (próximamente)`}
+                title={`${label} (próximamente)`}
+              >
                 <Icon size={20} />
               </button>
             );
           }
+
+          const isActive = pathname === href;
+          const className = `${styles.navItem} ${isActive ? styles.navItemActive : ""}`;
 
           return (
             <Link key={label} href={href} className={className} aria-label={label} title={label}>
@@ -54,6 +61,7 @@ export function Sidebar() {
       </nav>
 
       <div className={styles.footer}>
+        <div className={styles.divider} />
         <button type="button" className={styles.navItem} aria-label="Configuración" title="Configuración">
           <Settings size={20} />
         </button>

@@ -41,6 +41,19 @@
   position: relative;
   display: flex;
   align-items: center;
+  transition: transform $transition-fast;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.selectCalendarIcon {
+  position: absolute;
+  left: 10px;
+  color: $color-accent;
+  pointer-events: none;
+  transition: color $transition-fast;
 }
 
 .periodSelect {
@@ -48,21 +61,26 @@
   border: 1px solid $color-sidebar-border;
   border-radius: $radius-sm;
   background-color: $color-sidebar-bg;
-  padding: 8px 30px 8px 12px;
+  padding: 8px 30px 8px 32px;
   font-size: 13px;
   font-weight: 500;
   color: $color-text-dark;
   cursor: pointer;
-  transition: border-color $transition-fast;
+  transition: border-color $transition-fast, background-color $transition-fast, box-shadow $transition-fast;
 
   &:hover {
-    border-color: $color-text-muted;
+    border-color: $color-accent;
   }
 
   &:focus {
     outline: none;
     border-color: $color-accent;
     box-shadow: $shadow-focus;
+  }
+
+  &:focus ~ .selectIcon {
+    transform: rotate(180deg);
+    color: $color-accent;
   }
 }
 
@@ -71,6 +89,12 @@
   right: 10px;
   color: $color-icon-default;
   pointer-events: none;
+  transition: transform $transition-base, color $transition-fast;
+}
+
+.selectWrapper:hover .selectIcon,
+.selectWrapper:hover .selectCalendarIcon {
+  color: $color-accent;
 }
 
 .iconButton {

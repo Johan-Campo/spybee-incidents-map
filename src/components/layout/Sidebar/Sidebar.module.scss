@@ -63,7 +63,7 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: $radius-sm;
+  border-radius: $radius-md;
   border: none;
   background: transparent;
   color: $color-icon-default;
@@ -124,6 +124,33 @@
     background-color: $color-accent-light;
     color: $color-accent;
     transform: none;
+  }
+}
+
+.navItemDisabled {
+  color: $color-text-muted;
+  opacity: 0.45;
+  cursor: not-allowed;
+
+  &:hover {
+    background-color: transparent;
+    color: $color-text-muted;
+    transform: none;
+  }
+
+  &:active {
+    transform: none;
+  }
+}
+
+.divider {
+  width: 28px;
+  height: 1px;
+  margin-bottom: $spacing-sm;
+  background-color: $color-sidebar-border;
+
+  @media (max-width: $breakpoint-mobile) {
+    display: none;
   }
 }
 
