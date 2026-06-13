@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type DragEvent } from "react";
+import { useEffect, useId, useMemo, useState, type DragEvent } from "react";
 import { Image as ImageIcon, Upload, X } from "lucide-react";
 import { FormField } from "./FormField";
 import styles from "./fields.module.scss";
@@ -13,7 +13,18 @@ interface FileUploadFieldProps {
 
 export function FileUploadField({ label, files, onChange }: FileUploadFieldProps) {
   const [isDragOver, setIsDragOver] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputId = useId();
+
+  const previews = useMemo(
+    () => files.map((file) => (file.type.startsWith("image/") ? URL.createObjectURL(file) : null)),
+    [files]
+  );
+
+  useEffect(() => {
+    return () => {
+      previews.forEach((url) => url && URL.revokeObjectURL(url));
+    };
+  }, [previews]);
 
   function addFiles(newFiles: FileList | null) {
     if (!newFiles) return;
@@ -24,7 +35,7 @@ export function FileUploadField({ label, files, onChange }: FileUploadFieldProps
     onChange(files.filter((_, fileIndex) => fileIndex !== index));
   }
 
-  function handleDrop(event: DragEvent<HTMLDivElement>) {
+  function handleDrop(event: DragEvent<HTMLLabelElement>) {
     event.preventDefault();
     setIsDragOver(false);
     addFiles(event.dataTransfer.files);
@@ -32,9 +43,9 @@ export function FileUploadField({ label, files, onChange }: FileUploadFieldProps
 
   return (
     <FormField label={label}>
-      <div
+      <label
+        htmlFor={inputId}
         className={`${styles.dropzone} ${isDragOver ? styles.dragOver : ""}`}
-        onClick={() => inputRef.current?.click()}
         onDragOver={(event) => {
           event.preventDefault();
           setIsDragOver(true);
@@ -46,26 +57,31 @@ export function FileUploadField({ label, files, onChange }: FileUploadFieldProps
         <span>Arrastra archivos aquí o haz clic para seleccionar</span>
         <span className={styles.dropzoneHint}>Imágenes o videos</span>
         <input
-          ref={inputRef}
+          id={inputId}
           type="file"
           multiple
           accept="image/*,video/*"
           className={styles.fileInput}
           onChange={(event) => addFiles(event.target.files)}
         />
-      </div>
+      </label>
 
       {files.length > 0 && (
         <ul className={styles.fileList}>
           {files.map((file, index) => (
             <li key={`${file.name}-${index}`} className={styles.fileItem}>
-              {file.type.startsWith("image/") ? (
-                <img className={styles.filePreview} src={URL.createObjectURL(file)} alt="" />
+              {previews[index] ? (
+                <img className={styles.filePreview} src={previews[index]!} alt="" />
               ) : (
                 <ImageIcon size={16} />
               )}
               <span className={styles.fileName}>{file.name}</span>
-              <button type="button" className={styles.fileRemove} onClick={() => removeFile(index)}>
+              <button
+                type="button"
+                className={styles.fileRemove}
+                onClick={() => removeFile(index)}
+                aria-label={`Quitar ${file.name}`}
+              >
                 <X size={14} />
               </button>
             </li>

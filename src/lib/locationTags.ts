@@ -18,13 +18,12 @@ export const LOCATION_TAGS: LocationTag[] = [
     ],
   },
   { id: "apartamento-112", name: "Apartamento 112", color: LOCATION_TAG_COLOR },
-  { id: "prueba", name: "Prueba", color: LOCATION_TAG_COLOR },
-  { id: "prueba-2", name: "Prueba2", color: LOCATION_TAG_COLOR },
+  { id: "fachada", name: "Fachada", color: LOCATION_TAG_COLOR },
   {
-    id: "test-1",
-    name: "test 1",
+    id: "zona-comun",
+    name: "Zona Común",
     color: LOCATION_TAG_COLOR,
-    children: [{ id: "test-1-nivel-1", name: "nivel 1", color: LOCATION_TAG_COLOR }],
+    children: [{ id: "zona-comun-parqueadero", name: "Parqueadero", color: LOCATION_TAG_COLOR }],
   },
 ];
 

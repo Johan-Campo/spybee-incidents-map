@@ -19,9 +19,10 @@ interface SearchableSelectFieldProps {
   options: SearchableSelectOption[];
   placeholder: string;
   required?: boolean;
+  invalid?: boolean;
 }
 
-export function SearchableSelectField({ id, label, value, onChange, options, placeholder, required }: SearchableSelectFieldProps) {
+export function SearchableSelectField({ id, label, value, onChange, options, placeholder, required, invalid }: SearchableSelectFieldProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -53,7 +54,10 @@ export function SearchableSelectField({ id, label, value, onChange, options, pla
           aria-expanded={open}
           aria-controls={listId}
           aria-autocomplete="list"
-          className={`${styles.input} ${styles.comboboxInputPadded}`}
+          aria-required={required}
+          aria-invalid={invalid}
+          required={required}
+          className={`${styles.input} ${styles.comboboxInputPadded} ${invalid ? styles.inputInvalid : ""}`}
           value={open ? query : selectedOption?.label ?? ""}
           placeholder={placeholder}
           onFocus={() => {

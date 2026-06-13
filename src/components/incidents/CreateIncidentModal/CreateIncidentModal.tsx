@@ -6,6 +6,7 @@ import { useIncidentsStore } from "@/store/incidentsStore";
 import { CATEGORY_OPTIONS, CURRENT_USER, DEFAULT_PROJECT, PEOPLE_OPTIONS, PRIORITY_OPTIONS } from "@/lib/incidentOptions";
 import { DEFAULT_MAP_VIEW } from "@/lib/mapConfig";
 import { LOCATION_TAGS, flattenLocationTags } from "@/lib/locationTags";
+import { parseLocalDate } from "@/lib/date";
 import type { Incident, IncidentCoordinates, IncidentMedia, IncidentPriority } from "@/types/incident";
 import { TextField } from "../fields/TextField";
 import { TextAreaField } from "../fields/TextAreaField";
@@ -42,12 +43,17 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
   const [coordinates, setCoordinates] = useState<IncidentCoordinates>(INITIAL_COORDINATES);
   const [locationDescription, setLocationDescription] = useState("");
   const [files, setFiles] = useState<File[]>([]);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const category = CATEGORY_OPTIONS.find((option) => option.id === categoryId);
-    if (!category || !priority) return;
+    if (!category || !priority || !dueDate) {
+      setSubmitError("Completa los campos obligatorios: categoría, prioridad y fecha de vencimiento.");
+      return;
+    }
+    setSubmitError(null);
 
     const order = incidentsCount + 1;
     const now = new Date().toISOString();
@@ -79,7 +85,7 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
       observers: PEOPLE_OPTIONS.filter((person) => observerIds.includes(person.id)),
       coordinates,
       locationDescription,
-      dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+      dueDate: dueDate ? parseLocalDate(dueDate).toISOString() : null,
       closingDate: null,
       media,
       tags: flattenLocationTags().filter((tag) => tagIds.includes(tag.id)),
@@ -114,7 +120,14 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
             required
           />
 
-          <DateField id="dueDate" label="Fecha de vencimiento" value={dueDate} onChange={setDueDate} required />
+          <DateField
+            id="dueDate"
+            label="Fecha de vencimiento"
+            value={dueDate}
+            onChange={setDueDate}
+            required
+            invalid={submitError !== null && !dueDate}
+          />
 
           <div className={styles.categoryRow}>
             <SearchableSelectField
@@ -124,6 +137,7 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
               onChange={setCategoryId}
               placeholder="Seleccione categoría"
               required
+              invalid={submitError !== null && !categoryId}
               options={CATEGORY_OPTIONS.map((category) => ({ value: category.id, label: category.name, color: category.color }))}
             />
             <button type="button" className={styles.manageButton}>
@@ -150,7 +164,7 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
               nodes={LOCATION_TAGS}
             />
             <button type="button" className={styles.manageButton}>
-              Manage
+              Gestionar etiquetas
             </button>
           </div>
 
@@ -179,6 +193,12 @@ export function CreateIncidentModal({ onClose }: CreateIncidentModalProps) {
 
           <FileUploadField label="Adjuntos" files={files} onChange={setFiles} />
         </form>
+
+        {submitError && (
+          <p className={styles.formError} role="alert">
+            {submitError}
+          </p>
+        )}
 
         <footer className={styles.footer}>
           <button type="button" className={styles.cancelButton} onClick={onClose}>

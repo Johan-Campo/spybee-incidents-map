@@ -300,6 +300,10 @@
   color: $color-text-muted;
 }
 
+.inputInvalid {
+  border-color: #ef4444;
+}
+
 .chipRemove {
   display: flex;
   align-items: center;
@@ -333,6 +337,10 @@
     outline: 2px solid $color-accent;
     outline-offset: -1px;
   }
+}
+
+.dateInputInvalid {
+  border-color: #ef4444;
 }
 
 .calendarPanel {

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Calendar, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { FormField } from "./FormField";
+import { formatLocalDate, parseLocalDate } from "@/lib/date";
 import styles from "./fields.module.scss";
 
 const WEEKDAY_LABELS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
@@ -17,18 +18,7 @@ interface DateFieldProps {
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
-}
-
-function parseDate(value: string): Date {
-  const [year, month, day] = value.split("-").map(Number);
-  return new Date(year, month - 1, day);
-}
-
-function formatDate(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  invalid?: boolean;
 }
 
 function buildCalendarDays(year: number, month: number): Date[] {
@@ -41,10 +31,10 @@ function buildCalendarDays(year: number, month: number): Date[] {
   });
 }
 
-export function DateField({ id, label, value, onChange, required }: DateFieldProps) {
+export function DateField({ id, label, value, onChange, required, invalid }: DateFieldProps) {
   const [open, setOpen] = useState(false);
   const today = new Date();
-  const referenceDate = value ? parseDate(value) : today;
+  const referenceDate = value ? parseLocalDate(value) : today;
   const [viewYear, setViewYear] = useState(referenceDate.getFullYear());
   const [viewMonth, setViewMonth] = useState(referenceDate.getMonth());
 
@@ -57,12 +47,12 @@ export function DateField({ id, label, value, onChange, required }: DateFieldPro
   }
 
   function handleSelectDay(date: Date) {
-    onChange(formatDate(date));
+    onChange(formatLocalDate(date));
     setOpen(false);
   }
 
   function handleToday() {
-    onChange(formatDate(today));
+    onChange(formatLocalDate(today));
     setViewYear(today.getFullYear());
     setViewMonth(today.getMonth());
     setOpen(false);
@@ -84,7 +74,8 @@ export function DateField({ id, label, value, onChange, required }: DateFieldPro
           id={id}
           aria-haspopup="dialog"
           aria-expanded={open}
-          className={styles.dateInput}
+          aria-invalid={invalid}
+          className={`${styles.dateInput} ${invalid ? styles.dateInputInvalid : ""}`}
           onClick={() => setOpen((isOpen) => !isOpen)}
         >
           <span className={value ? "" : styles.placeholder}>{value || "Seleccionar fecha"}</span>
@@ -122,7 +113,7 @@ export function DateField({ id, label, value, onChange, required }: DateFieldPro
             <div className={styles.calendarGrid} role="grid" aria-label={`${MONTH_LABELS[viewMonth]} ${viewYear}`}>
               {days.map((date) => {
                 const isCurrentMonth = date.getMonth() === viewMonth;
-                const isSelected = value === formatDate(date);
+                const isSelected = value === formatLocalDate(date);
                 return (
                   <button
                     key={date.toISOString()}

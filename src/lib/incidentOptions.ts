@@ -1,5 +1,5 @@
 import incidentsMock from "../../data/incidents.mock.json";
-import type { Incident, IncidentPriority, IncidentProject, IncidentTag, IncidentType, IncidentUser } from "@/types/incident";
+import type { Incident, IncidentPriority, IncidentProject, IncidentType, IncidentUser } from "@/types/incident";
 
 const incidents = incidentsMock as Incident[];
 
@@ -43,10 +43,6 @@ export const PRIORITY_OPTIONS: { value: IncidentPriority; label: string; color: 
   { value: "medium", label: "Media", color: "#F59E0B" },
   { value: "low", label: "Baja", color: "#10B981" },
 ];
-
-export const TAG_OPTIONS: IncidentTag[] = Array.from(
-  new Map(incidents.flatMap((incident) => incident.tags).map((tag) => [tag.id, tag])).values()
-);
 
 export const PEOPLE_OPTIONS: IncidentUser[] = Array.from(
   new Map(
