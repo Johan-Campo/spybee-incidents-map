@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 import { useAuthStore } from "@/store/authStore";
 import styles from "./page.module.scss";
@@ -19,11 +20,16 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    login();
-    router.replace("/");
+    setIsSubmitting(true);
+    setTimeout(() => {
+      login();
+      router.replace("/");
+    }, 600);
   }
 
   return (
@@ -32,12 +38,12 @@ export default function LoginPage() {
         <div className={styles.brandPanel}>
           <img src="/brand/logo2.avif" alt="" className={styles.beeWatermark} />
 
-          <div className={styles.brandLogo}>
+          <div className={`${styles.brandLogo} ${styles.fadeInUp}`}>
             <img src="/brand/logo2.avif" alt="" className={styles.brandLogoIcon} />
             <span>Spybee</span>
           </div>
 
-          <div className={styles.brandCopy}>
+          <div className={`${styles.brandCopy} ${styles.fadeInUp}`} style={{ animationDelay: "0.08s" }}>
             <h2 className={styles.brandTitle}>
               Controla tu obra.
               <br />
@@ -50,8 +56,12 @@ export default function LoginPage() {
           </div>
 
           <dl className={styles.stats}>
-            {STATS.map((stat) => (
-              <div key={stat.label} className={styles.stat}>
+            {STATS.map((stat, index) => (
+              <div
+                key={stat.label}
+                className={`${styles.stat} ${styles.fadeInUp}`}
+                style={{ animationDelay: `${0.16 + index * 0.05}s` }}
+              >
                 <dt className={styles.statValue}>{stat.value}</dt>
                 <dd className={styles.statLabel}>{stat.label}</dd>
               </div>
@@ -82,18 +92,35 @@ export default function LoginPage() {
 
             <label className={styles.field}>
               <span className={styles.label}>Contraseña</span>
-              <input
-                type="password"
-                className={styles.input}
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="••••••••"
-                required
-              />
+              <div className={styles.passwordWrapper}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className={styles.input}
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  className={styles.togglePassword}
+                  onClick={() => setShowPassword((value) => !value)}
+                  aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </label>
 
-            <button type="submit" className={styles.submitButton}>
-              Iniciar sesión
+            <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 size={16} className={styles.spinner} />
+                  Iniciando sesión...
+                </>
+              ) : (
+                "Iniciar sesión"
+              )}
             </button>
 
             <p className={styles.demoHint}>Modo demo: cualquier correo y contraseña funcionan.</p>
