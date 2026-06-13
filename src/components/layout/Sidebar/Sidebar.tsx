@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Calendar,
   Clock,
@@ -9,35 +11,46 @@ import {
   Settings,
   Share2,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import styles from "./Sidebar.module.scss";
 
 const navItems = [
-  { icon: Home, label: "Inicio" },
-  { icon: Clock, label: "Historial" },
-  { icon: MapPin, label: "Mapa", active: true },
-  { icon: Info, label: "Información" },
-  { icon: Calendar, label: "Calendario" },
-  { icon: ImageIcon, label: "Galería" },
-  { icon: Folder, label: "Documentos" },
+  { icon: Home, label: "Inicio", href: null },
+  { icon: Clock, label: "Historial", href: null },
+  { icon: MapPin, label: "Mapa", href: "/" },
+  { icon: Info, label: "Información", href: "/dashboard" },
+  { icon: Calendar, label: "Calendario", href: null },
+  { icon: ImageIcon, label: "Galería", href: null },
+  { icon: Folder, label: "Documentos", href: null },
 ];
 
 export function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <aside className={styles.sidebar}>
       <span className={styles.projectAvatar}>PO</span>
 
       <nav className={styles.nav}>
-        {navItems.map(({ icon: Icon, label, active }) => (
-          <button
-            key={label}
-            type="button"
-            className={`${styles.navItem} ${active ? styles.navItemActive : ""}`}
-            aria-label={label}
-            title={label}
-          >
-            <Icon size={20} />
-          </button>
-        ))}
+        {navItems.map(({ icon: Icon, label, href }) => {
+          const isActive = href !== null && pathname === href;
+          const className = `${styles.navItem} ${isActive ? styles.navItemActive : ""}`;
+
+          if (!href) {
+            return (
+              <button key={label} type="button" className={className} aria-label={label} title={label}>
+                <Icon size={20} />
+              </button>
+            );
+          }
+
+          return (
+            <Link key={label} href={href} className={className} aria-label={label} title={label}>
+              <Icon size={20} />
+            </Link>
+          );
+        })}
       </nav>
 
       <div className={styles.footer}>

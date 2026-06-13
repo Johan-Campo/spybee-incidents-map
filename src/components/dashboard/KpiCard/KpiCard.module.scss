@@ -1,0 +1,35 @@
+@use "../../../styles/variables" as *;
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background-color: $color-sidebar-bg;
+  border: 1px solid $color-sidebar-border;
+  border-left: 3px solid;
+  border-radius: $radius-md;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.value {
+  font-size: 20px;
+  font-weight: 700;
+  color: $color-text-dark;
+}
+
+.label {
+  font-size: 12px;
+  color: $color-text-muted;
+}
