@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import { AlertTriangle, CheckCircle2, Clock, FolderOpen, Percent, PlusCircle } from "lucide-react";
-import { CategoryBarChart } from "@/components/dashboard/CategoryBarChart/CategoryBarChart";
+import { ActivityCalendar } from "@/components/dashboard/ActivityCalendar/ActivityCalendar";
+import { CategoryRadarChart } from "@/components/dashboard/CategoryRadarChart/CategoryRadarChart";
 import { DashboardToolbar } from "@/components/dashboard/DashboardToolbar/DashboardToolbar";
+import { CriticalIncidentsTable } from "@/components/dashboard/CriticalIncidentsTable/CriticalIncidentsTable";
 import { DonutChart } from "@/components/dashboard/DonutChart/DonutChart";
 import { KpiCard } from "@/components/dashboard/KpiCard/KpiCard";
 import { RiskIndicators } from "@/components/dashboard/RiskIndicators/RiskIndicators";
+import { TagTreemap } from "@/components/dashboard/TagTreemap/TagTreemap";
 import { TrendChart } from "@/components/dashboard/TrendChart/TrendChart";
 import { WorkloadList } from "@/components/dashboard/WorkloadList/WorkloadList";
 import { CreateIncidentModal } from "@/components/incidents/CreateIncidentModal/CreateIncidentModal";
@@ -14,13 +17,17 @@ import {
   formatCountDelta,
   formatDaysDelta,
   getCategoryCounts,
+  getCriticalIncidents,
   getHighPriorityOpenCount,
   getOpenCount,
   getOverdueCount,
   getPeriodComparison,
   getPriorityCounts,
+  getReporterRanking,
+  getResolverRanking,
   getStaleCount,
   getStatusCounts,
+  getTagCounts,
   getUpcomingDueCount,
   getWorkload,
   PERIOD_OPTIONS,
@@ -113,11 +120,37 @@ export default function DashboardPage() {
           highPriorityOpen={getHighPriorityOpenCount(incidents)}
           upcomingDue={getUpcomingDueCount(incidents)}
         />
+
+        <CriticalIncidentsTable incidents={getCriticalIncidents(incidents)} />
       </section>
 
-      <section className={styles.bottomRow}>
-        <CategoryBarChart title="Incidencias por categoría" categories={getCategoryCounts(incidents)} />
-        <WorkloadList title="Carga actual de trabajo" entries={getWorkload(incidents)} />
+      <section className={styles.trendSection}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Distribución detallada</h2>
+          <span className={styles.sectionSubtitle}>Incidencias por categoría y por etiqueta</span>
+        </div>
+
+        <div className={styles.distributionRow}>
+          <CategoryRadarChart title="Por categoría de incidencia" categories={getCategoryCounts(incidents)} />
+          <TagTreemap title="Por etiqueta" tags={getTagCounts(incidents)} />
+        </div>
+      </section>
+
+      <section className={styles.trendSection}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Desempeño del equipo</h2>
+          <span className={styles.sectionSubtitle}>Quién resuelve, quién reporta y cómo está repartida la carga</span>
+        </div>
+
+        <div className={styles.teamRow}>
+          <WorkloadList title="Quién resuelve más" subtitle="Incidencias cerradas" entries={getResolverRanking(incidents)} />
+          <WorkloadList title="Quién reporta más" subtitle="Incidencias creadas" entries={getReporterRanking(incidents)} />
+          <WorkloadList title="Carga actual de trabajo" subtitle="Incidencias abiertas asignadas" entries={getWorkload(incidents)} />
+        </div>
+      </section>
+
+      <section className={styles.calendarRow}>
+        <ActivityCalendar incidents={incidents} />
       </section>
     </div>
   );

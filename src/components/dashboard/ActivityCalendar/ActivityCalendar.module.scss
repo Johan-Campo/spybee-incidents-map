@@ -1,0 +1,178 @@
+@use "../../../styles/variables" as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background-color: $color-sidebar-bg;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+  animation: scale-fade-in $transition-base;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-text-dark;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.monthLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-text-dark;
+  min-width: 140px;
+  text-align: center;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  background-color: $color-sidebar-bg;
+  color: $color-text-dark;
+  transition: border-color $transition-fast, background-color $transition-fast, transform $transition-fast;
+
+  &:hover {
+    border-color: $color-text-muted;
+    background-color: $color-content-bg;
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.weekday {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: $color-text-muted;
+  text-align: center;
+  padding-bottom: 4px;
+}
+
+.empty {
+  aspect-ratio: 1;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  aspect-ratio: 1;
+  border-radius: $radius-sm;
+  background-color: $color-content-bg;
+  transition: transform $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: $shadow-sm;
+  }
+}
+
+.today {
+  box-shadow: 0 0 0 2px $color-accent inset;
+}
+
+.dayNumber {
+  font-size: 11px;
+  font-weight: 600;
+  color: $color-text-dark;
+}
+
+.dayCount {
+  font-size: 10px;
+  font-weight: 600;
+  color: $color-text-muted;
+}
+
+.level0 {
+  background-color: $color-content-bg;
+
+  .dayCount {
+    display: none;
+  }
+}
+
+.level1 {
+  background-color: rgba(245, 185, 20, 0.18);
+
+  .dayNumber,
+  .dayCount {
+    color: #92400e;
+  }
+}
+
+.level2 {
+  background-color: rgba(245, 185, 20, 0.4);
+
+  .dayNumber,
+  .dayCount {
+    color: #92400e;
+  }
+}
+
+.level3 {
+  background-color: rgba(245, 185, 20, 0.65);
+
+  .dayNumber,
+  .dayCount {
+    color: #78350f;
+  }
+}
+
+.level4 {
+  background-color: rgba(245, 185, 20, 0.9);
+
+  .dayNumber,
+  .dayCount {
+    color: #78350f;
+  }
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.legendLabel {
+  font-size: 11px;
+  color: $color-text-muted;
+}
+
+.legendSwatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}

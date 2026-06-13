@@ -1,30 +1,39 @@
-import type { WorkloadEntry } from "@/lib/dashboardMetrics";
+import type { RankedEntry } from "@/lib/dashboardMetrics";
 import styles from "./WorkloadList.module.scss";
 
 interface WorkloadListProps {
   title: string;
-  entries: WorkloadEntry[];
+  subtitle?: string;
+  entries: RankedEntry[];
 }
 
-export function WorkloadList({ title, entries }: WorkloadListProps) {
-  const maxValue = Math.max(...entries.map((entry) => entry.openCount), 1);
+export function WorkloadList({ title, subtitle, entries }: WorkloadListProps) {
+  const maxValue = Math.max(...entries.map((entry) => entry.value), 1);
 
   return (
     <div className={styles.card}>
-      <h3 className={styles.title}>{title}</h3>
+      <div className={styles.header}>
+        <h3 className={styles.title}>{title}</h3>
+        {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
+      </div>
 
       {entries.length === 0 ? (
-        <p className={styles.empty}>Sin incidencias asignadas.</p>
+        <p className={styles.empty}>Sin datos disponibles.</p>
       ) : (
         <ul className={styles.list}>
           {entries.map((entry) => (
             <li key={entry.id} className={styles.row}>
               <img src={entry.avatarUrl} alt="" className={styles.avatar} />
-              <span className={styles.name}>{entry.name}</span>
-              <div className={styles.track}>
-                <div className={styles.bar} style={{ width: `${(entry.openCount / maxValue) * 100}%` }} />
+              <div className={styles.info}>
+                <span className={styles.name}>{entry.name}</span>
+                <div className={styles.track}>
+                  <div className={styles.bar} style={{ width: `${(entry.value / maxValue) * 100}%` }} />
+                </div>
               </div>
-              <span className={styles.value}>{entry.openCount}</span>
+              <div className={styles.valueGroup}>
+                <span className={styles.value}>{entry.value}</span>
+                {entry.meta && <span className={styles.meta}>{entry.meta}</span>}
+              </div>
             </li>
           ))}
         </ul>

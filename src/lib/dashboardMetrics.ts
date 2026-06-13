@@ -31,11 +31,12 @@ export interface TrendPoint {
   backlog: number;
 }
 
-export interface WorkloadEntry {
+export interface RankedEntry {
   id: string;
   name: string;
   avatarUrl: string;
-  openCount: number;
+  value: number;
+  meta?: string;
 }
 
 export interface PeriodOption {
@@ -132,6 +133,62 @@ export function getHighPriorityOpenCount(incidents: Incident[]): number {
   return activeIncidents(incidents).filter((incident) => incident.status !== "closed" && incident.priority === "high").length;
 }
 
+export interface CriticalIncident {
+  id: string;
+  sequenceId: string;
+  title: string;
+  priority: IncidentPriority;
+  status: IncidentStatus;
+  assignees: Incident["assignees"];
+  owner: Incident["owner"];
+  dueDate: string | null;
+}
+
+const PRIORITY_RANK: Record<IncidentPriority, number> = { high: 0, medium: 1, low: 2 };
+
+export function getCriticalIncidents(incidents: Incident[], days = 7, now: Date = new Date()): CriticalIncident[] {
+  const threshold = new Date(now.getTime() + days * ONE_DAY_MS);
+
+  return activeIncidents(incidents)
+    .filter((incident) => {
+      if (incident.status === "closed") return false;
+      if (incident.priority === "high") return true;
+      return Boolean(incident.dueDate && new Date(incident.dueDate) <= threshold);
+    })
+    .map((incident) => ({
+      id: incident.id,
+      sequenceId: incident.sequenceId,
+      title: incident.title,
+      priority: incident.priority,
+      status: incident.status,
+      assignees: incident.assignees,
+      owner: incident.owner,
+      dueDate: incident.dueDate,
+    }))
+    .sort((a, b) => {
+      const aOverdue = a.dueDate ? new Date(a.dueDate) < now : false;
+      const bOverdue = b.dueDate ? new Date(b.dueDate) < now : false;
+      if (aOverdue !== bOverdue) return aOverdue ? -1 : 1;
+      return PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority];
+    });
+}
+
+export interface DueLabel {
+  text: string;
+  overdue: boolean;
+}
+
+export function formatDueLabel(dueDate: string | null, now: Date = new Date()): DueLabel {
+  if (!dueDate) return { text: "Sin fecha", overdue: false };
+
+  const due = new Date(dueDate);
+  const diffDays = Math.floor((now.getTime() - due.getTime()) / ONE_DAY_MS);
+
+  if (diffDays > 0) return { text: `Vencida hace ${diffDays}d`, overdue: true };
+  if (diffDays === 0) return { text: "Vence hoy", overdue: true };
+  return { text: `Vence en ${Math.abs(diffDays)}d`, overdue: false };
+}
+
 export function getUpcomingDueCount(incidents: Incident[], days = 7, now: Date = new Date()): number {
   const threshold = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
   return activeIncidents(incidents).filter((incident) => {
@@ -169,6 +226,33 @@ export function getCategoryCounts(incidents: Incident[], limit = 8): CategoryCou
     value: active.filter((incident) => incident.type.id === category.id).length,
     color: category.color,
   }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, limit);
+}
+
+export interface TagCount {
+  id: string;
+  name: string;
+  value: number;
+  color: string;
+}
+
+export function getTagCounts(incidents: Incident[], limit = 10): TagCount[] {
+  const active = activeIncidents(incidents);
+  const counts = new Map<string, TagCount>();
+
+  for (const incident of active) {
+    for (const tag of incident.tags) {
+      const entry = counts.get(tag.id);
+      if (entry) {
+        entry.value += 1;
+      } else {
+        counts.set(tag.id, { id: tag.id, name: tag.name, value: 1, color: tag.color });
+      }
+    }
+  }
+
+  return Array.from(counts.values())
     .sort((a, b) => b.value - a.value)
     .slice(0, limit);
 }
@@ -242,28 +326,83 @@ export function getTrendData(incidents: Incident[], granularity: TrendGranularit
   });
 }
 
-export function getWorkload(incidents: Incident[], limit = 6): WorkloadEntry[] {
+export function getWorkload(incidents: Incident[], limit = 6): RankedEntry[] {
   const active = activeIncidents(incidents).filter((incident) => incident.status !== "closed");
-  const counts = new Map<string, WorkloadEntry>();
+  const counts = new Map<string, RankedEntry>();
 
   for (const incident of active) {
     for (const assignee of incident.assignees) {
       const entry = counts.get(assignee.id);
       if (entry) {
-        entry.openCount += 1;
+        entry.value += 1;
       } else {
         counts.set(assignee.id, {
           id: assignee.id,
           name: assignee.name,
           avatarUrl: assignee.avatarUrl,
-          openCount: 1,
+          value: 1,
+          meta: "abiertas",
         });
       }
     }
   }
 
   return Array.from(counts.values())
-    .sort((a, b) => b.openCount - a.openCount)
+    .sort((a, b) => b.value - a.value)
+    .slice(0, limit);
+}
+
+export function getResolverRanking(incidents: Incident[], limit = 6): RankedEntry[] {
+  const resolved = activeIncidents(incidents).filter(
+    (incident) => incident.status === "closed" && incident.closingDate
+  );
+
+  const counts = new Map<string, { id: string; name: string; avatarUrl: string; closedCount: number; totalDays: number }>();
+
+  for (const incident of resolved) {
+    const days = (new Date(incident.closingDate as string).getTime() - new Date(incident.createdAt).getTime()) / ONE_DAY_MS;
+
+    for (const assignee of incident.assignees) {
+      const entry = counts.get(assignee.id);
+      if (entry) {
+        entry.closedCount += 1;
+        entry.totalDays += days;
+      } else {
+        counts.set(assignee.id, { id: assignee.id, name: assignee.name, avatarUrl: assignee.avatarUrl, closedCount: 1, totalDays: days });
+      }
+    }
+  }
+
+  return Array.from(counts.values())
+    .map((entry) => ({
+      id: entry.id,
+      name: entry.name,
+      avatarUrl: entry.avatarUrl,
+      value: entry.closedCount,
+      meta: `${(entry.totalDays / entry.closedCount).toFixed(1)}d promedio`,
+    }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, limit);
+}
+
+export function getReporterRanking(incidents: Incident[], limit = 6): RankedEntry[] {
+  const active = activeIncidents(incidents);
+  const counts = new Map<string, RankedEntry>();
+
+  for (const incident of active) {
+    const owner = incident.owner;
+    if (!owner) continue;
+
+    const entry = counts.get(owner.id);
+    if (entry) {
+      entry.value += 1;
+    } else {
+      counts.set(owner.id, { id: owner.id, name: owner.name, avatarUrl: owner.avatarUrl, value: 1, meta: "reportadas" });
+    }
+  }
+
+  return Array.from(counts.values())
+    .sort((a, b) => b.value - a.value)
     .slice(0, limit);
 }
 
@@ -324,6 +463,26 @@ export function formatDaysDelta(current: number | null, previous: number | null)
   const diff = current - (previous ?? 0);
   const direction = diff > 0 ? "up" : diff < 0 ? "down" : "neutral";
   return { text: `${Math.abs(diff).toFixed(1)} d vs periodo anterior`, direction };
+}
+
+export interface ActivityDay {
+  day: number;
+  count: number;
+}
+
+export function getActivityCalendar(incidents: Incident[], year: number, month: number): ActivityDay[] {
+  const active = activeIncidents(incidents);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const counts = new Array(daysInMonth).fill(0);
+
+  for (const incident of active) {
+    const created = new Date(incident.createdAt);
+    if (created.getFullYear() === year && created.getMonth() === month) {
+      counts[created.getDate() - 1] += 1;
+    }
+  }
+
+  return counts.map((count, index) => ({ day: index + 1, count }));
 }
 
 export function formatPeriodRangeLabel(days: number, now: Date = new Date()): string {

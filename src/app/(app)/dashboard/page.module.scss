@@ -55,10 +55,29 @@
   color: $color-text-muted;
 }
 
-.bottomRow {
+.distributionRow {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: $spacing-md;
+
+  @media (max-width: $breakpoint-tablet) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.teamRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-md;
+
+  @media (max-width: $breakpoint-tablet) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.calendarRow {
+  display: grid;
+  grid-template-columns: minmax(0, 420px);
 
   @media (max-width: $breakpoint-tablet) {
     grid-template-columns: 1fr;

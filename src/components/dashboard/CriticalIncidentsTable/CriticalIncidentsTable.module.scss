@@ -1,0 +1,223 @@
+@use "../../../styles/variables" as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background-color: $color-sidebar-bg;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+  animation: scale-fade-in $transition-base;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: $spacing-sm;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-text-dark;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: $color-text-muted;
+  flex: 1;
+}
+
+.total {
+  font-size: 12px;
+  color: $color-text-muted;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th {
+    text-align: left;
+    padding: $spacing-sm $spacing-sm;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $color-text-muted;
+    border-bottom: 1px solid $color-sidebar-border;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: $spacing-sm $spacing-sm;
+    border-bottom: 1px solid $color-sidebar-border;
+    color: $color-text-dark;
+    white-space: nowrap;
+    transition: background-color $transition-fast;
+  }
+
+  tbody tr {
+    transition: background-color $transition-fast;
+
+    &:hover {
+      background-color: $color-content-bg;
+    }
+
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+}
+
+.sequence {
+  color: $color-text-muted;
+  font-weight: 600;
+}
+
+.titleCell {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.avatarStack {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid $color-sidebar-bg;
+  margin-left: -8px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.avatarMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: $color-content-bg;
+  color: $color-text-muted;
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: -8px;
+  border: 2px solid $color-sidebar-bg;
+}
+
+.creator {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.creatorName {
+  font-size: 12px;
+  color: $color-text-dark;
+}
+
+.muted {
+  color: $color-text-muted;
+}
+
+.dueOverdue {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.dueNormal {
+  color: $color-text-muted;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+}
+
+.rangeLabel {
+  font-size: 12px;
+  color: $color-text-muted;
+}
+
+.pageControls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pageButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  background-color: $color-sidebar-bg;
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-dark;
+  transition: border-color $transition-fast, background-color $transition-fast, color $transition-fast, transform $transition-fast;
+
+  &:hover:not(:disabled) {
+    border-color: $color-text-muted;
+    background-color: $color-content-bg;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.pageButtonActive {
+  background-color: $color-accent;
+  border-color: $color-accent;
+  color: $color-text-dark;
+
+  &:hover {
+    background-color: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+.ellipsis {
+  color: $color-text-muted;
+  font-size: 12px;
+  padding: 0 2px;
+}
