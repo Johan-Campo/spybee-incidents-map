@@ -41,6 +41,7 @@ export function DateField({ id, label, value, onChange, required, invalid, error
   const [viewMonth, setViewMonth] = useState(referenceDate.getMonth());
   const [focusedDate, setFocusedDate] = useState(referenceDate);
   const dayRefs = useRef(new Map<string, HTMLButtonElement>());
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const days = buildCalendarDays(viewYear, viewMonth);
 
@@ -130,16 +131,23 @@ export function DateField({ id, label, value, onChange, required, invalid, error
     dayRefs.current.get(formatLocalDate(focusedDate))?.focus();
   }, [open, focusedDate]);
 
+  useEffect(() => {
+    if (!open) return;
+    function handlePointerDown(event: PointerEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+        setOpen(false);
+        onBlur?.();
+      }
+    }
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [open, onBlur]);
+
   return (
     <FormField label={label} htmlFor={id} required={required} error={error}>
       <div
+        ref={wrapperRef}
         className={styles.comboboxWrapper}
-        onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) {
-            setOpen(false);
-            onBlur?.();
-          }
-        }}
         onKeyDown={(event) => {
           if (event.key === "Escape") setOpen(false);
         }}

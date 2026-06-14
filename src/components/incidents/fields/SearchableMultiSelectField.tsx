@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { ChevronDown, X } from "lucide-react";
 import Image from "next/image";
 import { FormField } from "./FormField";
@@ -26,6 +26,7 @@ export function SearchableMultiSelectField({ label, options, selected, onChange,
   const [query, setQuery] = useState("");
   const inputId = useId();
   const listId = `${inputId}-listbox`;
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const selectedOptions = options.filter((option) => selected.includes(option.value));
   const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(query.toLowerCase()));
@@ -34,13 +35,20 @@ export function SearchableMultiSelectField({ label, options, selected, onChange,
     onChange(selected.includes(value) ? selected.filter((item) => item !== value) : [...selected, value]);
   }
 
+  useEffect(() => {
+    if (!open) return;
+    function handlePointerDown(event: PointerEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) setOpen(false);
+    }
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [open]);
+
   return (
     <FormField label={label} htmlFor={inputId}>
       <div
+        ref={wrapperRef}
         className={styles.comboboxWrapper}
-        onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
-        }}
         onKeyDown={(event) => {
           if (event.key === "Escape") setOpen(false);
         }}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown, X } from "lucide-react";
 import { FormField } from "./FormField";
 import styles from "./fields.module.scss";
@@ -27,6 +27,7 @@ interface SearchableSelectFieldProps {
 export function SearchableSelectField({ id, label, value, onChange, options, placeholder, required, invalid, error, onBlur }: SearchableSelectFieldProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = options.find((option) => option.value === value);
   const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(query.toLowerCase()));
@@ -39,16 +40,23 @@ export function SearchableSelectField({ id, label, value, onChange, options, pla
     setOpen(false);
   }
 
+  useEffect(() => {
+    if (!open) return;
+    function handlePointerDown(event: PointerEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+        setOpen(false);
+        onBlur?.();
+      }
+    }
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [open, onBlur]);
+
   return (
     <FormField label={label} htmlFor={id} required={required} error={error}>
       <div
+        ref={wrapperRef}
         className={styles.comboboxWrapper}
-        onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) {
-            setOpen(false);
-            onBlur?.();
-          }
-        }}
         onKeyDown={(event) => {
           if (event.key === "Escape") setOpen(false);
         }}

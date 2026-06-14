@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { ChevronDown, Minus, Plus, Search, X } from "lucide-react";
 import { FormField } from "./FormField";
 import type { LocationTag } from "@/lib/locationTags";
@@ -37,6 +37,7 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
   const [expanded, setExpanded] = useState<string[]>(() => defaultExpandedIds(nodes));
   const inputId = useId();
   const treeId = `${inputId}-tree`;
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const selectedNodes = flattenNodes(nodes).filter((node) => selected.includes(node.id));
 
@@ -106,13 +107,20 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
     );
   }
 
+  useEffect(() => {
+    if (!open) return;
+    function handlePointerDown(event: PointerEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) setOpen(false);
+    }
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [open]);
+
   return (
     <FormField label={label} htmlFor={inputId}>
       <div
+        ref={wrapperRef}
         className={styles.comboboxWrapper}
-        onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
-        }}
         onKeyDown={(event) => {
           if (event.key === "Escape") setOpen(false);
         }}

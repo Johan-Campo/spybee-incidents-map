@@ -11,7 +11,11 @@
       "Bash(curl -s http://localhost:3000/login)",
       "Bash(taskkill //PID 38056 //F)",
       "Bash(CHROME_PATH=\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" node tmp_mobile_test.mjs)",
-      "Bash(CHROME_PATH=\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" node tmp_mobile_test2.mjs)"
+      "Bash(CHROME_PATH=\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" node tmp_mobile_test2.mjs)",
+      "Bash(CHROME_PATH=\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" node tmp_mobile_tap2.mjs)",
+      "Bash(CHROME_PATH=\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" node tmp_mobile_tap3.mjs)",
+      "Bash(CHROME_PATH=\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" node tmp_mobile_tap4.mjs)",
+      "Bash(CHROME_PATH=\"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" node tmp_full_flow.mjs)"
     ]
   }
 }
