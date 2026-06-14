@@ -30,7 +30,7 @@ Al hacer click en un marcador se abre un popup con el número de incidencia, tí
 
 ### Crear incidencia
 
-Desde la barra superior del mapa se abre un modal con el formulario de creación: título, descripción, categoría, prioridad, ubicación (con selector de punto sobre el mapa), fecha límite, asignados/observadores, etiquetas y adjuntos.
+Desde la barra superior del mapa se abre un modal con el formulario de creación: título, descripción, categoría, prioridad, ubicación (con selector de punto sobre el mapa), fecha límite, asignados/observadores, etiquetas y adjuntos. Los campos de **Categoría** y **Prioridad** resaltan con un color sutil acorde a la opción seleccionada, para identificar de un vistazo a qué tipo de incidencia corresponde.
 
 ![Modal de creación](docs/screenshots/create-incident-modal.png)
 
@@ -40,9 +40,21 @@ Al enviarlo, la incidencia se agrega al store de Zustand y aparece de inmediato 
 
 ## Dashboard
 
-Vista `/dashboard`. Resume el estado general del proyecto con KPIs, indicadores de riesgo, gráficos de distribución, tendencia temporal, una tabla de incidencias críticas y métricas de desempeño del equipo. Todo es interactivo: los donuts y chips de indicadores filtran la tabla, el selector de periodo recalcula KPIs y tendencias, etc.
+Vista `/dashboard`. La barra superior queda reducida a lo esencial (ruta del proyecto, título, selector de periodo y botón "Crear incidencia"), dejando todo el espacio para el contenido. Las secciones están ordenadas de lo más accionable a lo más general:
+
+1. **KPIs e indicadores de riesgo**: incidencias abiertas, creadas/cerradas en el periodo, tasa de cierre, tiempo promedio de resolución y vencidas activas, junto con alertas de vencidas hoy, sin actualizar, alta prioridad abierta y próximas a vencer.
+2. **Atención requerida**: tabla de incidencias críticas (vencidas o por vencer); cada fila abre el detalle de la incidencia en un modal.
+3. **Tendencia**: incidencias creadas/cerradas por día, semana o mes, con una línea de pendientes acumuladas.
+4. **Panorama general**: distribución por estado y por prioridad (donuts).
+5. **Distribución detallada**: incidencias por categoría y por etiqueta.
+6. **Desempeño del equipo**: quién resuelve más, quién reporta más y la carga de trabajo actual.
+7. **Calendario de actividad y mapa de calor** de incidencias.
+
+Todo es interactivo: los donuts y chips de indicadores filtran la tabla, el selector de periodo recalcula KPIs y tendencias, etc.
 
 ![Dashboard - vista general](docs/screenshots/dashboard-overview.png)
+
+![Tendencia y panorama general](docs/screenshots/dashboard-trend.png)
 
 ![Distribución por categoría y etiqueta](docs/screenshots/dashboard-distribution.png)
 

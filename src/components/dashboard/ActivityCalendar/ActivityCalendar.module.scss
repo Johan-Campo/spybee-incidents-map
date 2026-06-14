@@ -77,7 +77,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  gap: $spacing-sm;
 }
 
 .weekday {
@@ -110,7 +110,7 @@
   &:hover {
     transform: scale(1.08);
     box-shadow: $shadow-md;
-    z-index: 1;
+    z-index: 2;
   }
 }
 
@@ -125,12 +125,12 @@
 }
 
 .dayCount {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 0 4px;
+  padding: 0 5px;
   border-radius: 999px;
-  background-color: rgba($color-text-dark, 0.08);
-  color: $color-text-muted;
+  background-color: rgba($color-text-dark, 0.1);
+  color: $color-text-dark;
 }
 
 .level0 {
@@ -143,33 +143,31 @@
 }
 
 .level1 {
-  background-color: #fef3c7;
-
-  .dayNumber {
-    color: #92400e;
-  }
+  background-color: $color-accent-light;
 
   .dayCount {
-    background-color: rgba(146, 64, 14, 0.12);
-    color: #92400e;
+    background-color: rgba($color-text-dark, 0.08);
   }
 }
 
 .level2 {
-  background-color: #fcd34d;
-
-  .dayNumber,
-  .dayCount {
-    color: #78350f;
-  }
+  background-color: rgba($color-accent, 0.55);
 
   .dayCount {
-    background-color: rgba(120, 53, 15, 0.16);
+    background-color: rgba($color-text-dark, 0.12);
   }
 }
 
 .level3 {
-  background-color: #fb923c;
+  background-color: $color-accent;
+
+  .dayCount {
+    background-color: rgba($color-text-dark, 0.16);
+  }
+}
+
+.level4 {
+  background-color: #c98a0c;
 
   .dayNumber,
   .dayCount {
@@ -181,17 +179,27 @@
   }
 }
 
-.level4 {
-  background-color: #ef4444;
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 4px 8px;
+  border-radius: $radius-xs;
+  background-color: $color-text-dark;
+  color: $color-text-light;
+  font-size: 11px;
+  font-weight: 500;
+  box-shadow: $shadow-md;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity $transition-fast;
+  z-index: 3;
+}
 
-  .dayNumber,
-  .dayCount {
-    color: $color-text-light;
-  }
-
-  .dayCount {
-    background-color: rgba(255, 255, 255, 0.25);
-  }
+.day:hover .tooltip {
+  opacity: 1;
 }
 
 .legend {

@@ -32,6 +32,7 @@ export function SelectField({ id, label, value, onChange, options, placeholder, 
         <select
           id={id}
           className={`${styles.select} ${selectedOption?.color ? styles.selectWithDot : ""} ${invalid ? styles.inputInvalid : ""}`}
+          style={selectedOption?.color ? { backgroundColor: `${selectedOption.color}14` } : undefined}
           value={value}
           onChange={(event) => onChange(event.target.value)}
           onBlur={onBlur}

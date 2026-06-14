@@ -1,6 +1,9 @@
 "use client";
 
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { PieChart as PieChartIcon } from "lucide-react";
+import { Cell, Pie, PieChart, ResponsiveContainer, Sector, Tooltip } from "recharts";
+import type { PieSectorDataItem } from "recharts/types/polar/Pie";
+import { EmptyState } from "@/components/dashboard/EmptyState/EmptyState";
 import styles from "./DonutChart.module.scss";
 
 export interface DonutChartSegment {
@@ -18,12 +21,24 @@ interface DonutChartProps {
   activeId?: string | null;
 }
 
-const EMPTY_COLOR = "#f0f0f0";
+function renderActiveShape(props: PieSectorDataItem) {
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
+  return (
+    <Sector
+      cx={cx}
+      cy={cy}
+      innerRadius={innerRadius}
+      outerRadius={Number(outerRadius ?? 0) + 5}
+      startAngle={startAngle}
+      endAngle={endAngle}
+      fill={fill ?? "#ccc"}
+    />
+  );
+}
 
 export function DonutChart({ title, subtitle, segments, onSegmentClick, activeId }: DonutChartProps) {
   const total = segments.reduce((sum, segment) => sum + segment.value, 0);
   const data = segments.filter((segment) => segment.value > 0);
-  const chartData = data.length > 0 ? data : [{ label: "Sin datos", value: 1, color: EMPTY_COLOR }];
 
   return (
     <div className={styles.card}>
@@ -35,37 +50,39 @@ export function DonutChart({ title, subtitle, segments, onSegmentClick, activeId
         <span className={styles.total}>{total}</span>
       </div>
 
+      {data.length === 0 ? (
+        <EmptyState icon={PieChartIcon} message="Sin incidencias registradas" />
+      ) : (
       <div className={styles.body}>
         <div className={styles.chart}>
-          <ResponsiveContainer width={120} height={120}>
+          <ResponsiveContainer width={160} height={160}>
             <PieChart>
               <Pie
-                data={chartData}
+                data={data}
                 dataKey="value"
                 nameKey="label"
                 cx="50%"
                 cy="50%"
-                innerRadius={42}
-                outerRadius={56}
-                paddingAngle={chartData.length > 1 ? 2 : 0}
+                innerRadius={56}
+                outerRadius={75}
+                paddingAngle={data.length > 1 ? 2 : 0}
                 startAngle={90}
                 endAngle={-270}
                 animationDuration={600}
                 stroke="none"
+                activeShape={renderActiveShape}
               >
-                {chartData.map((entry, index) => (
+                {data.map((entry, index) => (
                   <Cell
                     key={`${entry.label}-${index}`}
                     fill={entry.color}
                     opacity={activeId && activeId !== entry.id ? 0.3 : 1}
-                    cursor={onSegmentClick && data.length > 0 ? "pointer" : "default"}
-                    onClick={() => data.length > 0 && onSegmentClick?.(entry)}
+                    cursor={onSegmentClick ? "pointer" : "default"}
+                    onClick={() => onSegmentClick?.(entry)}
                   />
                 ))}
               </Pie>
-              {data.length > 0 && (
-                <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }} />
-              )}
+              <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }} />
             </PieChart>
           </ResponsiveContainer>
           <div className={styles.centerLabel}>
@@ -92,6 +109,7 @@ export function DonutChart({ title, subtitle, segments, onSegmentClick, activeId
           })}
         </ul>
       </div>
+      )}
     </div>
   );
 }

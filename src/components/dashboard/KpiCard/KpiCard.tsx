@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, Minus, type LucideIcon } from "lucide-react";
+import { ArrowDown, ArrowUp, HelpCircle, Minus, type LucideIcon } from "lucide-react";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
 import styles from "./KpiCard.module.scss";
 
@@ -13,6 +13,7 @@ interface KpiCardProps {
   value: string;
   accentColor: string;
   subtitle?: string;
+  helpText?: string;
   delta?: KpiDelta;
   sparkline?: number[];
   critical?: boolean;
@@ -24,19 +25,26 @@ const DELTA_ICONS: Record<KpiDelta["direction"], LucideIcon> = {
   neutral: Minus,
 };
 
-export function KpiCard({ icon: Icon, label, value, accentColor, subtitle, delta, sparkline, critical }: KpiCardProps) {
+export function KpiCard({ icon: Icon, label, value, accentColor, subtitle, helpText, delta, sparkline, critical }: KpiCardProps) {
   const DeltaIcon = delta ? DELTA_ICONS[delta.direction] : null;
   const sparklineData = sparkline?.map((value, index) => ({ index, value }));
 
   return (
     <div className={`${styles.card} ${critical ? styles.critical : ""}`} style={{ borderLeftColor: accentColor }}>
       <div className={styles.row}>
-        <div className={styles.iconWrapper} style={{ color: accentColor }}>
+        <div className={`${styles.iconWrapper} ${critical ? styles.iconPulse : ""}`} style={{ color: accentColor }}>
           <Icon size={18} />
         </div>
         <div className={styles.text}>
           <span className={styles.value}>{value}</span>
-          <span className={styles.label}>{label}</span>
+          <span className={styles.label}>
+            {label}
+            {helpText && (
+              <span className={styles.help} title={helpText}>
+                <HelpCircle size={12} />
+              </span>
+            )}
+          </span>
           {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
           {delta && DeltaIcon && (
             <span className={`${styles.delta} ${styles[delta.direction]}`}>
@@ -55,7 +63,7 @@ export function KpiCard({ icon: Icon, label, value, accentColor, subtitle, delta
                 dataKey="value"
                 stroke={accentColor}
                 fill={accentColor}
-                fillOpacity={0.15}
+                fillOpacity={0.25}
                 strokeWidth={1.5}
                 isAnimationActive={false}
               />

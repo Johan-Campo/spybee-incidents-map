@@ -73,23 +73,3 @@
 .chart {
   width: 100%;
 }
-
-.legend {
-  display: flex;
-  gap: $spacing-md;
-  flex-wrap: wrap;
-}
-
-.legendItem {
-  display: flex;
-  align-items: center;
-  gap: $spacing-xs;
-  font-size: 12px;
-  color: $color-text-muted;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}

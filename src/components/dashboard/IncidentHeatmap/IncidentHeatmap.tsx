@@ -1,5 +1,6 @@
 "use client";
 
+import { HelpCircle } from "lucide-react";
 import Map, { Layer, NavigationControl, Source } from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { DEFAULT_MAP_VIEW, MAPBOX_TOKEN, MAP_STYLE } from "@/lib/mapConfig";
@@ -27,9 +28,22 @@ export function IncidentHeatmap({ incidents }: IncidentHeatmapProps) {
 
   return (
     <div className={styles.card}>
-      <div className={styles.headerText}>
-        <h3 className={styles.title}>Mapa de calor de incidencias</h3>
-        <p className={styles.subtitle}>Concentración geográfica de incidencias en la obra. Acércate para ver cada incidencia como un punto individual.</p>
+      <div className={styles.header}>
+        <div className={styles.headerText}>
+          <h3 className={styles.title}>Mapa de calor de incidencias</h3>
+          <p className={styles.subtitle}>
+            Zonas de la obra con más incidencias
+            <span className={styles.help} title="Acércate al mapa para ver cada incidencia como un punto individual">
+              <HelpCircle size={12} />
+            </span>
+          </p>
+        </div>
+
+        <div className={styles.legend}>
+          <span className={styles.legendLabel}>Bajo</span>
+          <span className={styles.legendGradient} />
+          <span className={styles.legendLabel}>Alto</span>
+        </div>
       </div>
 
       <div className={styles.map}>

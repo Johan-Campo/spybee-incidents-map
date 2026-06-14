@@ -53,10 +53,33 @@
       "Bash(grep -n 'sidebar-width\\\\|breakpoint-mobile\\\\|transition-base\\\\|transition-fast\\\\|shadow-lg\\\\|z-index\\\\|$spacing' src/styles/_variables.scss)",
       "Bash(npx --yes playwright --version)",
       "Bash(node -e \"const d=require\\('./data/incidents.mock.json'\\); console.log\\(JSON.stringify\\(d[0].project\\)\\)\")",
-      "Bash(node -e \"const i=require\\('lucide-react'\\); console.log\\(Object.keys\\(i\\).filter\\(k=>/drone|plane|video|camera|message|whatsapp|sparkle|brain|radar|cpu/i.test\\(k\\)\\)\\)\")"
+      "Bash(node -e \"const i=require\\('lucide-react'\\); console.log\\(Object.keys\\(i\\).filter\\(k=>/drone|plane|video|camera|message|whatsapp|sparkle|brain|radar|cpu/i.test\\(k\\)\\)\\)\")",
+      "Bash(find src/app/dashboard -type f)",
+      "Bash(find src/app -maxdepth 3 -type d)",
+      "Bash(node -e \"console.log\\(require.resolve\\('playwright'\\)\\)\")",
+      "Read(//c//**)",
+      "PowerShell(Stop-Process -Id 2596 -Force -ErrorAction SilentlyContinue)",
+      "Bash(file docs/screenshots/dashboard-overview.png docs/screenshots/mobile-dashboard.png)",
+      "Bash(python3 -c ' *)",
+      "PowerShell(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\cdp.ps1\" -Url \"http://localhost:3000/dashboard\" -OutFile \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\\\\docs\\\\screenshots\\\\dashboard-overview.png\" -Width 1440 -Height 900)",
+      "PowerShell(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\cdp.ps1\" -Url \"http://localhost:3000/dashboard\" -OutFile \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\test1.png\" -Width 1440 -Height 900 2>&1 | Out-String)",
+      "PowerShell(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\login.ps1\")",
+      "Bash(xargs grep -l \"overflow\")",
+      "PowerShell(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\cdp.ps1\" -Url \"http://localhost:3000/dashboard\" -OutFile \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\d900.png\" -Width 1440 -Height 900 -ScrollY 900)",
+      "PowerShell(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\cdp.ps1\" -Url \"http://localhost:3000/dashboard\" -OutFile \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\d1700.png\" -Width 1440 -Height 900 -ScrollY 1700)",
+      "PowerShell(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\cdp.ps1\" -Url \"http://localhost:3000/dashboard\" -OutFile \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\d2050.png\" -Width 1440 -Height 900 -ScrollY 2050)",
+      "PowerShell(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\cdp.ps1\" -Url \"http://localhost:3000/dashboard\" -OutFile \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\d2450.png\" -Width 1440 -Height 900 -ScrollY 2450)",
+      "PowerShell(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\cdp.ps1\" -Url \"http://localhost:3000/\" -OutFile \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\modal-test.png\" -Width 1440 -Height 900 -ClickText \"Crear incidencia\" -WaitMs 1000)",
+      "PowerShell(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\cdp.ps1\" -Url \"http://localhost:3000/\" -OutFile \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\\\\docs\\\\screenshots\\\\create-incident-modal.png\" -Width 1440 -Height 900 -ClickSelector 'button[aria-label=\"Crear incidencia\"]' -WaitMs 1200)",
+      "Bash(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\cdp.ps1\" -Url \"http://localhost:3000/\" -OutFile \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\\\\docs\\\\screenshots\\\\create-incident-modal.png\" -Width 1440 -Height 900 -ClickText \"Crear incidencia\" -WaitMs 1500)",
+      "Bash(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\modal-fill.ps1\")",
+      "Bash(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\cdp.ps1\" -Url \"http://localhost:3000/\" -OutFile \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\\\\docs\\\\screenshots\\\\map-overview.png\" -Width 1440 -Height 900 -WaitMs 1000)",
+      "Bash(powershell -File \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\modal-submit.ps1\")",
+      "Bash(taskkill //PID 6468 //T //F)"
     ],
     "additionalDirectories": [
-      "C:\\Users\\User\\Documents\\GitHub\\spybee-incidents-map\\project-notes"
+      "C:\\Users\\User\\Documents\\GitHub\\spybee-incidents-map\\project-notes",
+      "C:\\Users\\User\\AppData\\Local\\Temp"
     ]
   }
 }

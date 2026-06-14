@@ -84,6 +84,8 @@
   gap: $spacing-sm;
   flex: 1;
   min-width: 0;
+  max-height: 224px;
+  overflow-y: auto;
 }
 
 .legendItem {

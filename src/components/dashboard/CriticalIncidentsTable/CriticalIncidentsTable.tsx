@@ -1,11 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, ShieldCheck, X } from "lucide-react";
 import Image from "next/image";
 import { formatDueLabel, type CriticalIncident } from "@/lib/dashboardMetrics";
 import { PRIORITY_OPTIONS } from "@/lib/incidentOptions";
 import { STATUS_COLORS, STATUS_LABELS } from "@/lib/dashboardMetrics";
+import { EmptyState } from "@/components/dashboard/EmptyState/EmptyState";
 import styles from "./CriticalIncidentsTable.module.scss";
 
 export interface TableFilter {
@@ -18,6 +19,7 @@ interface CriticalIncidentsTableProps {
   totalCount: number;
   filter?: TableFilter | null;
   onClearFilter?: () => void;
+  onRowClick?: (id: string) => void;
 }
 
 type SortKey = "priority" | "due";
@@ -26,8 +28,9 @@ type SortDirection = "asc" | "desc";
 const PAGE_SIZE = 10;
 const PRIORITY_MAP = new Map(PRIORITY_OPTIONS.map((option) => [option.value, option]));
 const PRIORITY_RANK: Record<CriticalIncident["priority"], number> = { high: 0, medium: 1, low: 2 };
+const DUE_DATE_FORMATTER = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short" });
 
-export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearFilter }: CriticalIncidentsTableProps) {
+export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearFilter, onRowClick }: CriticalIncidentsTableProps) {
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<{ key: SortKey; direction: SortDirection } | null>(null);
 
@@ -91,9 +94,14 @@ export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearF
             <X size={12} />
           </button>
         )}
-        <span className={styles.total}>{incidents.length} de {totalCount}</span>
+        <span className={styles.total}>
+          {filter ? `${incidents.length} filtradas de ${totalCount} en total` : `${totalCount} en total`}
+        </span>
       </div>
 
+      {sortedIncidents.length === 0 ? (
+        <EmptyState icon={ShieldCheck} message="Sin incidencias críticas en este momento" />
+      ) : (
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
@@ -105,7 +113,7 @@ export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearF
               </th>
               <th>Estado</th>
               <th>Asignados</th>
-              <th>Creado por</th>
+              <th className={styles.colCreator}>Creado por</th>
               <th className={styles.sortable} onClick={() => toggleSort("due")}>
                 <span className={styles.sortLabel}>Vencimiento {sortIcon("due")}</span>
               </th>
@@ -115,9 +123,10 @@ export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearF
             {rows.map((incident) => {
               const priority = PRIORITY_MAP.get(incident.priority);
               const due = formatDueLabel(incident.dueDate);
+              const dueDateLabel = incident.dueDate ? DUE_DATE_FORMATTER.format(new Date(incident.dueDate)) : null;
 
               return (
-                <tr key={incident.id}>
+                <tr key={incident.id} className={onRowClick ? styles.clickableRow : ""} onClick={() => onRowClick?.(incident.id)}>
                   <td className={styles.sequence}>#{incident.sequenceId}</td>
                   <td className={styles.titleCell}>{incident.title}</td>
                   <td>
@@ -139,7 +148,7 @@ export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearF
                     {incident.assignees.length > 0 ? (
                       <div className={styles.avatarStack}>
                         {incident.assignees.slice(0, 3).map((assignee) => (
-                          <Image key={assignee.id} src={assignee.avatarUrl} alt={assignee.name} title={assignee.name} width={22} height={22} className={styles.avatar} />
+                          <Image key={assignee.id} src={assignee.avatarUrl} alt={assignee.name} title={assignee.name} width={28} height={28} className={styles.avatar} />
                         ))}
                         {incident.assignees.length > 3 && (
                           <span className={styles.avatarMore}>+{incident.assignees.length - 3}</span>
@@ -149,27 +158,34 @@ export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearF
                       <span className={styles.muted}>--</span>
                     )}
                   </td>
-                  <td>
+                  <td className={styles.colCreator}>
                     {incident.owner ? (
                       <div className={styles.creator}>
-                        <Image src={incident.owner.avatarUrl} alt={incident.owner.name} width={22} height={22} className={styles.avatar} />
+                        <Image src={incident.owner.avatarUrl} alt={incident.owner.name} title={incident.owner.name} width={28} height={28} className={styles.avatar} />
                         <span className={styles.creatorName}>{incident.owner.name.split(" ")[0]}</span>
                       </div>
                     ) : (
                       <span className={styles.muted}>--</span>
                     )}
                   </td>
-                  <td className={due.overdue ? styles.dueOverdue : styles.dueNormal}>{due.text}</td>
+                  <td>
+                    <span className={`${styles.dueBadge} ${due.overdue ? styles.dueOverdue : styles.dueNormal}`}>
+                      {dueDateLabel && <span className={styles.dueDate}>{dueDateLabel}</span>}
+                      <span className={styles.dueRelative}>{due.text}</span>
+                    </span>
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
+      )}
 
+      {sortedIncidents.length > 0 && (
       <div className={styles.pagination}>
         <span className={styles.rangeLabel}>
-          {(currentPage - 1) * PAGE_SIZE + 1}-{Math.min(currentPage * PAGE_SIZE, incidents.length)} de {incidents.length}
+          Mostrando {(currentPage - 1) * PAGE_SIZE + 1}-{Math.min(currentPage * PAGE_SIZE, incidents.length)} de {incidents.length}
         </span>
 
         <div className={styles.pageControls}>
@@ -206,6 +222,7 @@ export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearF
           </button>
         </div>
       </div>
+      )}
     </div>
   );
 }

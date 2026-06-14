@@ -12,6 +12,7 @@ interface CategoryBarChartProps {
 export function CategoryBarChart({ title, categories }: CategoryBarChartProps) {
   const data = [...categories].sort((a, b) => a.value - b.value);
   const maxValue = Math.max(...data.map((item) => item.value), 1);
+  const chartHeight = Math.max(180, data.length * 36);
 
   return (
     <div className={styles.card}>
@@ -20,14 +21,14 @@ export function CategoryBarChart({ title, categories }: CategoryBarChartProps) {
         <p className={styles.subtitle}>Cantidad de incidencias registradas por categoría de obra.</p>
       </div>
 
-      <div className={styles.chart}>
+      <div className={styles.chart} style={{ height: chartHeight }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} layout="vertical" margin={{ top: 0, right: 28, bottom: 0, left: 0 }}>
             <XAxis type="number" domain={[0, maxValue]} hide />
             <YAxis
               dataKey="name"
               type="category"
-              width={110}
+              width={120}
               tickLine={false}
               axisLine={false}
               tick={{ fontSize: 12, fill: "#374151" }}

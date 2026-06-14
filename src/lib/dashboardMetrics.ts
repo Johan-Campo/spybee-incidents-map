@@ -378,7 +378,7 @@ export function getResolverRanking(incidents: Incident[], limit = 6): RankedEntr
       name: entry.name,
       avatarUrl: entry.avatarUrl,
       value: entry.closedCount,
-      meta: `${(entry.totalDays / entry.closedCount).toFixed(1)}d promedio`,
+      meta: `${(entry.totalDays / entry.closedCount).toFixed(1)} días promedio`,
     }))
     .sort((a, b) => b.value - a.value)
     .slice(0, limit);

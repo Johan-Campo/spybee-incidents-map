@@ -81,11 +81,16 @@
   flex-shrink: 0;
 }
 
-.selectWrapper .colorDot {
+.selectWrapper > .colorDot,
+.comboboxWrapper > .colorDot {
   position: absolute;
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.comboboxInputWithDot {
+  padding-left: 30px;
 }
 
 // Multi-select (details/summary)

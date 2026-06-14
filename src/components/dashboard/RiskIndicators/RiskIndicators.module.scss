@@ -54,16 +54,12 @@
   padding: $spacing-sm $spacing-md;
   background-color: $color-content-bg;
   text-align: left;
-  transition: border-color $transition-fast, transform $transition-fast, box-shadow $transition-fast;
+  transition: border-color $transition-base, background-color $transition-base;
+}
 
-  &:hover {
-    border-color: $color-text-muted;
-    box-shadow: $shadow-sm;
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
+.itemActive {
+  border-color: rgba($color-accent, 0.5);
+  background-color: $color-accent-light;
 }
 
 .itemIcon {
@@ -76,11 +72,12 @@
 .itemLabel {
   flex: 1;
   font-size: 12px;
+  font-weight: 500;
   color: $color-text-dark;
 }
 
 .itemValue {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   color: $color-text-dark;
 }

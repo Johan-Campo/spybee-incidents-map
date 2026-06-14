@@ -54,6 +54,13 @@
 
 .tableWrapper {
   overflow-x: auto;
+  position: relative;
+
+  @media (max-width: $breakpoint-mobile) {
+    margin: 0 (-$spacing-md);
+    padding: 0 $spacing-md;
+    mask-image: linear-gradient(to right, transparent, black #{$spacing-sm}, black calc(100% - #{$spacing-sm}), transparent);
+  }
 }
 
 .table {
@@ -100,13 +107,23 @@
   tbody tr {
     transition: background-color $transition-fast;
 
-    &:hover {
-      background-color: $color-content-bg;
-    }
-
     &:last-child td {
       border-bottom: none;
     }
+  }
+}
+
+.clickableRow {
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-content-bg;
+  }
+}
+
+.colCreator {
+  @media (max-width: $breakpoint-mobile) {
+    display: none;
   }
 }
 
@@ -137,12 +154,12 @@
 }
 
 .avatar {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid $color-sidebar-bg;
-  margin-left: -8px;
+  margin-left: -10px;
 
   &:first-child {
     margin-left: 0;
@@ -153,14 +170,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background-color: $color-content-bg;
   color: $color-text-muted;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
-  margin-left: -8px;
+  margin-left: -10px;
   border: 2px solid $color-sidebar-bg;
 }
 
@@ -179,13 +196,40 @@
   color: $color-text-muted;
 }
 
+.dueBadge {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1.3;
+}
+
+.dueDate {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dueRelative {
+  font-size: 11px;
+}
+
 .dueOverdue {
-  color: #ef4444;
-  font-weight: 500;
+  .dueDate {
+    color: #ef4444;
+  }
+
+  .dueRelative {
+    color: #ef4444;
+  }
 }
 
 .dueNormal {
-  color: $color-text-muted;
+  .dueDate {
+    color: $color-text-dark;
+  }
+
+  .dueRelative {
+    color: $color-text-muted;
+  }
 }
 
 .pagination {

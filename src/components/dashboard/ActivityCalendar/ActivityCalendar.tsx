@@ -84,15 +84,18 @@ export function ActivityCalendar({ incidents }: ActivityCalendarProps) {
 
         {days.map(({ day, count }) => {
           const isToday = year === today.getFullYear() && month === today.getMonth() && day === today.getDate();
+          const dateLabel = capitalize(new Date(year, month, day).toLocaleDateString("es-CO", { day: "numeric", month: "long" }));
 
           return (
             <div
               key={day}
               className={`${styles.day} ${styles[`level${intensityLevel(count, maxCount)}`]} ${isToday ? styles.today : ""}`}
-              title={`${count} incidencia${count === 1 ? "" : "s"} creada${count === 1 ? "" : "s"}`}
             >
               <span className={styles.dayNumber}>{day}</span>
               {count > 0 && <span className={styles.dayCount}>{count}</span>}
+              <span className={styles.tooltip}>
+                {dateLabel} · {count} incidencia{count === 1 ? "" : "s"} creada{count === 1 ? "" : "s"}
+              </span>
             </div>
           );
         })}

@@ -42,3 +42,24 @@
     height: 340px;
   }
 }
+
+.tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: $spacing-sm $spacing-sm;
+  background-color: $color-sidebar-bg;
+  border: 1px solid $color-sidebar-border;
+  border-radius: $radius-sm;
+  box-shadow: $shadow-md;
+  font-size: 12px;
+}
+
+.tooltipLabel {
+  font-weight: 600;
+  color: $color-text-dark;
+}
+
+.tooltipValue {
+  color: $color-text-muted;
+}

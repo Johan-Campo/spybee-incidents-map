@@ -19,12 +19,28 @@
 }
 
 .critical {
-  background-color: rgba(#ef4444, 0.05);
+  background-color: rgba(#ef4444, 0.08);
+  border-left-width: 4px;
   border-color: rgba(#ef4444, 0.25);
 
   .value {
     color: #ef4444;
   }
+}
+
+@keyframes pulse-icon {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+.iconPulse {
+  animation: pulse-icon 2.4s ease-in-out infinite;
 }
 
 .row {
@@ -52,18 +68,29 @@
 }
 
 .value {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 800;
   color: $color-text-dark;
+  line-height: 1.15;
 }
 
 .label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: 12px;
   color: $color-text-muted;
 }
 
+.help {
+  display: flex;
+  align-items: center;
+  color: $color-text-muted;
+  cursor: help;
+}
+
 .subtitle {
-  font-size: 11px;
+  font-size: 12px;
   color: $color-text-muted;
 }
 
@@ -72,7 +99,7 @@
   align-items: center;
   gap: 3px;
   margin-top: 2px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: $color-text-muted;
 }

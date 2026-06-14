@@ -14,6 +14,7 @@ import { TagTreemap } from "@/components/dashboard/TagTreemap/TagTreemap";
 import { TrendChart } from "@/components/dashboard/TrendChart/TrendChart";
 import { WorkloadList } from "@/components/dashboard/WorkloadList/WorkloadList";
 import { CreateIncidentModal } from "@/components/incidents/CreateIncidentModal/CreateIncidentModal";
+import { IncidentDetailModal } from "@/components/map/IncidentDetailModal/IncidentDetailModal";
 import {
   formatCountDelta,
   formatDaysDelta,
@@ -49,6 +50,7 @@ export default function DashboardPage() {
   const [period, setPeriod] = useState(PERIOD_OPTIONS[2].value);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [tableFilter, setTableFilter] = useState<TableFilter | null>(null);
+  const [selectedIncidentId, setSelectedIncidentId] = useState<string | null>(null);
 
   const periodOption = PERIOD_OPTIONS.find((option) => option.value === period) ?? PERIOD_OPTIONS[2];
   const comparison = getPeriodComparison(incidents, periodOption.days);
@@ -84,11 +86,15 @@ export default function DashboardPage() {
     );
   }
 
+  const selectedIncident = selectedIncidentId ? incidents.find((incident) => incident.id === selectedIncidentId) ?? null : null;
+
   return (
     <div className={styles.page}>
       <DashboardToolbar period={period} onPeriodChange={setPeriod} onCreateIncident={() => setIsCreateModalOpen(true)} />
 
       {isCreateModalOpen && <CreateIncidentModal onClose={() => setIsCreateModalOpen(false)} />}
+
+      {selectedIncident && <IncidentDetailModal incident={selectedIncident} onClose={() => setSelectedIncidentId(null)} />}
 
       <section className={styles.kpis}>
         <KpiCard
@@ -122,11 +128,12 @@ export default function DashboardPage() {
           label="Tasa de cierre"
           value={`${periodClosureRate}%`}
           subtitle="cerradas / creadas"
+          helpText="Porcentaje de incidencias creadas en el periodo que ya fueron cerradas"
           accentColor="#8B5CF6"
         />
         <KpiCard
           icon={Clock}
-          label="Tiempo medio resolución"
+          label="Tiempo promedio de resolución"
           value={comparison.averageResolutionDays === null ? "Sin datos" : `${comparison.averageResolutionDays.toFixed(1)} d`}
           subtitle="días promedio"
           delta={formatDaysDelta(comparison.averageResolutionDays, comparison.averageResolutionDaysPrevious)}
@@ -149,37 +156,52 @@ export default function DashboardPage() {
         upcomingDue={getUpcomingDueCount(incidents)}
       />
 
-      <section className={styles.donutsRow}>
-        <DonutChart
-          title="Por estado"
-          subtitle="Distribución de todas las incidencias registradas"
-          segments={getStatusCounts(incidents).map((status) => ({ id: status.status, label: status.label, value: status.value, color: status.color }))}
-          activeId={tableFilter?.type === "status" ? tableFilter.id : null}
-          onSegmentClick={toggleStatusFilter}
-        />
-        <DonutChart
-          title="Por prioridad"
-          subtitle="Nivel de urgencia de las incidencias abiertas"
-          segments={getPriorityCounts(incidents).map((priority) => ({ id: priority.priority, label: priority.label, value: priority.value, color: priority.color }))}
-          activeId={tableFilter?.type === "priority" ? tableFilter.id : null}
-          onSegmentClick={togglePriorityFilter}
-        />
-      </section>
-
       <section className={styles.trendSection}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Tendencia y riesgo</h2>
-          <span className={styles.sectionSubtitle}>Evolución temporal y alertas accionables</span>
+          <h2 className={styles.sectionTitle}>Atención requerida</h2>
+          <span className={styles.sectionSubtitle}>Incidencias críticas que necesitan acción</span>
         </div>
-
-        <TrendChart title="Tendencia: creadas vs cerradas" incidents={incidents} />
 
         <CriticalIncidentsTable
           incidents={filteredCriticalIncidents}
           totalCount={criticalIncidents.length}
           filter={tableFilter ? { label: tableFilter.label, color: tableFilter.color } : null}
           onClearFilter={() => setTableFilter(null)}
+          onRowClick={(id) => setSelectedIncidentId(id)}
         />
+      </section>
+
+      <section className={styles.trendSection}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Tendencia</h2>
+          <span className={styles.sectionSubtitle}>Evolución temporal de incidencias creadas y cerradas</span>
+        </div>
+
+        <TrendChart title="Tendencia: creadas vs cerradas" incidents={incidents} />
+      </section>
+
+      <section className={styles.trendSection}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Panorama general</h2>
+          <span className={styles.sectionSubtitle}>Distribución de incidencias por estado y prioridad</span>
+        </div>
+
+        <div className={styles.donutsRow}>
+          <DonutChart
+            title="Por estado"
+            subtitle="Distribución de todas las incidencias registradas"
+            segments={getStatusCounts(incidents).map((status) => ({ id: status.status, label: status.label, value: status.value, color: status.color }))}
+            activeId={tableFilter?.type === "status" ? tableFilter.id : null}
+            onSegmentClick={toggleStatusFilter}
+          />
+          <DonutChart
+            title="Por prioridad"
+            subtitle="Nivel de urgencia de las incidencias abiertas"
+            segments={getPriorityCounts(incidents).map((priority) => ({ id: priority.priority, label: priority.label, value: priority.value, color: priority.color }))}
+            activeId={tableFilter?.type === "priority" ? tableFilter.id : null}
+            onSegmentClick={togglePriorityFilter}
+          />
+        </div>
       </section>
 
       <section className={styles.trendSection}>

@@ -2,12 +2,6 @@
 
 .toolbar {
   display: flex;
-  flex-direction: column;
-  gap: $spacing-sm;
-}
-
-.topRow {
-  display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: $spacing-md;
@@ -97,28 +91,6 @@
   color: $color-accent;
 }
 
-.iconButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid $color-sidebar-border;
-  border-radius: $radius-sm;
-  background-color: $color-sidebar-bg;
-  color: $color-icon-default;
-  transition: border-color $transition-fast, color $transition-fast, transform $transition-fast;
-
-  &:hover {
-    border-color: $color-text-muted;
-    color: $color-text-dark;
-  }
-
-  &:active {
-    transform: scale(0.94);
-  }
-}
-
 .createButton {
   display: flex;
   align-items: center;
@@ -144,43 +116,3 @@
   }
 }
 
-.summaryRow {
-  display: flex;
-  align-items: center;
-  gap: $spacing-md;
-  flex-wrap: wrap;
-}
-
-.pdfButton {
-  display: flex;
-  align-items: center;
-  gap: $spacing-xs;
-  border: 1px solid $color-sidebar-border;
-  border-radius: $radius-sm;
-  padding: 6px 12px;
-  background-color: $color-sidebar-bg;
-  color: $color-text-dark;
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
-  transition: border-color $transition-fast, background-color $transition-fast, transform $transition-fast;
-
-  &:hover {
-    border-color: $color-text-muted;
-    background-color: $color-content-bg;
-  }
-
-  &:active {
-    transform: scale(0.97);
-  }
-}
-
-.summaryText {
-  font-size: 13px;
-  color: $color-text-dark;
-}
-
-.summaryMuted {
-  font-size: 12px;
-  color: $color-text-muted;
-}

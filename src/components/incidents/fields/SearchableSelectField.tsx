@@ -53,6 +53,10 @@ export function SearchableSelectField({ id, label, value, onChange, options, pla
           if (event.key === "Escape") setOpen(false);
         }}
       >
+        {!open && selectedOption?.color && (
+          <span className={styles.colorDot} style={{ backgroundColor: selectedOption.color }} />
+        )}
+
         <input
           id={id}
           role="combobox"
@@ -62,7 +66,8 @@ export function SearchableSelectField({ id, label, value, onChange, options, pla
           aria-required={required}
           aria-invalid={invalid}
           required={required}
-          className={`${styles.input} ${styles.comboboxInputPadded} ${invalid ? styles.inputInvalid : ""}`}
+          className={`${styles.input} ${styles.comboboxInputPadded} ${!open && selectedOption?.color ? styles.comboboxInputWithDot : ""} ${invalid ? styles.inputInvalid : ""}`}
+          style={!open && selectedOption?.color ? { backgroundColor: `${selectedOption.color}14` } : undefined}
           value={open ? query : selectedOption?.label ?? ""}
           placeholder={placeholder}
           onFocus={() => {

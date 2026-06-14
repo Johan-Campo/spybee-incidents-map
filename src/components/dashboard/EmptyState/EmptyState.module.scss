@@ -1,0 +1,13 @@
+@use "../../../styles/variables" as *;
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  padding: $spacing-lg 0;
+  color: $color-text-muted;
+  font-size: 13px;
+  text-align: center;
+}
