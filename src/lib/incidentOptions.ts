@@ -10,6 +10,8 @@ export const CURRENT_USER: IncidentUser = {
   avatarUrl: "https://i.pravatar.cc/64?u=johan-superadmin",
 };
 
+export const DEMO_PASSWORD = "Spybee2026";
+
 export const DEFAULT_PROJECT: IncidentProject = incidents[0].project;
 
 const CATEGORY_COLORS: Record<string, string> = {

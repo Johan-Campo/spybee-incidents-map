@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, X } from "lucide-react";
+import Image from "next/image";
 import { formatDueLabel, type CriticalIncident } from "@/lib/dashboardMetrics";
 import { PRIORITY_OPTIONS } from "@/lib/incidentOptions";
 import { STATUS_COLORS, STATUS_LABELS } from "@/lib/dashboardMetrics";
@@ -138,7 +139,7 @@ export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearF
                     {incident.assignees.length > 0 ? (
                       <div className={styles.avatarStack}>
                         {incident.assignees.slice(0, 3).map((assignee) => (
-                          <img key={assignee.id} src={assignee.avatarUrl} alt={assignee.name} title={assignee.name} className={styles.avatar} />
+                          <Image key={assignee.id} src={assignee.avatarUrl} alt={assignee.name} title={assignee.name} width={22} height={22} className={styles.avatar} />
                         ))}
                         {incident.assignees.length > 3 && (
                           <span className={styles.avatarMore}>+{incident.assignees.length - 3}</span>
@@ -151,7 +152,7 @@ export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearF
                   <td>
                     {incident.owner ? (
                       <div className={styles.creator}>
-                        <img src={incident.owner.avatarUrl} alt={incident.owner.name} className={styles.avatar} />
+                        <Image src={incident.owner.avatarUrl} alt={incident.owner.name} width={22} height={22} className={styles.avatar} />
                         <span className={styles.creatorName}>{incident.owner.name.split(" ")[0]}</span>
                       </div>
                     ) : (

@@ -25,7 +25,27 @@
       "Bash(node project-notes/check-dash.mjs)",
       "Bash(node project-notes/check-dash2.mjs)",
       "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/check-dash2.mjs project-notes/dash2-*.png)",
-      "Bash(node project-notes/check-team.mjs)"
+      "Bash(node project-notes/check-team.mjs)",
+      "Bash(node project-notes/check-calendar.mjs)",
+      "Bash(ls -la *.json *.mjs *.ts)",
+      "Bash(cat eslint.config.mjs)",
+      "Bash(cat tsconfig.json)",
+      "Bash(mkdir -p src/components/auth/DroneSwarm)",
+      "Bash(git mv *)",
+      "Bash(rmdir src/components/login/DroneSwarm src/components/login)",
+      "Bash(node -e ' *)",
+      "Bash(node project-notes/verify-images.mjs)",
+      "Bash(sort -k6)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/login)",
+      "Bash(node project-notes/screenshot-readme.mjs)",
+      "Bash(mkdir -p docs/screenshots)",
+      "Bash(cp project-notes/readme-login.png docs/screenshots/login.png)",
+      "Bash(cp project-notes/readme-dashboard-full.png docs/screenshots/dashboard-overview.png)",
+      "Bash(cp project-notes/map-overview.png docs/screenshots/map-overview.png)",
+      "Bash(cp project-notes/map-popup.png docs/screenshots/map-popup.png)",
+      "Bash(cat .env.local.example)",
+      "Bash(ls -la .env*)",
+      "Bash(cd c:/Users/User/Documents/GitHub/spybee-incidents-map && rm -f project-notes/screenshot-readme.mjs project-notes/readme-*.png && git status --short | head -30)"
     ],
     "additionalDirectories": [
       "C:\\Users\\User\\Documents\\GitHub\\spybee-incidents-map\\project-notes"

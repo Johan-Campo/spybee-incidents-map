@@ -69,7 +69,7 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
     const isExpanded = expanded.includes(node.id);
 
     return (
-      <li key={node.id} role="treeitem" aria-expanded={hasChildren ? isExpanded : undefined}>
+      <li key={node.id} role="treeitem" aria-selected={isChecked} aria-expanded={hasChildren ? isExpanded : undefined}>
         <div className={styles.treeRow} style={{ paddingLeft: depth * 20 }}>
           {hasChildren ? (
             <button

@@ -74,7 +74,6 @@ export function DateField({ id, label, value, onChange, required, invalid }: Dat
           id={id}
           aria-haspopup="dialog"
           aria-expanded={open}
-          aria-invalid={invalid}
           className={`${styles.dateInput} ${invalid ? styles.dateInputInvalid : ""}`}
           onClick={() => setOpen((isOpen) => !isOpen)}
         >

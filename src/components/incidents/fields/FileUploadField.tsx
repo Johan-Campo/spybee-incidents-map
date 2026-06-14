@@ -71,6 +71,7 @@ export function FileUploadField({ label, files, onChange }: FileUploadFieldProps
           {files.map((file, index) => (
             <li key={`${file.name}-${index}`} className={styles.fileItem}>
               {previews[index] ? (
+                // eslint-disable-next-line @next/next/no-img-element -- previews son blob: URLs locales, next/image no las soporta
                 <img className={styles.filePreview} src={previews[index]!} alt="" />
               ) : (
                 <ImageIcon size={16} />

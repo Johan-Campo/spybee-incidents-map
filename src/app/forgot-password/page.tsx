@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Loader2, MailCheck } from "lucide-react";
 import { AuthGuard } from "@/components/auth/AuthGuard";
@@ -41,7 +42,7 @@ export default function ForgotPasswordPage() {
           </div>
         ) : (
           <form className={cardStyles.card} onSubmit={handleSubmit}>
-            <img src="/brand/logo1.avif" alt="Spybee" className={cardStyles.formLogo} />
+            <Image src="/brand/logo1.avif" alt="Spybee" width={81} height={40} className={cardStyles.formLogo} />
 
             <div className={cardStyles.intro}>
               <h1 className={cardStyles.title}>¿Olvidaste tu contraseña?</h1>

@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { AlertCircle, Eye, EyeOff, Loader2 } from "lucide-react";
 import { AuthGuard } from "@/components/auth/AuthGuard";
 import { AuthLayout } from "@/components/auth/AuthLayout/AuthLayout";
+import { CURRENT_USER, DEMO_PASSWORD } from "@/lib/incidentOptions";
 import { useAuthStore } from "@/store/authStore";
 import cardStyles from "@/components/auth/AuthCard/AuthCard.module.scss";
 
@@ -17,9 +19,18 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    const isValid = email.trim().toLowerCase() === CURRENT_USER.email.toLowerCase() && password === DEMO_PASSWORD;
+    if (!isValid) {
+      setError("Correo o contraseña incorrectos.");
+      return;
+    }
+
+    setError(null);
     setIsSubmitting(true);
     setTimeout(() => {
       login();
@@ -31,7 +42,7 @@ export default function LoginPage() {
     <AuthGuard requireAuth={false}>
       <AuthLayout>
         <form className={cardStyles.card} onSubmit={handleSubmit}>
-          <img src="/brand/logo1.avif" alt="Spybee" className={cardStyles.formLogo} />
+          <Image src="/brand/logo1.avif" alt="Spybee" width={81} height={40} className={cardStyles.formLogo} />
 
           <div className={cardStyles.intro}>
             <h1 className={cardStyles.title}>Iniciar sesión</h1>
@@ -81,6 +92,13 @@ export default function LoginPage() {
             </Link>
           </div>
 
+          {error && (
+            <p className={cardStyles.errorMessage}>
+              <AlertCircle size={14} />
+              {error}
+            </p>
+          )}
+
           <button type="submit" className={cardStyles.submitButton} disabled={isSubmitting}>
             {isSubmitting ? (
               <>
@@ -91,8 +109,6 @@ export default function LoginPage() {
               "Iniciar sesión"
             )}
           </button>
-
-          <p className={cardStyles.demoHint}>Modo demo: cualquier correo y contraseña funcionan.</p>
         </form>
       </AuthLayout>
     </AuthGuard>

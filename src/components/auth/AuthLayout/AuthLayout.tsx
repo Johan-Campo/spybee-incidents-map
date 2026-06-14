@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { DroneSwarm } from "@/components/login/DroneSwarm/DroneSwarm";
+import Image from "next/image";
+import { DroneSwarm } from "@/components/auth/DroneSwarm/DroneSwarm";
 import styles from "./AuthLayout.module.scss";
 
 interface AuthLayoutProps {
@@ -10,11 +11,11 @@ export function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className={styles.page}>
       <div className={styles.brandPanel}>
-        <img src="/brand/logo2.avif" alt="" className={styles.beeWatermark} />
+        <Image src="/brand/logo2.avif" alt="" width={985} height={900} className={styles.beeWatermark} />
         <DroneSwarm />
 
         <div className={`${styles.brandLogo} ${styles.fadeInUp}`}>
-          <img src="/brand/logo2.avif" alt="" className={styles.brandLogoIcon} />
+          <Image src="/brand/logo2.avif" alt="" width={31} height={28} className={styles.brandLogoIcon} />
           <span className={styles.lightSweep} style={{ animationDuration: "9s", animationDelay: "-1s" }}>
             Spybee
           </span>

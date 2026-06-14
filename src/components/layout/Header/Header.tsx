@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, ChevronRight, HelpCircle, LogOut, Settings, Smartphone, User as UserIcon } from "lucide-react";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import styles from "./Header.module.scss";
@@ -42,7 +43,7 @@ export function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
-        <img src="/brand/logo2.avif" alt="" className={styles.logoIcon} />
+        <Image src="/brand/logo2.avif" alt="" width={26} height={24} className={styles.logoIcon} />
         <span>Spybee</span>
       </div>
 
@@ -65,7 +66,7 @@ export function Header() {
               onClick={() => setIsMenuOpen((open) => !open)}
               aria-expanded={isMenuOpen}
             >
-              <img className={styles.avatar} src={user.avatarUrl} alt={user.name} />
+              <Image className={styles.avatar} src={user.avatarUrl} alt={user.name} width={32} height={32} />
               <div className={styles.userInfo}>
                 <span className={styles.userName}>{user.name.split(" ")[0]}</span>
                 <span className={styles.userRole}>Superadmin</span>

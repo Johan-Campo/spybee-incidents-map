@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { RankedEntry } from "@/lib/dashboardMetrics";
 import styles from "./WorkloadList.module.scss";
 
@@ -23,7 +24,7 @@ export function WorkloadList({ title, subtitle, entries }: WorkloadListProps) {
         <ul className={styles.list}>
           {entries.map((entry) => (
             <li key={entry.id} className={styles.row}>
-              <img src={entry.avatarUrl} alt="" className={styles.avatar} />
+              <Image src={entry.avatarUrl} alt="" width={28} height={28} className={styles.avatar} />
               <div className={styles.info}>
                 <span className={styles.name}>{entry.name}</span>
                 <div className={styles.track}>

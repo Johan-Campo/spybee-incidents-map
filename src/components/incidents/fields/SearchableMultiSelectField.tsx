@@ -2,6 +2,7 @@
 
 import { useId, useState } from "react";
 import { ChevronDown, X } from "lucide-react";
+import Image from "next/image";
 import { FormField } from "./FormField";
 import { chipColorForId } from "@/lib/chipColors";
 import styles from "./fields.module.scss";
@@ -96,7 +97,7 @@ export function SearchableMultiSelectField({ label, options, selected, onChange,
                       className={`${styles.comboboxOption} ${isSelected ? styles.comboboxOptionSelected : ""}`}
                       onClick={() => toggle(option.value)}
                     >
-                      {option.avatarUrl && <img className={styles.avatar} src={option.avatarUrl} alt="" />}
+                      {option.avatarUrl && <Image className={styles.avatar} src={option.avatarUrl} alt="" width={20} height={20} />}
                       {option.color && <span className={styles.colorDot} style={{ backgroundColor: option.color }} />}
                       <span>{option.label}</span>
                     </button>
