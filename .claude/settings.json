@@ -14,7 +14,9 @@
       "Bash(node project-notes/check-garantia.mjs)",
       "Bash(node project-notes/check-garantia2.mjs)",
       "Bash(node project-notes/check-garantia3.mjs)",
-      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/check-garantia*.mjs project-notes/garantia-*.png project-notes/tag-*.png project-notes/tag3-*.png)"
+      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/check-garantia*.mjs project-notes/garantia-*.png project-notes/tag-*.png project-notes/tag3-*.png)",
+      "Bash(node project-notes/check-auth.mjs)",
+      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/check-auth.mjs project-notes/auth-*.png)"
     ],
     "additionalDirectories": [
       "C:\\Users\\User\\Documents\\GitHub\\spybee-incidents-map\\project-notes"

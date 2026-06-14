@@ -1,110 +1,5 @@
-@use "../../styles/variables" as *;
-@use "../../styles/animations" as *;
-
-.page {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  min-height: 100vh;
-
-  @media (max-width: $breakpoint-tablet) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.brandPanel {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 48px;
-  padding: $spacing-lg;
-  text-align: center;
-  background-color: $color-header-bg;
-  color: $color-text-light;
-  overflow: hidden;
-
-  @media (max-width: $breakpoint-tablet) {
-    display: none;
-  }
-}
-
-.beeWatermark {
-  position: absolute;
-  top: -10%;
-  right: -15%;
-  width: 60%;
-  max-width: 480px;
-  opacity: 0.08;
-  pointer-events: none;
-}
-
-.brandLogo {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: $spacing-sm;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.brandLogoIcon {
-  height: 28px;
-  width: auto;
-}
-
-.brandCopy {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-md;
-  max-width: 480px;
-}
-
-.brandTitle {
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.brandSubtitle {
-  font-size: 14px;
-  line-height: 1.6;
-  color: rgba($color-text-light, 0.7);
-}
-
-.fadeInUp {
-  opacity: 0;
-  animation: slide-up-fade-in 0.5s ease both;
-}
-
-.lightSweep {
-  animation: text-glow-sweep 9s ease-in-out infinite;
-}
-
-@keyframes text-glow-sweep {
-  0%,
-  35%,
-  65%,
-  100% {
-    color: inherit;
-    text-shadow: none;
-  }
-
-  50% {
-    color: $color-accent;
-    text-shadow: 0 0 6px rgba($color-accent, 0.35);
-  }
-}
-
-.formPanel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: $spacing-md;
-  background-color: $color-content-bg;
-}
+@use "../../../styles/variables" as *;
+@use "../../../styles/animations" as *;
 
 .card {
   display: flex;
@@ -251,4 +146,98 @@
   font-size: 12px;
   color: $color-text-muted;
   text-align: center;
+}
+
+.footerLinks {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.link {
+  color: $color-text-dark;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-accent;
+  }
+}
+
+.linkMuted {
+  color: $color-text-muted;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-text-dark;
+  }
+}
+
+.banner {
+  display: flex;
+  gap: $spacing-sm;
+  align-items: flex-start;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid rgba($color-accent, 0.4);
+  border-radius: $radius-sm;
+  background-color: $color-accent-light;
+  font-size: 12px;
+  line-height: 1.5;
+  color: $color-text-dark;
+}
+
+.bannerIcon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: $color-accent;
+}
+
+.successIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: $color-accent-light;
+  color: $color-accent;
+  align-self: center;
+}
+
+.successTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: $color-text-dark;
+  text-align: center;
+}
+
+.successText {
+  font-size: 13px;
+  color: $color-text-muted;
+  text-align: center;
+  line-height: 1.5;
+
+  strong {
+    color: $color-text-dark;
+  }
+}
+
+.backLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  font-size: 13px;
+  font-weight: 600;
+  color: $color-text-dark;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-accent;
+  }
 }
