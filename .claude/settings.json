@@ -49,7 +49,11 @@
       "Bash(node project-notes/screenshot-readme2.mjs)",
       "Bash(cd c:/Users/User/Documents/GitHub/spybee-incidents-map && rm -f project-notes/screenshot-readme*.mjs project-notes/readme-*.png && ls project-notes)",
       "Bash(ls src/lib)",
-      "Bash(find src *)"
+      "Bash(find src *)",
+      "Bash(grep -n 'sidebar-width\\\\|breakpoint-mobile\\\\|transition-base\\\\|transition-fast\\\\|shadow-lg\\\\|z-index\\\\|$spacing' src/styles/_variables.scss)",
+      "Bash(npx --yes playwright --version)",
+      "Bash(node -e \"const d=require\\('./data/incidents.mock.json'\\); console.log\\(JSON.stringify\\(d[0].project\\)\\)\")",
+      "Bash(node -e \"const i=require\\('lucide-react'\\); console.log\\(Object.keys\\(i\\).filter\\(k=>/drone|plane|video|camera|message|whatsapp|sparkle|brain|radar|cpu/i.test\\(k\\)\\)\\)\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\User\\Documents\\GitHub\\spybee-incidents-map\\project-notes"

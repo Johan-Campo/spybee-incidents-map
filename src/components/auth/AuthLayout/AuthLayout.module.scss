@@ -62,16 +62,65 @@
   max-width: 480px;
 }
 
-.brandTitle {
-  font-size: 32px;
+.brandEyebrow {
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $color-accent;
+}
+
+.brandTitle {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 800;
   line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.brandHighlight {
+  color: $color-accent;
 }
 
 .brandSubtitle {
   font-size: 14px;
   line-height: 1.6;
   color: rgba($color-text-light, 0.7);
+}
+
+.brandFeatures {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  align-items: center;
+  row-gap: $spacing-sm;
+  column-gap: $spacing-sm;
+  list-style: none;
+  width: 100%;
+  margin: $spacing-xs 0 0;
+  padding: 0;
+}
+
+.brandFeatureItem {
+  display: contents;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba($color-text-light, 0.85);
+}
+
+.brandFeatureIconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: $radius-sm;
+  background-color: rgba($color-accent, 0.85);
+}
+
+.brandFeatureIcon {
+  color: $color-text-dark;
 }
 
 .fadeInUp {

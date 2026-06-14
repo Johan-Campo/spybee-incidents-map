@@ -13,7 +13,10 @@ export function MapControls({ onCreateIncident, view, onViewChange }: MapControl
   return (
     <>
       <button type="button" className={styles.createButton} onClick={onCreateIncident} aria-label="Crear incidencia">
-        <Plus size={20} />
+        <Plus size={20} className={styles.createIcon} />
+        <span className={styles.tooltip} role="tooltip">
+          Crear Incidencia
+        </span>
       </button>
 
       <div className={styles.bottomBar}>

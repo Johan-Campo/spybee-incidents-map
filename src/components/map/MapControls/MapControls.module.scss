@@ -66,15 +66,45 @@
   background-color: $color-accent;
   color: $color-text-dark;
   box-shadow: $shadow-md;
-  transition: transform $transition-base, box-shadow $transition-base;
+  transition: box-shadow $transition-base;
   animation: scale-fade-in $transition-base;
 
   &:hover {
-    transform: scale(1.08) rotate(90deg);
     box-shadow: $shadow-lg;
+
+    .tooltip {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
   }
 
-  &:active {
+  &:active .createIcon {
     transform: scale(0.96) rotate(90deg);
   }
+}
+
+.createIcon {
+  transition: transform $transition-base;
+}
+
+.createButton:hover .createIcon {
+  transform: scale(1.08) rotate(90deg);
+}
+
+.tooltip {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + #{$spacing-sm});
+  transform: translate(6px, -50%);
+  padding: 6px 10px;
+  border-radius: $radius-sm;
+  background-color: $color-text-dark;
+  color: $color-text-light;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: $shadow-sm;
+  transition: opacity $transition-base, transform $transition-base;
 }

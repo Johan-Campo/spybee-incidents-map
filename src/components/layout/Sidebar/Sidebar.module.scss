@@ -1,58 +1,137 @@
 @use "../../../styles/variables" as *;
 
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+.sidebarContainer {
+  position: relative;
   width: $sidebar-width;
-  padding: $spacing-md 0;
-  background-color: $color-sidebar-bg;
-  border-right: 1px solid $color-sidebar-border;
+  flex-shrink: 0;
 
   @media (max-width: $breakpoint-mobile) {
+    width: 100%;
+  }
+}
+
+.sidebar {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  width: $sidebar-width;
+  padding: $spacing-md $spacing-sm;
+  background-color: $color-sidebar-bg;
+  border-right: 1px solid $color-sidebar-border;
+  overflow: hidden;
+  transition: width 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s ease;
+
+  @media (min-width: $breakpoint-mobile + 1px) {
+    &:hover {
+      width: 220px;
+      box-shadow: $shadow-lg;
+    }
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    position: static;
     flex-direction: row;
+    align-items: center;
     justify-content: space-around;
     width: 100%;
     padding: $spacing-sm 0;
     border-right: none;
     border-top: 1px solid $color-sidebar-border;
+    overflow: visible;
+    transition: none;
   }
 }
 
-.projectAvatar {
+.projectHeader {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: $radius-md;
-  background-color: $color-accent;
-  color: $color-text-light;
-  font-weight: 700;
-  font-size: 14px;
-  margin-bottom: $spacing-lg;
-  transition: transform $transition-base, box-shadow $transition-base;
-
-  &:hover {
-    transform: scale(1.06);
-    box-shadow: $shadow-sm;
-  }
+  width: 100%;
+  height: 40px;
+  margin-bottom: $spacing-md;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
 
   @media (max-width: $breakpoint-mobile) {
     display: none;
   }
 }
 
+.projectAvatarWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.projectAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-md;
+  background-color: $color-accent;
+  color: $color-text-light;
+  font-weight: 700;
+  font-size: 13px;
+  transition: transform $transition-base, box-shadow $transition-base;
+}
+
+.projectAvatarWrap:hover .projectAvatar {
+  transform: scale(1.06);
+  box-shadow: $shadow-sm;
+}
+
+.projectInfo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+  gap: 1px;
+  margin-left: $spacing-xs;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.sidebar:hover .projectInfo {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.22s ease 0.06s, transform 0.22s ease 0.06s;
+}
+
+.projectName {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: 600;
+  color: $color-text-dark;
+}
+
+.projectMeta {
+  font-size: 10px;
+  color: $color-text-muted;
+}
+
 .nav {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: $spacing-sm;
+  width: 100%;
 
   @media (max-width: $breakpoint-mobile) {
     flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
     gap: $spacing-xs;
+    width: auto;
   }
 }
 
@@ -60,51 +139,84 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
+  width: 100%;
   height: 40px;
   border-radius: $radius-md;
   border: none;
   background: transparent;
   color: $color-icon-default;
-  transition: background-color $transition-base, color $transition-base, transform $transition-fast;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: background-color $transition-base, color $transition-base;
 
   &::before {
     content: "";
     position: absolute;
-    left: -#{$spacing-sm};
+    left: 0;
     top: 50%;
     transform: translateY(-50%);
     width: 3px;
     height: 0;
-    border-radius: 999px;
+    border-radius: 0 999px 999px 0;
     background-color: $color-accent;
     transition: height $transition-base;
+  }
 
-    @media (max-width: $breakpoint-mobile) {
+  &:hover {
+    background-color: $color-content-bg;
+    color: $color-icon-active;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    width: 40px;
+    justify-content: center;
+
+    &::before {
       left: 50%;
       top: auto;
       bottom: -#{$spacing-sm};
       transform: translateX(-50%);
       width: 0;
       height: 3px;
+      border-radius: 999px;
       transition: width $transition-base;
     }
-  }
 
-  &:hover {
-    background-color: $color-content-bg;
-    color: $color-icon-active;
-    transform: translateY(-1px);
-
-    @media (max-width: $breakpoint-mobile) {
+    &:active {
       transform: none;
     }
   }
+}
 
-  &:active {
-    transform: scale(0.94);
+.navIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.navLabel {
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+
+  @media (max-width: $breakpoint-mobile) {
+    display: none;
   }
+}
+
+.sidebar:hover .navLabel {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.22s ease 0.06s, transform 0.22s ease 0.06s;
 }
 
 .navItemActive {
@@ -123,7 +235,17 @@
   &:hover {
     background-color: $color-accent-light;
     color: $color-accent;
-    transform: none;
+  }
+}
+
+.navItemMuted {
+  color: $color-text-muted;
+  opacity: 0.45;
+
+  &:hover {
+    background-color: $color-content-bg;
+    color: $color-text-muted;
+    opacity: 0.7;
   }
 }
 
@@ -135,7 +257,6 @@
   &:hover {
     background-color: transparent;
     color: $color-text-muted;
-    transform: none;
   }
 
   &:active {
@@ -144,9 +265,10 @@
 }
 
 .divider {
-  width: 28px;
+  width: 100%;
   height: 1px;
-  margin-bottom: $spacing-sm;
+  flex-shrink: 0;
+  margin: $spacing-xs 0 $spacing-sm;
   background-color: $color-sidebar-border;
 
   @media (max-width: $breakpoint-mobile) {
@@ -157,7 +279,7 @@
 .footer {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: 100%;
   gap: $spacing-sm;
 
   @media (max-width: $breakpoint-mobile) {
