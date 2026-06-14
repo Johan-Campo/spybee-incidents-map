@@ -201,3 +201,75 @@
   color: $color-text-muted;
   flex-shrink: 0;
 }
+
+.footer {
+  padding: $spacing-sm $spacing-lg;
+  border-top: 1px solid $color-sidebar-border;
+}
+
+.deleteButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-sm;
+  background-color: transparent;
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: rgba(#ef4444, 0.08);
+  }
+}
+
+.confirmBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+}
+
+.confirmText {
+  font-size: 12px;
+  color: $color-text-dark;
+}
+
+.confirmActions {
+  display: flex;
+  gap: $spacing-sm;
+  flex-shrink: 0;
+}
+
+.cancelButton {
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-sm;
+  background-color: $color-content-bg;
+  color: $color-text-dark;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: $color-sidebar-border;
+  }
+}
+
+.confirmDeleteButton {
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-sm;
+  background-color: #ef4444;
+  color: $color-text-light;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: #dc2626;
+  }
+}

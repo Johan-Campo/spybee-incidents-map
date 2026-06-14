@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CreateIncidentModal } from "@/components/incidents/CreateIncidentModal/CreateIncidentModal";
 import { IncidentDetailModal } from "@/components/map/IncidentDetailModal/IncidentDetailModal";
 import { IncidentMarker } from "@/components/map/IncidentMarker/IncidentMarker";
@@ -17,9 +17,11 @@ export default function Home() {
     null,
   );
   const [newIncidentId, setNewIncidentId] = useState<string | null>(null);
+  const [flyToTarget, setFlyToTarget] = useState<{ longitude: number; latitude: number } | null>(null);
   const [mapView, setMapView] = useState<"2D" | "3D">("2D");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const incidents = useIncidentsStore((state) => state.incidents);
+  const deleteIncident = useIncidentsStore((state) => state.deleteIncident);
   const activeIncidents = incidents.filter((incident) => !incident.deleted);
   const selectedIncident = incidents.find((incident) => incident.id === mapInteraction?.incidentId);
 
@@ -28,9 +30,16 @@ export default function Home() {
     if (incidentId === newIncidentId) setNewIncidentId(null);
   }
 
+  useEffect(() => {
+    if (!newIncidentId) return;
+    const timer = setTimeout(() => setNewIncidentId(null), 9000);
+    return () => clearTimeout(timer);
+  }, [newIncidentId]);
+
   return (
     <MapView
       pitch={mapView === "3D" ? 50 : 0}
+      flyTo={flyToTarget}
       markers={activeIncidents.map((incident) => (
         <IncidentMarker
           key={incident.id}
@@ -56,6 +65,7 @@ export default function Home() {
           onClose={() => setIsCreateModalOpen(false)}
           onCreated={(incident) => {
             setNewIncidentId(incident.id);
+            setFlyToTarget({ longitude: incident.coordinates.lng, latitude: incident.coordinates.lat });
             setToastMessage(`Incidencia #${incident.sequenceId} creada correctamente`);
           }}
         />
@@ -64,6 +74,11 @@ export default function Home() {
         <IncidentDetailModal
           incident={selectedIncident}
           onClose={() => setMapInteraction((current) => current && { ...current, view: "popup" })}
+          onDelete={() => {
+            deleteIncident(selectedIncident.id);
+            setMapInteraction(null);
+            setToastMessage("Incidencia eliminada correctamente");
+          }}
         />
       )}
       {toastMessage && <Toast message={toastMessage} onClose={() => setToastMessage(null)} />}

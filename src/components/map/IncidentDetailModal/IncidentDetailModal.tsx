@@ -1,6 +1,7 @@
 "use client";
 
-import { Calendar, FileVideo, ImageIcon, MapPin, X } from "lucide-react";
+import { useState } from "react";
+import { Calendar, FileVideo, ImageIcon, MapPin, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import { CATEGORY_OPTIONS, PRIORITY_OPTIONS } from "@/lib/incidentOptions";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
@@ -10,6 +11,7 @@ import styles from "./IncidentDetailModal.module.scss";
 interface IncidentDetailModalProps {
   incident: Incident;
   onClose: () => void;
+  onDelete: () => void;
 }
 
 const STATUS_LABELS: Record<IncidentStatus, string> = {
@@ -26,10 +28,11 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export function IncidentDetailModal({ incident, onClose }: IncidentDetailModalProps) {
+export function IncidentDetailModal({ incident, onClose, onDelete }: IncidentDetailModalProps) {
   const modalRef = useFocusTrap<HTMLDivElement>(true);
   const category = CATEGORY_OPTIONS.find((option) => option.id === incident.type.id);
   const priority = PRIORITY_OPTIONS.find((option) => option.value === incident.priority);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -156,6 +159,27 @@ export function IncidentDetailModal({ incident, onClose }: IncidentDetailModalPr
             </div>
           )}
         </div>
+
+        <footer className={styles.footer}>
+          {confirmingDelete ? (
+            <div className={styles.confirmBar}>
+              <span className={styles.confirmText}>¿Eliminar esta incidencia? No se puede deshacer.</span>
+              <div className={styles.confirmActions}>
+                <button type="button" className={styles.cancelButton} onClick={() => setConfirmingDelete(false)}>
+                  Cancelar
+                </button>
+                <button type="button" className={styles.confirmDeleteButton} onClick={onDelete}>
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button type="button" className={styles.deleteButton} onClick={() => setConfirmingDelete(true)}>
+              <Trash2 size={14} />
+              Eliminar incidencia
+            </button>
+          )}
+        </footer>
       </div>
     </div>
   );

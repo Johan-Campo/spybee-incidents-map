@@ -18,7 +18,13 @@ export function IncidentMarker({ incident, onClick, isNew }: IncidentMarkerProps
   return (
     <Marker longitude={incident.coordinates.lng} latitude={incident.coordinates.lat} anchor="bottom">
       <div className={styles.markerWrapper}>
-        {isNew && <span className={styles.pulseRing} />}
+        {isNew && (
+          <>
+            <span className={styles.pulseRing} />
+            <span className={styles.pulseRing} />
+            <span className={styles.pulseRing} />
+          </>
+        )}
         <button
           type="button"
           className={styles.pin}

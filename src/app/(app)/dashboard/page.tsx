@@ -47,6 +47,7 @@ interface TableFilter {
 
 export default function DashboardPage() {
   const incidents = useIncidentsStore((state) => state.incidents);
+  const deleteIncident = useIncidentsStore((state) => state.deleteIncident);
   const [period, setPeriod] = useState(PERIOD_OPTIONS[2].value);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [tableFilter, setTableFilter] = useState<TableFilter | null>(null);
@@ -95,7 +96,16 @@ export default function DashboardPage() {
 
       {isCreateModalOpen && <CreateIncidentModal onClose={() => setIsCreateModalOpen(false)} />}
 
-      {selectedIncident && <IncidentDetailModal incident={selectedIncident} onClose={() => setSelectedIncidentId(null)} />}
+      {selectedIncident && (
+        <IncidentDetailModal
+          incident={selectedIncident}
+          onClose={() => setSelectedIncidentId(null)}
+          onDelete={() => {
+            deleteIncident(selectedIncident.id);
+            setSelectedIncidentId(null);
+          }}
+        />
+      )}
 
       <section className={styles.kpis}>
         <KpiCard

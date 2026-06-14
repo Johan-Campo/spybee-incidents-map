@@ -104,8 +104,6 @@ data/
 
 ## Decisiones técnicas y por qué
 
-> Esta sección explica, con más detalle técnico, las decisiones de arquitectura y el porqué de cada una — pensada para quien evalúe el código.
-
 **Datos y estado (Zustand, sin backend).** Toda la app trabaja sobre `data/incidents.mock.json`, cargado una sola vez en `useIncidentsStore`. Crear una incidencia nueva simplemente la antepone al array en memoria — es lo más simple que cumple el requisito de "se ve reflejada al instante" sin montar un backend real. La sesión vive en `useAuthStore` con `persist`, para que el login sobreviva a un refresh.
 
 **Mapa desacoplado de los datos.** `MapView` es un componente de presentación puro (recibe `markers`/`popup`/`children` como `ReactNode`); quien decide qué incidencias mostrar y cómo es la página que lo usa. Esto permite reusar el mapa tanto en la vista principal como en el selector de ubicación del formulario de creación, sin duplicar la configuración de Mapbox.
