@@ -45,7 +45,9 @@
       "Bash(cp project-notes/map-popup.png docs/screenshots/map-popup.png)",
       "Bash(cat .env.local.example)",
       "Bash(ls -la .env*)",
-      "Bash(cd c:/Users/User/Documents/GitHub/spybee-incidents-map && rm -f project-notes/screenshot-readme.mjs project-notes/readme-*.png && git status --short | head -30)"
+      "Bash(cd c:/Users/User/Documents/GitHub/spybee-incidents-map && rm -f project-notes/screenshot-readme.mjs project-notes/readme-*.png && git status --short | head -30)",
+      "Bash(node project-notes/screenshot-readme2.mjs)",
+      "Bash(cd c:/Users/User/Documents/GitHub/spybee-incidents-map && rm -f project-notes/screenshot-readme*.mjs project-notes/readme-*.png && ls project-notes)"
     ],
     "additionalDirectories": [
       "C:\\Users\\User\\Documents\\GitHub\\spybee-incidents-map\\project-notes"

@@ -4,12 +4,7 @@ Prueba técnica de Frontend (Next.js / React) para Spybee. La aplicación recrea
 
 ## Acceso
 
-La app cuenta con un flujo de autenticación (UI completa de login, registro y recuperación de contraseña), pero por ser una demo solo existe **un usuario válido**:
-
-- **Correo:** `johan.campo@constructora.com`
-- **Contraseña:** `Spybee2026`
-
-Cualquier otra combinación muestra un mensaje de error y no permite el acceso.
+La app cuenta con un flujo de autenticación (UI completa de login, registro y recuperación de contraseña), pero por ser una demo solo existe **un usuario válido**. Cualquier otra combinación de correo/contraseña muestra un mensaje de error y no permite el acceso. Las credenciales de prueba se comparten por aparte.
 
 ![Login](docs/screenshots/login.png)
 
@@ -27,9 +22,11 @@ Cualquier otra combinación muestra un mensaje de error y no permite el acceso.
 
 Vista principal de la app (`/`). Muestra todas las incidencias del proyecto como marcadores sobre el mapa, coloreados según su prioridad/estado. Al hacer click en un marcador se abre un popup con el resumen de la incidencia.
 
-![Mapa](docs/screenshots/map-overview.png)
+![Mapa con zoom sobre los marcadores](docs/screenshots/map-overview.png)
 
-![Popup de incidencia](docs/screenshots/map-popup.png)
+Al hacer click en un marcador se abre un popup con el número de incidencia, título, descripción, etiquetas de estado/prioridad y ubicación dentro de la obra.
+
+![Popup al hacer click en una incidencia](docs/screenshots/map-popup.png)
 
 ### Crear incidencia
 
