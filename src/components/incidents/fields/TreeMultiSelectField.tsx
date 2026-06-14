@@ -70,7 +70,7 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
 
     return (
       <li key={node.id} role="treeitem" aria-selected={isChecked} aria-expanded={hasChildren ? isExpanded : undefined}>
-        <div className={styles.treeRow} style={{ paddingLeft: depth * 20 }}>
+        <div className={styles.treeRow} style={{ "--depth": depth } as React.CSSProperties}>
           {hasChildren ? (
             <button
               type="button"
@@ -149,6 +149,8 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
         </div>
 
         {!open && <ChevronDown size={14} className={styles.comboboxChevron} />}
+
+        {open && <div className={styles.panelBackdrop} onClick={() => setOpen(false)} />}
 
         {open && (
           <div className={styles.comboboxPanel}>

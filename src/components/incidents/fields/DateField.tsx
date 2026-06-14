@@ -156,6 +156,8 @@ export function DateField({ id, label, value, onChange, required, invalid, error
           <Calendar size={16} />
         </button>
 
+        {open && <div className={styles.panelBackdrop} onClick={() => setOpen(false)} />}
+
         {open && (
           <div className={styles.calendarPanel} role="dialog" aria-label="Seleccionar fecha">
             <div className={styles.calendarHeader}>

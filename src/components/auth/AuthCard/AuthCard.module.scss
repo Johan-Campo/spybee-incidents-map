@@ -60,6 +60,10 @@
   background-color: $color-sidebar-bg;
   transition: border-color $transition-fast, box-shadow $transition-fast;
 
+  @media (max-width: $breakpoint-mobile) {
+    font-size: 16px;
+  }
+
   &:hover {
     border-color: $color-text-muted;
   }

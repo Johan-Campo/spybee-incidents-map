@@ -79,6 +79,8 @@ export function SearchableSelectField({ id, label, value, onChange, options, pla
 
         {!open && <ChevronDown size={14} className={styles.comboboxChevron} />}
 
+        {open && <div className={styles.panelBackdrop} onClick={() => setOpen(false)} />}
+
         {open && (
           <div className={styles.comboboxPanel}>
             <div className={styles.panelHeader}>
