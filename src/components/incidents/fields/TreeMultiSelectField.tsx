@@ -158,9 +158,13 @@ export function TreeMultiSelectField({ label, nodes, selected, onChange, placeho
                 <X size={14} />
               </button>
             </div>
-            <ul id={treeId} role="tree" aria-label={label} className={`${styles.comboboxList} ${styles.treePanel}`}>
-              {nodes.map((node) => renderNode(node, 0))}
-            </ul>
+            {query && !nodes.some((node) => matchesQuery(node, query)) ? (
+              <p className={styles.comboboxEmpty}>Sin resultados</p>
+            ) : (
+              <ul id={treeId} role="tree" aria-label={label} className={`${styles.comboboxList} ${styles.treePanel}`}>
+                {nodes.map((node) => renderNode(node, 0))}
+              </ul>
+            )}
           </div>
         )}
       </div>

@@ -4,6 +4,15 @@
   position: relative;
   width: 26px;
   height: 26px;
+
+  &:focus-within::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px $color-accent;
+    pointer-events: none;
+  }
 }
 
 .pulseRing {
@@ -41,6 +50,10 @@
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   animation: marker-drop 0.35s ease;
+
+  &:focus-visible {
+    outline: none;
+  }
 
   svg {
     transform: rotate(45deg);

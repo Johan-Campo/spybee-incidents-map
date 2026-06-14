@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Calendar, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, X } from "lucide-react";
 import { FormField } from "./FormField";
 import { formatLocalDate, parseLocalDate } from "@/lib/date";
@@ -19,6 +19,8 @@ interface DateFieldProps {
   onChange: (value: string) => void;
   required?: boolean;
   invalid?: boolean;
+  error?: string | null;
+  onBlur?: () => void;
 }
 
 function buildCalendarDays(year: number, month: number): Date[] {
@@ -31,12 +33,14 @@ function buildCalendarDays(year: number, month: number): Date[] {
   });
 }
 
-export function DateField({ id, label, value, onChange, required, invalid }: DateFieldProps) {
+export function DateField({ id, label, value, onChange, required, invalid, error, onBlur }: DateFieldProps) {
   const [open, setOpen] = useState(false);
   const today = new Date();
   const referenceDate = value ? parseLocalDate(value) : today;
   const [viewYear, setViewYear] = useState(referenceDate.getFullYear());
   const [viewMonth, setViewMonth] = useState(referenceDate.getMonth());
+  const [focusedDate, setFocusedDate] = useState(referenceDate);
+  const dayRefs = useRef(new Map<string, HTMLButtonElement>());
 
   const days = buildCalendarDays(viewYear, viewMonth);
 
@@ -55,15 +59,86 @@ export function DateField({ id, label, value, onChange, required, invalid }: Dat
     onChange(formatLocalDate(today));
     setViewYear(today.getFullYear());
     setViewMonth(today.getMonth());
+    setFocusedDate(today);
     setOpen(false);
   }
 
+  function moveFocus(offsetDays: number) {
+    const date = new Date(focusedDate);
+    date.setDate(date.getDate() + offsetDays);
+    setFocusedDate(date);
+    if (date.getFullYear() !== viewYear || date.getMonth() !== viewMonth) {
+      setViewYear(date.getFullYear());
+      setViewMonth(date.getMonth());
+    }
+  }
+
+  function moveFocusMonths(offsetMonths: number) {
+    const date = new Date(focusedDate);
+    date.setMonth(date.getMonth() + offsetMonths);
+    setFocusedDate(date);
+    setViewYear(date.getFullYear());
+    setViewMonth(date.getMonth());
+  }
+
+  function handleGridKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    switch (event.key) {
+      case "ArrowLeft":
+        event.preventDefault();
+        moveFocus(-1);
+        break;
+      case "ArrowRight":
+        event.preventDefault();
+        moveFocus(1);
+        break;
+      case "ArrowUp":
+        event.preventDefault();
+        moveFocus(-7);
+        break;
+      case "ArrowDown":
+        event.preventDefault();
+        moveFocus(7);
+        break;
+      case "PageUp":
+        event.preventDefault();
+        moveFocusMonths(event.shiftKey ? -12 : -1);
+        break;
+      case "PageDown":
+        event.preventDefault();
+        moveFocusMonths(event.shiftKey ? 12 : 1);
+        break;
+      case "Home":
+        event.preventDefault();
+        moveFocus(-focusedDate.getDay());
+        break;
+      case "End":
+        event.preventDefault();
+        moveFocus(6 - focusedDate.getDay());
+        break;
+      case "Enter":
+      case " ":
+        event.preventDefault();
+        handleSelectDay(focusedDate);
+        break;
+      default:
+        break;
+    }
+  }
+
+  useEffect(() => {
+    if (!open) return;
+    dayRefs.current.get(formatLocalDate(focusedDate))?.focus();
+  }, [open, focusedDate]);
+
   return (
-    <FormField label={label} htmlFor={id} required={required}>
+    <FormField label={label} htmlFor={id} required={required} error={error}>
       <div
         className={styles.comboboxWrapper}
         onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+          if (!event.currentTarget.contains(event.relatedTarget)) {
+            setOpen(false);
+            onBlur?.();
+          }
         }}
         onKeyDown={(event) => {
           if (event.key === "Escape") setOpen(false);
@@ -112,19 +187,31 @@ export function DateField({ id, label, value, onChange, required, invalid }: Dat
               ))}
             </div>
 
-            <div className={styles.calendarGrid} role="grid" aria-label={`${MONTH_LABELS[viewMonth]} ${viewYear}`}>
+            <div
+              className={styles.calendarGrid}
+              role="grid"
+              aria-label={`${MONTH_LABELS[viewMonth]} ${viewYear}`}
+              onKeyDown={handleGridKeyDown}
+            >
               {days.map((date) => {
                 const isCurrentMonth = date.getMonth() === viewMonth;
                 const isSelected = value === formatLocalDate(date);
+                const isFocused = formatLocalDate(date) === formatLocalDate(focusedDate);
                 return (
                   <button
                     key={date.toISOString()}
+                    ref={(element) => {
+                      if (element) dayRefs.current.set(formatLocalDate(date), element);
+                      else dayRefs.current.delete(formatLocalDate(date));
+                    }}
                     type="button"
                     role="gridcell"
+                    tabIndex={isFocused ? 0 : -1}
                     aria-selected={isSelected}
                     aria-label={`${date.getDate()} de ${MONTH_LABELS[date.getMonth()]} de ${date.getFullYear()}`}
                     className={`${styles.calendarDay} ${isCurrentMonth ? "" : styles.calendarDayMuted} ${isSelected ? styles.calendarDaySelected : ""}`}
                     onClick={() => handleSelectDay(date)}
+                    onFocus={() => setFocusedDate(date)}
                   >
                     {date.getDate()}
                   </button>

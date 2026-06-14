@@ -4,7 +4,6 @@ import { useId, useState } from "react";
 import { ChevronDown, X } from "lucide-react";
 import Image from "next/image";
 import { FormField } from "./FormField";
-import { chipColorForId } from "@/lib/chipColors";
 import styles from "./fields.module.scss";
 
 export interface SearchableMultiSelectOption {
@@ -49,7 +48,11 @@ export function SearchableMultiSelectField({ label, options, selected, onChange,
         <div className={`${styles.comboboxInputRow} ${styles.comboboxInputRowPadded}`} onClick={() => setOpen(true)}>
           {selectedOptions.map((option) => (
             <span key={option.value} className={styles.chip}>
-              <span className={styles.colorDot} style={{ backgroundColor: chipColorForId(option.value) }} />
+              {option.avatarUrl ? (
+                <Image className={styles.avatar} src={option.avatarUrl} alt="" width={16} height={16} />
+              ) : (
+                option.color && <span className={styles.colorDot} style={{ backgroundColor: option.color }} />
+              )}
               {option.label}
               <button
                 type="button"
@@ -87,24 +90,28 @@ export function SearchableMultiSelectField({ label, options, selected, onChange,
                 <X size={14} />
               </button>
             </div>
-            <ul id={listId} role="listbox" aria-multiselectable="true" className={styles.comboboxList}>
-              {filteredOptions.map((option) => {
-                const isSelected = selected.includes(option.value);
-                return (
-                  <li key={option.value} role="option" aria-selected={isSelected}>
-                    <button
-                      type="button"
-                      className={`${styles.comboboxOption} ${isSelected ? styles.comboboxOptionSelected : ""}`}
-                      onClick={() => toggle(option.value)}
-                    >
-                      {option.avatarUrl && <Image className={styles.avatar} src={option.avatarUrl} alt="" width={20} height={20} />}
-                      {option.color && <span className={styles.colorDot} style={{ backgroundColor: option.color }} />}
-                      <span>{option.label}</span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+            {filteredOptions.length === 0 ? (
+              <p className={styles.comboboxEmpty}>Sin resultados</p>
+            ) : (
+              <ul id={listId} role="listbox" aria-multiselectable="true" className={styles.comboboxList}>
+                {filteredOptions.map((option) => {
+                  const isSelected = selected.includes(option.value);
+                  return (
+                    <li key={option.value} role="option" aria-selected={isSelected}>
+                      <button
+                        type="button"
+                        className={`${styles.comboboxOption} ${isSelected ? styles.comboboxOptionSelected : ""}`}
+                        onClick={() => toggle(option.value)}
+                      >
+                        {option.avatarUrl && <Image className={styles.avatar} src={option.avatarUrl} alt="" width={20} height={20} />}
+                        {option.color && <span className={styles.colorDot} style={{ backgroundColor: option.color }} />}
+                        <span>{option.label}</span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </div>
         )}
       </div>

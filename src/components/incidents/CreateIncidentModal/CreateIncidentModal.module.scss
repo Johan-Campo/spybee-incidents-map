@@ -78,47 +78,6 @@
   gap: $spacing-md;
 }
 
-.categoryRow {
-  display: flex;
-  align-items: flex-end;
-  gap: $spacing-sm;
-
-  > :first-child {
-    flex: 1;
-  }
-
-  @media (max-width: $breakpoint-mobile) {
-    flex-wrap: wrap;
-
-    > :first-child {
-      flex-basis: 100%;
-    }
-  }
-}
-
-.manageButton {
-  flex-shrink: 0;
-  padding: 8px 12px;
-  border: 1px solid $color-sidebar-border;
-  border-radius: $radius-sm;
-  font-size: 13px;
-  color: $color-text-muted;
-  background-color: $color-sidebar-bg;
-  cursor: default;
-  transition: border-color $transition-fast, color $transition-fast;
-
-  &:hover {
-    border-color: $color-text-muted;
-    color: $color-text-dark;
-  }
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: $spacing-md;
-}
-
 .formError {
   padding: $spacing-sm $spacing-lg;
   border-top: 1px solid $color-sidebar-border;

@@ -20,9 +20,11 @@ interface SearchableSelectFieldProps {
   placeholder: string;
   required?: boolean;
   invalid?: boolean;
+  error?: string | null;
+  onBlur?: () => void;
 }
 
-export function SearchableSelectField({ id, label, value, onChange, options, placeholder, required, invalid }: SearchableSelectFieldProps) {
+export function SearchableSelectField({ id, label, value, onChange, options, placeholder, required, invalid, error, onBlur }: SearchableSelectFieldProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -38,11 +40,14 @@ export function SearchableSelectField({ id, label, value, onChange, options, pla
   }
 
   return (
-    <FormField label={label} htmlFor={id} required={required}>
+    <FormField label={label} htmlFor={id} required={required} error={error}>
       <div
         className={styles.comboboxWrapper}
         onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+          if (!event.currentTarget.contains(event.relatedTarget)) {
+            setOpen(false);
+            onBlur?.();
+          }
         }}
         onKeyDown={(event) => {
           if (event.key === "Escape") setOpen(false);
@@ -77,16 +82,20 @@ export function SearchableSelectField({ id, label, value, onChange, options, pla
                 <X size={14} />
               </button>
             </div>
-            <ul id={listId} role="listbox" className={styles.comboboxList}>
-              {filteredOptions.map((option) => (
-                <li key={option.value} role="option" aria-selected={option.value === value}>
-                  <button type="button" className={styles.comboboxOption} onClick={() => handleSelect(option)}>
-                    {option.color && <span className={styles.colorDot} style={{ backgroundColor: option.color }} />}
-                    <span>{option.label}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
+            {filteredOptions.length === 0 ? (
+              <p className={styles.comboboxEmpty}>Sin resultados</p>
+            ) : (
+              <ul id={listId} role="listbox" className={styles.comboboxList}>
+                {filteredOptions.map((option) => (
+                  <li key={option.value} role="option" aria-selected={option.value === value}>
+                    <button type="button" className={styles.comboboxOption} onClick={() => handleSelect(option)}>
+                      {option.color && <span className={styles.colorDot} style={{ backgroundColor: option.color }} />}
+                      <span>{option.label}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         )}
       </div>

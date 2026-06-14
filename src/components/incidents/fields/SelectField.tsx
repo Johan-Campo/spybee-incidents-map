@@ -15,23 +15,28 @@ interface SelectFieldProps {
   options: SelectFieldOption[];
   placeholder: string;
   required?: boolean;
+  invalid?: boolean;
+  error?: string | null;
+  onBlur?: () => void;
 }
 
-export function SelectField({ id, label, value, onChange, options, placeholder, required }: SelectFieldProps) {
+export function SelectField({ id, label, value, onChange, options, placeholder, required, invalid, error, onBlur }: SelectFieldProps) {
   const selectedOption = options.find((option) => option.value === value);
 
   return (
-    <FormField label={label} htmlFor={id} required={required}>
+    <FormField label={label} htmlFor={id} required={required} error={error}>
       <div className={styles.selectWrapper}>
         {selectedOption?.color && (
           <span className={styles.colorDot} style={{ backgroundColor: selectedOption.color }} />
         )}
         <select
           id={id}
-          className={`${styles.select} ${selectedOption?.color ? styles.selectWithDot : ""}`}
+          className={`${styles.select} ${selectedOption?.color ? styles.selectWithDot : ""} ${invalid ? styles.inputInvalid : ""}`}
           value={value}
           onChange={(event) => onChange(event.target.value)}
+          onBlur={onBlur}
           required={required}
+          aria-invalid={invalid}
         >
           <option value="" disabled>
             {placeholder}

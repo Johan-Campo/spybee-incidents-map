@@ -8,18 +8,23 @@ interface TextAreaFieldProps {
   onChange: (value: string) => void;
   placeholder?: string;
   required?: boolean;
+  invalid?: boolean;
+  error?: string | null;
+  onBlur?: () => void;
 }
 
-export function TextAreaField({ id, label, value, onChange, placeholder, required }: TextAreaFieldProps) {
+export function TextAreaField({ id, label, value, onChange, placeholder, required, invalid, error, onBlur }: TextAreaFieldProps) {
   return (
-    <FormField label={label} htmlFor={id} required={required}>
+    <FormField label={label} htmlFor={id} required={required} error={error}>
       <textarea
         id={id}
-        className={styles.textarea}
+        className={`${styles.textarea} ${invalid ? styles.inputInvalid : ""}`}
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        onBlur={onBlur}
         placeholder={placeholder}
         required={required}
+        aria-invalid={invalid}
       />
     </FormField>
   );

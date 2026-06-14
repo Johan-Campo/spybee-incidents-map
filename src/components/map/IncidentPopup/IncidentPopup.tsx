@@ -9,6 +9,7 @@ import styles from "./IncidentPopup.module.scss";
 interface IncidentPopupProps {
   incident: Incident;
   onClose: () => void;
+  onViewDetail: () => void;
 }
 
 const STATUS_LABELS: Record<IncidentStatus, string> = {
@@ -17,7 +18,7 @@ const STATUS_LABELS: Record<IncidentStatus, string> = {
   closed: "Cerrada",
 };
 
-export function IncidentPopup({ incident, onClose }: IncidentPopupProps) {
+export function IncidentPopup({ incident, onClose, onViewDetail }: IncidentPopupProps) {
   const category = CATEGORY_OPTIONS.find((option) => option.id === incident.type.id);
   const priority = PRIORITY_OPTIONS.find((option) => option.value === incident.priority);
 
@@ -60,6 +61,10 @@ export function IncidentPopup({ incident, onClose }: IncidentPopupProps) {
         </div>
 
         {incident.locationDescription && <p className={styles.location}>{incident.locationDescription}</p>}
+
+        <button type="button" className={styles.detailButton} onClick={onViewDetail}>
+          Ver detalle completo
+        </button>
       </div>
     </Popup>
   );

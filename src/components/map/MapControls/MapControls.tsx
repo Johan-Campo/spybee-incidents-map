@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { Clock, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import styles from "./MapControls.module.scss";
 
-export function MapControls({ onCreateIncident }: { onCreateIncident: () => void }) {
-  const [view, setView] = useState<"2D" | "3D">("2D");
+interface MapControlsProps {
+  onCreateIncident: () => void;
+  view: "2D" | "3D";
+  onViewChange: (view: "2D" | "3D") => void;
+}
 
+export function MapControls({ onCreateIncident, view, onViewChange }: MapControlsProps) {
   return (
     <>
       <button type="button" className={styles.createButton} onClick={onCreateIncident} aria-label="Crear incidencia">
@@ -18,26 +21,19 @@ export function MapControls({ onCreateIncident }: { onCreateIncident: () => void
           <button
             type="button"
             className={`${styles.viewButton} ${view === "2D" ? styles.viewButtonActive : ""}`}
-            onClick={() => setView("2D")}
+            aria-pressed={view === "2D"}
+            onClick={() => onViewChange("2D")}
           >
             2D
           </button>
           <button
             type="button"
             className={`${styles.viewButton} ${view === "3D" ? styles.viewButtonActive : ""}`}
-            onClick={() => setView("3D")}
+            aria-pressed={view === "3D"}
+            onClick={() => onViewChange("3D")}
           >
             3D
           </button>
-        </div>
-
-        <button type="button" className={styles.iconButton} aria-label="Línea de tiempo">
-          <Clock size={16} />
-        </button>
-
-        <div className={styles.toggle360}>
-          360°
-          <span className={styles.switch} />
         </div>
       </div>
     </>

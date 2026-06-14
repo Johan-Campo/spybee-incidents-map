@@ -41,6 +41,9 @@ export function LocationPicker({
           />
         </div>
 
+        <label htmlFor="locationDescription" className={fieldStyles.srOnly}>
+          Detalles de localización
+        </label>
         <input
           id="locationDescription"
           type="text"

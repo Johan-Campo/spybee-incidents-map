@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, type KeyboardEvent } from "react";
 import { X } from "lucide-react";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useIncidentsStore } from "@/store/incidentsStore";
 import { CATEGORY_OPTIONS, CURRENT_USER, DEFAULT_PROJECT, PEOPLE_OPTIONS, PRIORITY_OPTIONS } from "@/lib/incidentOptions";
 import { DEFAULT_MAP_VIEW } from "@/lib/mapConfig";
@@ -32,6 +33,11 @@ const INITIAL_COORDINATES: IncidentCoordinates = {
 export function CreateIncidentModal({ onClose, onCreated }: CreateIncidentModalProps) {
   const incidentsCount = useIncidentsStore((state) => state.incidents.length);
   const addIncident = useIncidentsStore((state) => state.addIncident);
+  const modalRef = useFocusTrap<HTMLDivElement>(true);
+
+  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Escape") onClose();
+  }
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -45,13 +51,32 @@ export function CreateIncidentModal({ onClose, onCreated }: CreateIncidentModalP
   const [locationDescription, setLocationDescription] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  const fieldErrors = {
+    title: title.trim() ? null : "El título es obligatorio.",
+    description: description.trim() ? null : "La descripción es obligatoria.",
+    dueDate: dueDate ? null : "Selecciona una fecha de vencimiento.",
+    categoryId: categoryId ? null : "Selecciona una categoría.",
+    priority: priority ? null : "Selecciona una prioridad.",
+  };
+
+  function markTouched(field: keyof typeof fieldErrors) {
+    setTouched((current) => ({ ...current, [field]: true }));
+  }
+
+  function fieldError(field: keyof typeof fieldErrors) {
+    return touched[field] || hasSubmitted ? fieldErrors[field] : null;
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setHasSubmitted(true);
 
     const category = CATEGORY_OPTIONS.find((option) => option.id === categoryId);
-    if (!category || !priority || !dueDate) {
-      setSubmitError("Completa los campos obligatorios: categoría, prioridad y fecha de vencimiento.");
+    if (!category || !priority || Object.values(fieldErrors).some(Boolean)) {
+      setSubmitError("Completa los campos marcados en rojo antes de continuar.");
       return;
     }
     setSubmitError(null);
@@ -102,24 +127,46 @@ export function CreateIncidentModal({ onClose, onCreated }: CreateIncidentModalP
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(event) => event.stopPropagation()}>
+      <div
+        ref={modalRef}
+        className={styles.modal}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="create-incident-title"
+        tabIndex={-1}
+        onClick={(event) => event.stopPropagation()}
+        onKeyDown={handleKeyDown}
+      >
         <header className={styles.header}>
-          <h2 className={styles.title}>Crear Incidencia</h2>
+          <h2 id="create-incident-title" className={styles.title}>Crear Incidencia</h2>
           <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Cerrar">
             <X size={20} />
           </button>
         </header>
 
         <form className={styles.body} onSubmit={handleSubmit} id="create-incident-form">
-          <TextField id="title" label="Título" value={title} onChange={setTitle} placeholder="Nombre de la incidencia" required />
+          <TextField
+            id="title"
+            label="Título"
+            value={title}
+            onChange={setTitle}
+            onBlur={() => markTouched("title")}
+            placeholder="Nombre de la incidencia"
+            required
+            invalid={!!fieldError("title")}
+            error={fieldError("title")}
+          />
 
           <TextAreaField
             id="description"
             label="Descripción"
             value={description}
             onChange={setDescription}
+            onBlur={() => markTouched("description")}
             placeholder="Describe la incidencia"
             required
+            invalid={!!fieldError("description")}
+            error={fieldError("description")}
           />
 
           <DateField
@@ -127,48 +174,45 @@ export function CreateIncidentModal({ onClose, onCreated }: CreateIncidentModalP
             label="Fecha de vencimiento"
             value={dueDate}
             onChange={setDueDate}
+            onBlur={() => markTouched("dueDate")}
             required
-            invalid={submitError !== null && !dueDate}
+            invalid={!!fieldError("dueDate")}
+            error={fieldError("dueDate")}
           />
 
-          <div className={styles.categoryRow}>
-            <SearchableSelectField
-              id="category"
-              label="Categoría"
-              value={categoryId}
-              onChange={setCategoryId}
-              placeholder="Seleccione categoría"
-              required
-              invalid={submitError !== null && !categoryId}
-              options={CATEGORY_OPTIONS.map((category) => ({ value: category.id, label: category.name, color: category.color }))}
-            />
-            <button type="button" className={styles.manageButton}>
-              Gestionar categorías
-            </button>
-          </div>
+          <SearchableSelectField
+            id="category"
+            label="Categoría"
+            value={categoryId}
+            onChange={setCategoryId}
+            onBlur={() => markTouched("categoryId")}
+            placeholder="Seleccione categoría"
+            required
+            invalid={!!fieldError("categoryId")}
+            error={fieldError("categoryId")}
+            options={CATEGORY_OPTIONS.map((category) => ({ value: category.id, label: category.name, color: category.color }))}
+          />
 
           <SelectField
             id="priority"
             label="Prioridad"
             value={priority}
             onChange={(value) => setPriority(value as IncidentPriority)}
+            onBlur={() => markTouched("priority")}
             placeholder="Selecciona una prioridad"
             required
+            invalid={!!fieldError("priority")}
+            error={fieldError("priority")}
             options={PRIORITY_OPTIONS.map((option) => ({ value: option.value, label: option.label, color: option.color }))}
           />
 
-          <div className={styles.categoryRow}>
-            <TreeMultiSelectField
-              label="Etiquetas"
-              placeholder="Buscar etiquetas"
-              selected={tagIds}
-              onChange={setTagIds}
-              nodes={LOCATION_TAGS}
-            />
-            <button type="button" className={styles.manageButton}>
-              Gestionar etiquetas
-            </button>
-          </div>
+          <TreeMultiSelectField
+            label="Etiquetas"
+            placeholder="Buscar etiquetas"
+            selected={tagIds}
+            onChange={setTagIds}
+            nodes={LOCATION_TAGS}
+          />
 
           <SearchableMultiSelectField
             label="Asignados"

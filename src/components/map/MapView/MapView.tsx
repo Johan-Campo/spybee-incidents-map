@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Map from "react-map-gl/mapbox";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { DEFAULT_MAP_VIEW, MAPBOX_TOKEN, MAP_STYLE } from "@/lib/mapConfig";
@@ -10,10 +10,15 @@ interface MapViewProps {
   children?: ReactNode;
   markers?: ReactNode;
   popup?: ReactNode;
+  pitch?: number;
 }
 
-export function MapView({ children, markers, popup }: MapViewProps) {
-  const [viewState, setViewState] = useState(DEFAULT_MAP_VIEW);
+export function MapView({ children, markers, popup, pitch = 0 }: MapViewProps) {
+  const [viewState, setViewState] = useState({ ...DEFAULT_MAP_VIEW, pitch });
+
+  useEffect(() => {
+    setViewState((current) => ({ ...current, pitch }));
+  }, [pitch]);
 
   return (
     <div className={styles.wrapper}>
