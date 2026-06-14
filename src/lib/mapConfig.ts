@@ -4,6 +4,7 @@ export const DEFAULT_MAP_VIEW = {
   longitude: -74.058333,
   latitude: 4.6532075,
   zoom: 14.5,
+  pitch: 0,
 };
 
 export const MAP_STYLE = "mapbox://styles/mapbox/streets-v12";

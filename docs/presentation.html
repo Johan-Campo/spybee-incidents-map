@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Spybee — Mapa de incidencias &amp; Dashboard</title>
+<style>
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    font-family: "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+    color: #1f2937;
+    background: #ffffff;
+  }
+
+  .page {
+    width: 297mm;
+    height: 210mm;
+    overflow: hidden;
+    page-break-after: always;
+    display: flex;
+  }
+
+  .page:last-child {
+    page-break-after: auto;
+  }
+
+  /* ---------- Cover ---------- */
+  .cover {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1e1e1e;
+    color: #ffffff;
+    text-align: center;
+    position: relative;
+  }
+
+  .cover .badge {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+
+  .badge img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+  }
+
+  .cover h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  .cover .accent {
+    color: #f5b914;
+  }
+
+  .cover h2 {
+    margin-top: 14px;
+    font-size: 18px;
+    font-weight: 400;
+    color: #d1d5db;
+  }
+
+  .cover .pills {
+    margin-top: 36px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .cover .pill {
+    border: 1px solid #3a3a3a;
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: #e5e7eb;
+    background: #262626;
+  }
+
+  .cover .credentials {
+    margin-top: 36px;
+    border: 1px solid #3a3a3a;
+    border-radius: 12px;
+    background: #262626;
+    padding: 16px 28px;
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .cover .credentials .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f5b914;
+  }
+
+  .cover .credentials .row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+  }
+
+  .cover .credentials .row span:first-child {
+    font-size: 11px;
+    color: #9ca3af;
+  }
+
+  .cover .credentials .row span:last-child {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    font-family: "Consolas", monospace;
+  }
+
+  .cover .footer {
+    position: absolute;
+    bottom: 28px;
+    font-size: 12px;
+    color: #9ca3af;
+  }
+
+  /* ---------- Content pages ---------- */
+  .sidebar {
+    width: 30%;
+    background: #1e1e1e;
+    color: #ffffff;
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar .step {
+    font-size: 13px;
+    font-weight: 700;
+    color: #f5b914;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .sidebar h2 {
+    margin-top: 14px;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .sidebar .bar {
+    width: 36px;
+    height: 4px;
+    background: #f5b914;
+    border-radius: 2px;
+    margin: 18px 0;
+  }
+
+  .sidebar p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #d1d5db;
+  }
+
+  .sidebar ul {
+    margin-top: 8px;
+    padding-left: 18px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #d1d5db;
+  }
+
+  .sidebar .pageno {
+    margin-top: auto;
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  .main {
+    width: 70%;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    position: relative;
+  }
+
+  /* ---------- Browser window mockup ---------- */
+  .mockup {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    width: 100%;
+  }
+
+  .mockup-bar {
+    height: 22px;
+    background: #1e1e1e;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+  }
+
+  .mockup-bar .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .dot.red { background: #ef4444; }
+  .dot.yellow { background: #f5b914; }
+  .dot.green { background: #22c55e; }
+
+  .mockup img {
+    display: block;
+    width: 100%;
+  }
+
+  /* Inset popup card over the map mockup */
+  .inset {
+    position: absolute;
+    width: 34%;
+    bottom: 56px;
+    right: 56px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+    border: 1px solid #e5e7eb;
+  }
+
+  .inset img {
+    display: block;
+    width: 100%;
+  }
+
+  /* Phone mockup */
+  .phone {
+    width: 250px;
+    border: 8px solid #1e1e1e;
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .phone img {
+    display: block;
+    width: 100%;
+  }
+
+  /* ---------- Text-only page (decisiones) ---------- */
+  .text-page {
+    flex-direction: column;
+    background: #ffffff;
+    padding: 48px 64px;
+  }
+
+  .text-page .step {
+    font-size: 13px;
+    font-weight: 700;
+    color: #d97706;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .text-page h2 {
+    margin-top: 10px;
+    font-size: 32px;
+    font-weight: 800;
+    color: #1f2937;
+  }
+
+  .text-page .bar {
+    width: 44px;
+    height: 4px;
+    background: #f5b914;
+    border-radius: 2px;
+    margin: 18px 0 28px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    flex: 1;
+  }
+
+  .card {
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 22px 24px;
+    border-left: 4px solid #f5b914;
+  }
+
+  .card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #1f2937;
+  }
+
+  .card p {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #4b5563;
+  }
+
+  /* ---------- Closing ---------- */
+  .closing {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1e1e1e;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .closing .badge {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .closing .badge img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+  }
+
+  .closing h2 {
+    font-size: 30px;
+    font-weight: 800;
+  }
+
+  .closing p {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #d1d5db;
+  }
+
+  .closing .links {
+    margin-top: 28px;
+    font-size: 13px;
+    color: #f5b914;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- 1. Portada -->
+  <section class="page cover">
+    <div class="badge"><img src="../project-notes/logo2.png" alt="Spybee" /></div>
+    <h1>Spybee <span class="accent">—</span> Mapa de incidencias &amp; Dashboard</h1>
+    <h2>Prueba técnica de Frontend (Next.js / React)</h2>
+    <div class="pills">
+      <span class="pill">Next.js 16 · App Router</span>
+      <span class="pill">React 19</span>
+      <span class="pill">Zustand</span>
+      <span class="pill">Mapbox GL</span>
+      <span class="pill">Recharts</span>
+      <span class="pill">SCSS Modules</span>
+    </div>
+    <div class="credentials">
+      <span class="label">Acceso demo</span>
+      <div class="row">
+        <span>Correo</span>
+        <span>johan.campo@constructora.com</span>
+      </div>
+      <div class="row">
+        <span>Contraseña</span>
+        <span>Spybee2026</span>
+      </div>
+    </div>
+    <div class="footer">Johan Campo · 14 de junio de 2026</div>
+  </section>
+
+  <!-- 2. Mapa de incidencias -->
+  <section class="page">
+    <div class="sidebar">
+      <span class="step">01 · Vista principal</span>
+      <h2>Mapa de incidencias</h2>
+      <div class="bar"></div>
+      <p>
+        Todas las incidencias del proyecto se muestran como marcadores sobre el mapa,
+        coloreados según su prioridad y estado.
+      </p>
+      <p style="margin-top:12px;">
+        Al hacer click en un marcador se abre un popup con el número de incidencia,
+        título, descripción, etiquetas de estado/prioridad y su ubicación dentro de la obra.
+      </p>
+      <div class="pageno">02</div>
+    </div>
+    <div class="main">
+      <div class="mockup">
+        <div class="mockup-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+        <img src="screenshots/map-overview.png" alt="Mapa de incidencias" />
+      </div>
+      <div class="inset">
+        <img src="screenshots/map-popup.png" alt="Popup de incidencia" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Crear incidencia -->
+  <section class="page">
+    <div class="sidebar">
+      <span class="step">02 · Formulario</span>
+      <h2>Crear incidencia</h2>
+      <div class="bar"></div>
+      <p>
+        Desde la barra superior del mapa se abre un modal con el formulario completo:
+        título, descripción, fecha límite, categoría, prioridad, ubicación (con selector
+        sobre el mapa), asignados, observadores, etiquetas y adjuntos.
+      </p>
+      <p style="margin-top:12px;">
+        Los campos de <strong>Categoría</strong> y <strong>Prioridad</strong> se resaltan
+        con un color sutil según la opción elegida, para identificar de un vistazo a qué
+        tipo de incidencia corresponde.
+      </p>
+      <div class="pageno">03</div>
+    </div>
+    <div class="main">
+      <div class="mockup">
+        <div class="mockup-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+        <img src="screenshots/create-incident-modal.png" alt="Modal de creación de incidencia" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Incidencia creada -->
+  <section class="page">
+    <div class="sidebar">
+      <span class="step">02 · Formulario</span>
+      <h2>Reflejo inmediato</h2>
+      <div class="bar"></div>
+      <p>
+        Al enviar el formulario, la incidencia se agrega al store de Zustand y aparece
+        de inmediato en el mapa y en el dashboard, sin necesidad de recargar la página.
+      </p>
+      <p style="margin-top:12px;">
+        Una notificación confirma la creación junto con el número asignado a la nueva
+        incidencia.
+      </p>
+      <div class="pageno">04</div>
+    </div>
+    <div class="main">
+      <div class="mockup">
+        <div class="mockup-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+        <img src="screenshots/create-incident-submitted.png" alt="Incidencia creada" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Dashboard - vista general -->
+  <section class="page">
+    <div class="sidebar">
+      <span class="step">03 · Dashboard</span>
+      <h2>KPIs e indicadores de riesgo</h2>
+      <div class="bar"></div>
+      <p>
+        La barra superior queda reducida a lo esencial: ruta del proyecto, título,
+        selector de periodo y botón "Crear incidencia".
+      </p>
+      <ul>
+        <li>Incidencias abiertas, creadas y cerradas en el periodo</li>
+        <li>Tasa de cierre y tiempo promedio de resolución</li>
+        <li>Vencidas activas, alta prioridad y próximas a vencer</li>
+      </ul>
+      <div class="pageno">05</div>
+    </div>
+    <div class="main">
+      <div class="mockup">
+        <div class="mockup-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+        <img src="screenshots/dashboard-overview.png" alt="Dashboard - vista general" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Dashboard - tendencia -->
+  <section class="page">
+    <div class="sidebar">
+      <span class="step">03 · Dashboard</span>
+      <h2>Atención requerida &amp; tendencia</h2>
+      <div class="bar"></div>
+      <p>
+        La tabla de incidencias críticas (vencidas o por vencer) es lo primero que se ve
+        tras los KPIs; cada fila abre el detalle en un modal.
+      </p>
+      <p style="margin-top:12px;">
+        Debajo, la sección de tendencia muestra incidencias creadas/cerradas por día,
+        semana o mes, junto con una línea de pendientes acumuladas.
+      </p>
+      <div class="pageno">06</div>
+    </div>
+    <div class="main">
+      <div class="mockup">
+        <div class="mockup-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+        <img src="screenshots/dashboard-trend.png" alt="Tendencia y panorama general" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Dashboard - distribucion -->
+  <section class="page">
+    <div class="sidebar">
+      <span class="step">03 · Dashboard</span>
+      <h2>Distribución detallada</h2>
+      <div class="bar"></div>
+      <p>
+        Tras el panorama general por estado y prioridad, una vista más detallada
+        desglosa las incidencias por categoría y por etiqueta.
+      </p>
+      <p style="margin-top:12px;">
+        Estos gráficos son interactivos: permiten filtrar la tabla de incidencias
+        críticas con un solo click.
+      </p>
+      <div class="pageno">07</div>
+    </div>
+    <div class="main">
+      <div class="mockup">
+        <div class="mockup-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+        <img src="screenshots/dashboard-distribution.png" alt="Distribución por categoría y etiqueta" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Dashboard - equipo -->
+  <section class="page">
+    <div class="sidebar">
+      <span class="step">03 · Dashboard</span>
+      <h2>Desempeño del equipo</h2>
+      <div class="bar"></div>
+      <p>
+        Tres listas resumen quién resuelve más incidencias, quién reporta más y cómo
+        está distribuida la carga de trabajo actual entre el equipo.
+      </p>
+      <div class="pageno">08</div>
+    </div>
+    <div class="main">
+      <div class="mockup">
+        <div class="mockup-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+        <img src="screenshots/dashboard-team.png" alt="Desempeño del equipo" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Dashboard - calendario -->
+  <section class="page">
+    <div class="sidebar">
+      <span class="step">03 · Dashboard</span>
+      <h2>Calendario &amp; mapa de calor</h2>
+      <div class="bar"></div>
+      <p>
+        Un calendario de actividad muestra la cantidad de incidencias por día del mes,
+        y un mapa de calor geográfico ayuda a identificar zonas con mayor concentración
+        de incidencias dentro de la obra.
+      </p>
+      <div class="pageno">09</div>
+    </div>
+    <div class="main">
+      <div class="mockup">
+        <div class="mockup-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+        <img src="screenshots/dashboard-calendar.png" alt="Calendario de actividad y mapa de calor" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Responsive -->
+  <section class="page">
+    <div class="sidebar">
+      <span class="step">04 · Responsive</span>
+      <h2>Mobile &amp; tablet</h2>
+      <div class="bar"></div>
+      <p>
+        La aplicación es completamente usable en mobile y tablet: la barra lateral se
+        colapsa, los KPIs y gráficos se apilan en una sola columna y la navegación
+        inferior permite moverse entre vistas sin perder contexto.
+      </p>
+      <div class="pageno">10</div>
+    </div>
+    <div class="main">
+      <div class="phone">
+        <img src="screenshots/mobile-dashboard.png" alt="Dashboard en mobile" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Decisiones técnicas -->
+  <section class="page text-page">
+    <span class="step">05 · Decisiones técnicas</span>
+    <h2>Por qué se construyó así</h2>
+    <div class="bar"></div>
+    <div class="grid">
+      <div class="card">
+        <h3>Datos y estado con Zustand</h3>
+        <p>
+          Toda la app trabaja sobre un dataset mock cargado una sola vez. Crear una
+          incidencia la antepone al array en memoria: es lo más simple que cumple
+          "se ve reflejada al instante" sin montar un backend real. La sesión persiste
+          con <code>persist</code> para sobrevivir a un refresh.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Mapa desacoplado de los datos</h3>
+        <p>
+          El componente de mapa es de presentación pura: recibe marcadores, popup y
+          contenido como props. Se reutiliza tanto en la vista principal como en el
+          selector de ubicación del formulario, sin duplicar configuración de Mapbox.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Métricas centralizadas</h3>
+        <p>
+          Todos los cálculos del dashboard (conteos, tendencia, incidencias críticas,
+          rankings de equipo, comparación entre periodos) son funciones puras sobre el
+          array de incidencias. Los componentes solo renderizan.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Criterio de "críticas" acotado</h3>
+        <p>
+          En vez de marcar como crítica cualquier incidencia de alta prioridad, la tabla
+          muestra solo las vencidas o que vencen en los próximos 3 días: lo que realmente
+          requiere atención inmediata.
+        </p>
+      </div>
+      <div class="card">
+        <h3>SCSS Modules + variables compartidas</h3>
+        <p>
+          Cada componente tiene su propio módulo de estilos, pero todos comparten la
+          misma paleta, espaciados, radios y breakpoints definidos en un único archivo
+          de variables, sin necesidad de un framework de UI completo.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Autenticación de un solo usuario</h3>
+        <p>
+          Registro y "olvidé mi contraseña" tienen UI completa y funcional en cuanto a
+          flujo y validaciones, pero son demostrativos: el login real valida contra un
+          único usuario fijo, sin backend de autenticación.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Cierre -->
+  <section class="page closing">
+    <div class="badge"><img src="../project-notes/logo2.png" alt="Spybee" /></div>
+    <h2>Gracias</h2>
+    <p>Spybee — Mapa de incidencias &amp; Dashboard</p>
+    <div class="links">
+      <span>github.com/Johan-Campo/spybee-incidents-map</span>
+      <span>johancampo12@gmail.com</span>
+    </div>
+  </section>
+
+</body>
+</html>

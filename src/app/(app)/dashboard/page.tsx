@@ -55,6 +55,7 @@ export default function DashboardPage() {
   const periodOption = PERIOD_OPTIONS.find((option) => option.value === period) ?? PERIOD_OPTIONS[2];
   const comparison = getPeriodComparison(incidents, periodOption.days);
   const periodClosureRate = comparison.created === 0 ? 0 : Math.round((comparison.closed / comparison.created) * 100);
+  const overdueCount = getOverdueCount(incidents);
 
   const dailyTrend = getTrendData(incidents, "day");
   const backlogSparkline = dailyTrend.map((point) => point.backlog);
@@ -142,15 +143,15 @@ export default function DashboardPage() {
         <KpiCard
           icon={AlertTriangle}
           label="Vencidas activas"
-          value={String(getOverdueCount(incidents))}
+          value={String(overdueCount)}
           subtitle="estado actual"
           accentColor="#EF4444"
-          critical={getOverdueCount(incidents) > 0}
+          critical={overdueCount > 0}
         />
       </section>
 
       <RiskIndicators
-        overdueToday={getOverdueCount(incidents)}
+        overdueToday={overdueCount}
         staleCount={getStaleCount(incidents)}
         highPriorityOpen={getHighPriorityOpenCount(incidents)}
         upcomingDue={getUpcomingDueCount(incidents)}

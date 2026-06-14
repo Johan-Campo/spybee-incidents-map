@@ -3,9 +3,8 @@
 import { useMemo, useState } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, ShieldCheck, X } from "lucide-react";
 import Image from "next/image";
-import { formatDueLabel, type CriticalIncident } from "@/lib/dashboardMetrics";
+import { formatDueLabel, STATUS_COLORS, STATUS_LABELS, type CriticalIncident } from "@/lib/dashboardMetrics";
 import { PRIORITY_OPTIONS } from "@/lib/incidentOptions";
-import { STATUS_COLORS, STATUS_LABELS } from "@/lib/dashboardMetrics";
 import { EmptyState } from "@/components/dashboard/EmptyState/EmptyState";
 import styles from "./CriticalIncidentsTable.module.scss";
 

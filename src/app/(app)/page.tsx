@@ -13,17 +13,18 @@ import { useIncidentsStore } from "@/store/incidentsStore";
 
 export default function Home() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  const [selectedIncidentId, setSelectedIncidentId] = useState<string | null>(null);
+  const [mapInteraction, setMapInteraction] = useState<{ incidentId: string; view: "popup" | "detail" } | null>(
+    null,
+  );
   const [newIncidentId, setNewIncidentId] = useState<string | null>(null);
   const [mapView, setMapView] = useState<"2D" | "3D">("2D");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const incidents = useIncidentsStore((state) => state.incidents);
   const activeIncidents = incidents.filter((incident) => !incident.deleted);
-  const selectedIncident = incidents.find((incident) => incident.id === selectedIncidentId);
+  const selectedIncident = incidents.find((incident) => incident.id === mapInteraction?.incidentId);
 
   function handleMarkerClick(incidentId: string) {
-    setSelectedIncidentId(incidentId);
+    setMapInteraction({ incidentId, view: "popup" });
     if (incidentId === newIncidentId) setNewIncidentId(null);
   }
 
@@ -42,8 +43,8 @@ export default function Home() {
         selectedIncident && (
           <IncidentPopup
             incident={selectedIncident}
-            onClose={() => setSelectedIncidentId(null)}
-            onViewDetail={() => setIsDetailModalOpen(true)}
+            onClose={() => setMapInteraction(null)}
+            onViewDetail={() => setMapInteraction((current) => current && { ...current, view: "detail" })}
           />
         )
       }
@@ -59,8 +60,11 @@ export default function Home() {
           }}
         />
       )}
-      {isDetailModalOpen && selectedIncident && (
-        <IncidentDetailModal incident={selectedIncident} onClose={() => setIsDetailModalOpen(false)} />
+      {mapInteraction?.view === "detail" && selectedIncident && (
+        <IncidentDetailModal
+          incident={selectedIncident}
+          onClose={() => setMapInteraction((current) => current && { ...current, view: "popup" })}
+        />
       )}
       {toastMessage && <Toast message={toastMessage} onClose={() => setToastMessage(null)} />}
     </MapView>
