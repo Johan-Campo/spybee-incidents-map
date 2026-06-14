@@ -146,13 +146,12 @@ export interface CriticalIncident {
 
 const PRIORITY_RANK: Record<IncidentPriority, number> = { high: 0, medium: 1, low: 2 };
 
-export function getCriticalIncidents(incidents: Incident[], days = 7, now: Date = new Date()): CriticalIncident[] {
+export function getCriticalIncidents(incidents: Incident[], days = 3, now: Date = new Date()): CriticalIncident[] {
   const threshold = new Date(now.getTime() + days * ONE_DAY_MS);
 
   return activeIncidents(incidents)
     .filter((incident) => {
       if (incident.status === "closed") return false;
-      if (incident.priority === "high") return true;
       return Boolean(incident.dueDate && new Date(incident.dueDate) <= threshold);
     })
     .map((incident) => ({

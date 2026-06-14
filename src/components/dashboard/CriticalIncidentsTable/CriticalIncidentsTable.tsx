@@ -83,7 +83,7 @@ export function CriticalIncidentsTable({ incidents, totalCount, filter, onClearF
     <div className={styles.card}>
       <div className={styles.header}>
         <h3 className={styles.title}>Críticas para hoy</h3>
-        <span className={styles.subtitle}>Alta prioridad o con fecha próxima</span>
+        <span className={styles.subtitle}>Vencidas o por vencer en los próximos 3 días</span>
         {filter && (
           <button type="button" className={styles.filterChip} style={{ color: filter.color, backgroundColor: `${filter.color}1A` }} onClick={onClearFilter}>
             {filter.label}

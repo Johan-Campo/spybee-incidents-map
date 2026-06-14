@@ -22,7 +22,10 @@
       "Bash(node project-notes/dash-overview2.mjs)",
       "Bash(node project-notes/dash-overview3.mjs)",
       "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/dash-overview*.mjs project-notes/dash-full.png project-notes/dash-part*.png)",
-      "Bash(node project-notes/check-dash.mjs)"
+      "Bash(node project-notes/check-dash.mjs)",
+      "Bash(node project-notes/check-dash2.mjs)",
+      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/check-dash2.mjs project-notes/dash2-*.png)",
+      "Bash(node project-notes/check-team.mjs)"
     ],
     "additionalDirectories": [
       "C:\\Users\\User\\Documents\\GitHub\\spybee-incidents-map\\project-notes"
