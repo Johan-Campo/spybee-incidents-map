@@ -37,4 +37,8 @@
   :global(.recharts-treemap) text {
     font-family: inherit;
   }
+
+  @media (max-width: $breakpoint-mobile) {
+    height: 340px;
+  }
 }

@@ -10,7 +10,11 @@
       "Bash(node project-notes/verify-layout.mjs)",
       "Bash(node project-notes/verify-menu-crop.mjs)",
       "Bash(node project-notes/debug-overlap.mjs)",
-      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/verify-layout.mjs project-notes/verify-menu-crop.mjs project-notes/debug-zindex.mjs project-notes/debug-overlap.mjs project-notes/layout-*.png project-notes/menu-crop.png)"
+      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/verify-layout.mjs project-notes/verify-menu-crop.mjs project-notes/debug-zindex.mjs project-notes/debug-overlap.mjs project-notes/layout-*.png project-notes/menu-crop.png)",
+      "Bash(node project-notes/check-garantia.mjs)",
+      "Bash(node project-notes/check-garantia2.mjs)",
+      "Bash(node project-notes/check-garantia3.mjs)",
+      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/check-garantia*.mjs project-notes/garantia-*.png project-notes/tag-*.png project-notes/tag3-*.png)"
     ],
     "additionalDirectories": [
       "C:\\Users\\User\\Documents\\GitHub\\spybee-incidents-map\\project-notes"

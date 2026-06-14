@@ -24,6 +24,7 @@ function TreemapCell({ depth, x = 0, y = 0, width = 0, height = 0, name, value, 
   if (depth !== 1) return null;
 
   const showLabel = width > 64 && height > 36;
+  const showValueOnly = !showLabel && width > 36 && height > 20;
 
   return (
     <g>
@@ -35,6 +36,11 @@ function TreemapCell({ depth, x = 0, y = 0, width = 0, height = 0, name, value, 
       )}
       {showLabel && (
         <text x={x + 14} y={y + 46} fill="#fff" fontSize={20} fontWeight={600} opacity={0.92}>
+          {value}
+        </text>
+      )}
+      {showValueOnly && (
+        <text x={x + width / 2} y={y + height / 2} fill="#fff" fontSize={14} fontWeight={600} textAnchor="middle" dominantBaseline="middle">
           {value}
         </text>
       )}
