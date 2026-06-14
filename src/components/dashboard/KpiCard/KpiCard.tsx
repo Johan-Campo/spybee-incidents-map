@@ -15,6 +15,7 @@ interface KpiCardProps {
   subtitle?: string;
   delta?: KpiDelta;
   sparkline?: number[];
+  critical?: boolean;
 }
 
 const DELTA_ICONS: Record<KpiDelta["direction"], LucideIcon> = {
@@ -23,12 +24,12 @@ const DELTA_ICONS: Record<KpiDelta["direction"], LucideIcon> = {
   neutral: Minus,
 };
 
-export function KpiCard({ icon: Icon, label, value, accentColor, subtitle, delta, sparkline }: KpiCardProps) {
+export function KpiCard({ icon: Icon, label, value, accentColor, subtitle, delta, sparkline, critical }: KpiCardProps) {
   const DeltaIcon = delta ? DELTA_ICONS[delta.direction] : null;
   const sparklineData = sparkline?.map((value, index) => ({ index, value }));
 
   return (
-    <div className={styles.card} style={{ borderLeftColor: accentColor }}>
+    <div className={`${styles.card} ${critical ? styles.critical : ""}`} style={{ borderLeftColor: accentColor }}>
       <div className={styles.row}>
         <div className={styles.iconWrapper} style={{ color: accentColor }}>
           <Icon size={18} />

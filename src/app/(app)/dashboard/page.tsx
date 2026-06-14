@@ -138,20 +138,28 @@ export default function DashboardPage() {
           value={String(getOverdueCount(incidents))}
           subtitle="estado actual"
           accentColor="#EF4444"
+          critical={getOverdueCount(incidents) > 0}
         />
       </section>
+
+      <RiskIndicators
+        overdueToday={getOverdueCount(incidents)}
+        staleCount={getStaleCount(incidents)}
+        highPriorityOpen={getHighPriorityOpenCount(incidents)}
+        upcomingDue={getUpcomingDueCount(incidents)}
+      />
 
       <section className={styles.donutsRow}>
         <DonutChart
           title="Por estado"
-          subtitle="Distribución actual de incidencias activas"
+          subtitle="Distribución de todas las incidencias registradas"
           segments={getStatusCounts(incidents).map((status) => ({ id: status.status, label: status.label, value: status.value, color: status.color }))}
           activeId={tableFilter?.type === "status" ? tableFilter.id : null}
           onSegmentClick={toggleStatusFilter}
         />
         <DonutChart
           title="Por prioridad"
-          subtitle="Nivel de urgencia de las incidencias activas"
+          subtitle="Nivel de urgencia de las incidencias abiertas"
           segments={getPriorityCounts(incidents).map((priority) => ({ id: priority.priority, label: priority.label, value: priority.value, color: priority.color }))}
           activeId={tableFilter?.type === "priority" ? tableFilter.id : null}
           onSegmentClick={togglePriorityFilter}
@@ -165,13 +173,6 @@ export default function DashboardPage() {
         </div>
 
         <TrendChart title="Tendencia: creadas vs cerradas" incidents={incidents} />
-
-        <RiskIndicators
-          overdueToday={getOverdueCount(incidents)}
-          staleCount={getStaleCount(incidents)}
-          highPriorityOpen={getHighPriorityOpenCount(incidents)}
-          upcomingDue={getUpcomingDueCount(incidents)}
-        />
 
         <CriticalIncidentsTable
           incidents={filteredCriticalIncidents}

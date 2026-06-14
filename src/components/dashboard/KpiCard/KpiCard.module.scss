@@ -18,6 +18,15 @@
   }
 }
 
+.critical {
+  background-color: rgba(#ef4444, 0.05);
+  border-color: rgba(#ef4444, 0.25);
+
+  .value {
+    color: #ef4444;
+  }
+}
+
 .row {
   display: flex;
   align-items: flex-start;

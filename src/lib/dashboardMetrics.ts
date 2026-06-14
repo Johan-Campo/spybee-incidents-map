@@ -209,11 +209,11 @@ export function getStatusCounts(incidents: Incident[]): StatusCount[] {
 }
 
 export function getPriorityCounts(incidents: Incident[]): PriorityCount[] {
-  const active = activeIncidents(incidents);
+  const open = activeIncidents(incidents).filter((incident) => incident.status !== "closed");
   return PRIORITY_OPTIONS.map(({ value, label, color }) => ({
     priority: value,
     label,
-    value: active.filter((incident) => incident.priority === value).length,
+    value: open.filter((incident) => incident.priority === value).length,
     color,
   }));
 }

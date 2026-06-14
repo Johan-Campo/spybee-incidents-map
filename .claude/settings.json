@@ -16,7 +16,13 @@
       "Bash(node project-notes/check-garantia3.mjs)",
       "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/check-garantia*.mjs project-notes/garantia-*.png project-notes/tag-*.png project-notes/tag3-*.png)",
       "Bash(node project-notes/check-auth.mjs)",
-      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/check-auth.mjs project-notes/auth-*.png)"
+      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/check-auth.mjs project-notes/auth-*.png)",
+      "Bash(node project-notes/dash-overview.mjs)",
+      "Bash(node -e \"const sizeOf=require\\('fs'\\).statSync\\('project-notes/dash-full.png'\\); console.log\\(sizeOf.size\\)\")",
+      "Bash(node project-notes/dash-overview2.mjs)",
+      "Bash(node project-notes/dash-overview3.mjs)",
+      "Bash(cd \"c:\\\\Users\\\\User\\\\Documents\\\\GitHub\\\\spybee-incidents-map\" && rm -f project-notes/dash-overview*.mjs project-notes/dash-full.png project-notes/dash-part*.png)",
+      "Bash(node project-notes/check-dash.mjs)"
     ],
     "additionalDirectories": [
       "C:\\Users\\User\\Documents\\GitHub\\spybee-incidents-map\\project-notes"
