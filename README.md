@@ -2,6 +2,16 @@
 
 Prueba técnica de Frontend (Next.js / React) para Spybee. La aplicación recrea el flujo de **creación de incidencias sobre un mapa** de una obra de construcción y un **dashboard** que resume el estado de esas incidencias.
 
+## Lo más destacado
+
+- **Reflejo inmediato**: al crear una incidencia desde el formulario, aparece al instante en el mapa y en el dashboard, sin recargar la página.
+- **Mapa interactivo**: cada incidencia se ve como un marcador con color según su prioridad/estado, y con un click se puede consultar su detalle completo.
+- **Formulario completo y guiado**: título, descripción, categoría, prioridad, ubicación (eligiendo el punto directamente sobre el mapa), fecha límite, responsables, etiquetas y archivos adjuntos. Los campos de categoría y prioridad cambian sutilmente de color según lo seleccionado, para identificar el tipo de incidencia de un vistazo.
+- **Dashboard pensado para tomar decisiones rápido**: indicadores clave, alertas de incidencias vencidas o próximas a vencer, tabla de "atención requerida", tendencias en el tiempo, distribución por categoría/etiqueta, desempeño del equipo y un calendario/mapa de calor de actividad.
+- **Todo es interactivo**: se puede filtrar la tabla haciendo click en los gráficos, cambiar el periodo de tiempo y ver cómo se recalculan los indicadores al momento.
+- **Diseño responsive**: la aplicación se ve y funciona bien tanto en computador como en celular o tablet.
+- **Flujo de inicio de sesión completo**: incluye pantallas de registro y recuperación de contraseña (de demostración), además del login.
+
 ## Acceso
 
 La app cuenta con un flujo de autenticación (UI completa de login, registro y recuperación de contraseña), pero por ser una demo solo existe **un usuario válido**. Cualquier otra combinación de correo/contraseña muestra un mensaje de error y no permite el acceso. Las credenciales de prueba se comparten por aparte.
@@ -10,13 +20,12 @@ La app cuenta con un flujo de autenticación (UI completa de login, registro y r
 
 ## Stack
 
-- **Next.js 16** (App Router, Turbopack, TypeScript, `src/`)
-- **React 19**
-- **Zustand** para estado global (sesión e incidencias)
-- **react-map-gl / Mapbox GL** para el mapa
-- **Recharts** para las visualizaciones del dashboard
-- **SCSS Modules** para estilos, con variables y mixins compartidos en `src/styles/`
-- **lucide-react** para iconografía
+- **Next.js 16** y **React 19**: el framework y la librería sobre los que está construida toda la aplicación.
+- **Zustand**: guarda la información que la app necesita recordar mientras se usa (la sesión del usuario y la lista de incidencias).
+- **react-map-gl / Mapbox GL**: muestra el mapa interactivo y los marcadores de incidencias.
+- **Recharts**: dibuja los gráficos del dashboard (donuts, tendencias, calendario, etc.).
+- **SCSS Modules**: el sistema de estilos, con colores, espaciados y tamaños compartidos en `src/styles/` para mantener todo visualmente consistente.
+- **lucide-react**: los iconos usados en toda la interfaz.
 
 ## Mapa de incidencias
 
@@ -34,7 +43,7 @@ Desde la barra superior del mapa se abre un modal con el formulario de creación
 
 ![Modal de creación](docs/screenshots/create-incident-modal.png)
 
-Al enviarlo, la incidencia se agrega al store de Zustand y aparece de inmediato en el mapa y en el dashboard (sin necesidad de recargar).
+Al enviarlo, la incidencia se guarda en la aplicación y aparece de inmediato en el mapa y en el dashboard, sin necesidad de recargar la página.
 
 ![Incidencia creada](docs/screenshots/create-incident-submitted.png)
 
@@ -70,6 +79,8 @@ La app es usable en mobile y tablet (sidebar colapsable, KPIs y gráficos apilad
 
 ## Estructura del proyecto
 
+> Esta sección es para quienes vayan a revisar el código: muestra cómo está organizado el proyecto, carpeta por carpeta.
+
 ```
 src/
   app/
@@ -92,6 +103,8 @@ data/
 ```
 
 ## Decisiones técnicas y por qué
+
+> Esta sección explica, con más detalle técnico, las decisiones de arquitectura y el porqué de cada una — pensada para quien evalúe el código.
 
 **Datos y estado (Zustand, sin backend).** Toda la app trabaja sobre `data/incidents.mock.json`, cargado una sola vez en `useIncidentsStore`. Crear una incidencia nueva simplemente la antepone al array en memoria — es lo más simple que cumple el requisito de "se ve reflejada al instante" sin montar un backend real. La sesión vive en `useAuthStore` con `persist`, para que el login sobreviva a un refresh.
 
